@@ -19,8 +19,14 @@ Not a better metric — a finer-grained assay. Vary the training set *within* a 
 - **Knock-in** from pretrained: 8 random subsets of 100 chairs, 6 targeted (the 100 nearest to a low-margin trial), 6 cross-category controls. The random runs make the metric comparison free — any candidate estimate is recomputed on the same runs, within trial — and the targeted runs test whether the metric is *actionable*.
 - **Encoder-space upper bound**: features of all training renders under the fine-tuned models; if the chair model's own space shows nothing within category, no descriptor will [../REASONING.md#D09].
 
-## Resources used (cumulative, as of this state)
-Agent time ≈ 34 h (adds 19 Sep daytime: within-category anatomy, the three levels, experiment design, documentation). Compute: the 1,895-candidate search (3 core-h, $0.09), the encoder-space extraction (1.7 GPU-h, $7.80), the pilot fine-tune (1.7 GPU-h so far, $7.70), the evaluation test ($0.90) → **≈ $25 / $6.50** cumulative. **Committed**: batch 1 (22 fine-tunes ≈ 44 GPU-h ≈ $200 / $44); held: 15 k = 50 knockouts and 12 targeted/cross knock-ins (≈ $250 / $55 if all run). First new models of the project.
+## Resources used
+| | this state | cumulative |
+|---|---|---|
+| agent time | 7 h | 34 h |
+| lead time (guess) | 4 h | 11 h |
+| compute, unsub / sub | $16.30 / $3.70 | $25 / $6.50 |
+
+Compute: the 1,895-candidate search ($0.09), the encoder-space extraction (1.7 GPU-h), the pilot fine-tune (1.7 GPU-h so far), the evaluation test. **Committed**: batch 1, 22 fine-tunes ≈ 44 GPU-h ≈ $200 / $44. **Held**: 12 targeted/cross knock-ins + 15 k = 50 knockouts ≈ 54 GPU-h ≈ $245 / $54. First new models of the project.
 
 ## Next steps
 - [ ] Pilot fine-tune's epoch time → run budget; random knock-in subsets first.

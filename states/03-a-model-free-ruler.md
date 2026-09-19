@@ -26,8 +26,14 @@ This is, we now think, what r64w was describing: a correlation that appears beca
 ## Strategy
 Two things remain. The pooled rows — the single-model view a paper would naturally show — still fail the control. And the rank curve is mostly a step (on-category model far above the rest): is there anything graded beyond category membership? Look for an estimate that behaves in the pooled row, and look at the on-category row directly.
 
-## Resources used (cumulative, as of this state)
-Agent time ≈ 18 h (8–9 Sep; fig 7/9 by 09:07 on the 9th, the causal analysis by 21:46). Compute: descriptor banks (`geom_bank3d/2d`, `hida_bank` 114 core-h), representation variants, pose features, the 10k-permutation analysis on the login node ≈ **$8.50 / $2.70** cumulative. No new models; all results from the 12 inherited fine-tunes.
+## Resources used
+| | this state | cumulative |
+|---|---|---|
+| agent time | 13 h | 18 h |
+| lead time (guess) | 2 h | 4 h |
+| compute, unsub / sub | $3.70 / $1.20 | $8.50 / $2.70 |
+
+Compute: descriptor banks (`hida_bank` 114 core-h), representation variants, pose features; the 10k-permutation analysis on the login node. All results from the 12 inherited fine-tunes.
 
 ## Next steps
 - [ ] An estimate whose pooled relationship passes the base-DINOv2 control.

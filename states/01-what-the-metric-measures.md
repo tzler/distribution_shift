@@ -23,8 +23,14 @@ The metric is ½[d(A,C) + d(B,C)] over training images C, with A the matched obj
 ## Strategy
 Fix the *form* first: never difference A and B. Average a per-image quantity over the trial's images, so the task's decision variable cannot enter. Test whether that alone is enough, in the encoder's own space.
 
-## Resources used (cumulative, as of this state)
-Agent time ≈ 3 h (evening of 8 Sep). Compute: the feature-norm audit — 103 CPU-core-h + 0.4 GPU-h ≈ **$4.60 / $1.40** (unsub / sub). No new models.
+## Resources used
+| | this state | cumulative |
+|---|---|---|
+| agent time | 3 h | 3 h |
+| lead time (guess) | 0.5 h | 1.5 h |
+| compute, unsub / sub | $4.60 / $1.40 | $4.60 / $1.40 |
+
+Compute: the feature-norm audit, 103 CPU-core-h + 0.4 GPU-h. No new models.
 
 ## Next steps
 - [ ] Build the oddity-blind estimator (mean over images of distance to the k nearest training items).

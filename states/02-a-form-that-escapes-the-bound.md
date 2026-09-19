@@ -16,8 +16,14 @@ A distance to the training data that is not bounded by the trial's own difficult
 ## Strategy
 Leave the encoder's space. MOCHI's ShapeNet and ShapeGen trials come from known 3D assets, so distance to the training data can be measured on the *stimuli* — descriptors computed from the objects' geometry, with no encoder and no learned parameter anywhere in the ruler. The encoder then appears only where it should: as the thing being measured.
 
-## Resources used (cumulative, as of this state)
-Agent time ≈ 5 h (8 Sep, to ~00:30). Compute: audit + the first shift computations (`clean_shift`, `cosshift`) ≈ **$4.80 / $1.50**. No new models.
+## Resources used
+| | this state | cumulative |
+|---|---|---|
+| agent time | 2 h | 5 h |
+| lead time (guess) | 0.5 h | 2 h |
+| compute, unsub / sub | $0.20 / $0.10 | $4.80 / $1.50 |
+
+Compute: the first shift computations (`clean_shift`, `cosshift`). No new models.
 
 ## Next steps
 - [ ] Voxel-based descriptors for every ShapeNet object (rotation-invariant and raw-grid variants); silhouette descriptors for ShapeGen.

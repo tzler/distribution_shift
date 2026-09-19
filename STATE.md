@@ -35,8 +35,24 @@ The within-trial design worked because it varied the training set with the stimu
 
 **Budget and order.** One fine-tune is ~2 GPU-hours including evaluation (~3 min/epoch): $9 unsubsidised / $2 subsidised on a full B200; all 50 runs ≈ $450 / $100 [[D12](REASONING.md#D12), [D14](REASONING.md#D14)]. Order: random knock-in subsets → knockout k = 10 → targeted and cross knock-ins → knockout k = 50. Training hyperparameters stay pinned; each condition gets its own similarity table so mining fills every epoch; evaluation is chained into each job.
 
-## Resources used (cumulative)
-Agent time ≈ 34 h over 8–9 and 18–19 Sep; lead time intermittent, untracked. Compute to date: 4 GPU-h + 250 CPU-core-h ≈ **$25 unsubsidised / $6.50 subsidised** — banks, the audit, the search, the depth-map pipeline, the extraction, the pilot. Committed: batch 1 ≈ $200 / $44. Held: ≈ $250 / $55. Ledger: `background/compute_ledger.csv`; unit costs and rates in [RESOURCES.md](RESOURCES.md).
+## Resources used, and what the plan will cost
+**Used so far.** Agent ≈ 34 h; lead ≈ 11 h (a guess: reviewing, dictating direction, reading the artifact and these files). Compute: 4 GPU-h + 250 CPU-core-h ≈ **$25 unsubsidised / $6.50 subsidised** — the entire analysis phase, Acts 1–8, cost under $10; the rest is today's extraction and pilot. Ledger: `background/compute_ledger.csv`.
+
+**The plan as designed** (one fine-tune ≈ 2 GPU-h incl. evaluation; rates in [RESOURCES.md](RESOURCES.md)):
+
+| | runs | GPU-h | $ unsub | $ sub |
+|---|---|---|---|---|
+| batch 1 — knockout k = 10 + random controls + random knock-ins (submitted) | 22 | 44 | 200 | 44 |
+| batch 2 — targeted and cross-category knock-ins | 12 | 24 | 108 | 24 |
+| batch 3 — knockout k = 50 (held pending batch 1) | 15 | 30 | 135 | 30 |
+| **core plan** | **49** | **98** | **≈ 440** | **≈ 100** |
+| optional: second knock-in dose N = 25 | 8 | 16 | 72 | 16 |
+| optional: epochs ablation (10 vs 30) | 2 | 4 | 18 | 4 |
+| optional: targeted runs with the runner-up metric | 6 | 12 | 54 | 12 |
+| optional: second seed for the 12 category models (noise floor) | 12 | 24 | 108 | 24 |
+| **everything** | **77** | **154** | **≈ 700** | **≈ 155** |
+
+The core plan is ~6M billing-minutes, 10 % of the account's annual cap (17 % used before it); everything is ~16 %. Time to finish the core plan: ≈ 10–20 h wall at 6–8 jobs in parallel, plus ≈ 10–15 agent-hours of analysis and figures and ≈ 3–5 lead-hours of review.
 
 ## Next steps
 - [x] Pilot epoch time → run budget: ~3 min/epoch, all 50 runs affordable [D12]. (Claude)

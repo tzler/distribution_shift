@@ -22,8 +22,14 @@ Characterise human visual perception through distribution shift — the distance
 ## Strategy
 Roll up our sleeves. Rather than argue the reviews, take the metric apart and find out what it measures — if we were right, that will show it, and if not, we would rather know. Work in the tractable setting first — ShapeNet trials, twelve category-specific fine-tunes — where the training data and the stimulus geometry are both known, so any confound can be named.
 
-## Resources used (cumulative, as of this state)
-Nothing on this project's ledger yet. Inherited: the manuscript's 12 category fine-tunes (~25 GPU-h dedicated-equivalent, run by the collaborator), 313k renders per background, their similarity tables and MOCHI evaluations. Available compute: see [RESOURCES.md](../RESOURCES.md).
+## Resources used
+| | this state | cumulative |
+|---|---|---|
+| agent time | 0 h | 0 h |
+| lead time (guess) | 1 h | 1 h |
+| compute, unsub / sub | — | — |
+
+Nothing on the ledger; inherited assets only (12 fine-tunes ≈ 25 GPU-h by the collaborator). Lead time: reading the reviews and deciding to open the metric up.
 
 ## Next steps
 - [ ] Reproduce Fig. 1 right from the stored margins and distances.
