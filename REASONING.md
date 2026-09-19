@@ -1,63 +1,88 @@
-# REASONING — geometric_shift
-Append-only. Entries are true at their date; supersede, never edit. Cited from STATE.md as [Dxx].
-Entries before 2026-09-18 are back-filled from the session record and marked (recalled).
+# REASONING — Distribution shift and the oddity margin
+Append-only; newest entry at the top. Entries are true at their date; supersede, never edit.
+Cited from STATE.md as [Dxx]. Entries before 2026-09-18 are back-filled and marked (recalled).
 
-## D01 — 2026-09 (recalled) — Build a model-free shift ruler; first results look finished
-**Decided/Observed:** Replaced φ in the manuscript's Eq. 1–3 shift with geometric descriptors from ShapeNet voxels (d57, voxel grids); shapegen Fig-1 reproduction gave |r| 0.74–0.80 vs incumbent 0.53–0.64; pooled 8,472-point curve binned r −0.84.
-**Because:** Audit showed the incumbent tracks feature norm (r 0.95 ResNet-50); MOCHI ShapeNet/ShapeGen geometry is known, so no encoder is needed.
-**Rejected:** Mesh-based descriptors (no mesh library on cluster); image-pixel metrics (audit shows pix_l1 = coverage confound).
-**Implication:** Believed the circularity critique answered. Superseded by D02, D06.
+Template — one line each:
+**State:** the general situation at the time · **Observation:** the specific thing being engaged with ·
+**Decision:** what we concluded or chose · **Because:** the reasoning · **Rejected:** alternatives and why not ·
+**Implication:** what changes / next steps.
 
-## D02 — 2026-09 (recalled) — Pretrained control fails pooled; adopt within-trial design and oddity-blind estimator
-**Decided/Observed:** Base DINOv2 (never fine-tuned on any set) tracks the pooled geometric shift as strongly as fine-tuned models (r −0.121 vs −0.135). Within a trial, pretrained margin, d(A,B), human data have sd = 0, so rank/centre within trial: control becomes flat by construction; fine-tuned margin still falls (84.1% of 706 slopes negative, perm p 1e-4, category-cluster CI [−0.22,−0.03]; accuracy 81→56%).
-**Because:** Pooled relation is a stimulus property (atypical objects hard for every model). Shared-neighbour form is bounded by ½·d(A,B), so estimator changed to mean-over-images kNN (never differencing A,B).
-**Rejected:** Keeping the pooled row as the headline.
-**Implication:** H1 supported. evidence/fig46, fig48, fig7, fig9.
+## D10 — 2026-09-19 — Adopt the STATE/REASONING documentation system
+**State:** Q1 answered and written up as an artifact; Q2 handed to experiments; a RECAP + five narrative checkpoints drafted that afternoon.
+**Observation:** Lead supplied the lab HANDOFF: STATE = current truth, REASONING = why, evidence = only what is cited, git = history; wants the process presentable and projects citable.
+**Decision:** Initialise a git repo on branch `docs-system`; replace the draft with STATE / REASONING / meetings / evidence / background; keep the narrative draft under background/ as source.
+**Because:** Two "current truth" documents drift; the HANDOFF form is what the lab will read.
+**Rejected:** Keeping RECAP + checkpoints as the primary record.
+**Implication:** Every substantive STATE change now ships with a Dxx in the same commit; add the MOCHI project's STATE.md to background/ when it exists.
 
-## D03 — 2026-09 (recalled) — Within-category relationship weak; 1,895-candidate search finds a ceiling; pessimism
-**Decided/Observed:** On-category row (one point/trial, n=706): voxel16 r −0.097, category-centred +0.014. Hill climb (8 reps × ~20 estimators × 12 metrics, 50×5-fold CV over trials, perm null on max): held-out 0.113 vs fixed baseline 0.133; no metric beats it.
-**Because:** In that row "which model" and "which category" are one variable.
-**Rejected:** Further single-combination metric search on the existing 12 models (exhaustive already). Fitted-weight combinations excluded by design.
-**Implication:** Read at the time as "the metric is weak"; later split into Q1 (strong) vs Q2 (not identifiable) — see D07.
-
-## D04 — 2026-09-18 — Human RT/accuracy results set aside (external feedback)
-**Decided/Observed:** Lead pointed out MOCHI ShapeNet trials were selected adversarially, so r(geometric distance, human RT) −0.31 / accuracy +0.20 may reflect trial construction.
-**Because:** Human measures are trial-constant across the 12 models; no within-trial version exists to separate construction from robustness.
-**Rejected:** Leading the packet with the human/model divergence.
-**Implication:** Removed from packet and artifact; listed under "set aside" in STATE.
-
-## D05 — 2026-09-19 — Coverage (training mass within ε) adopted as the primary ruler
-**Decided/Observed:** coverage = −log(1+#category objects within cosine ε), mean over trial images. voxel16: within-trial r −0.424 (kNN −0.329); pooled −0.268 with control −0.030 (kNN −0.223/−0.137) — first pooled measure to pass the control. Split-half over ε: wins 20/20, held-out −0.414 vs −0.328. Holds ε 0.03–0.20, d57 and voxel16.
-**Because:** Hard cut-off saturates atypicality ("no neighbours" is maximal shift) so it cannot leak into the pooled row; soft kernel-mass, KDE, percentile variants do not reproduce it.
-**Rejected:** Gaussian KDE with per-category bandwidth (poorly calibrated, r −0.08).
-**Implication:** H5 supported. evidence/fig50, fig52, fig56.
-
-## D06 — 2026-09-19 — D01's shapegen headline withdrawn: the entangled shift was d(A,B)
-**Decided/Observed:** Eq. 1–3 shift correlates with d(A,B) at r 0.993 (shapegen); d(A,B) alone predicts the encoder proxy better (0.79) than the shift (0.74); oddity-blind form → |r| 0.12. Incumbent's r with d(A,B) is 0.07 — it was never riding this. Every distance obeys the bound (L1/unit-L1/cosine: floor 100%, r 0.73/0.75/0.78); decomposition: floor → pretrained margin +0.57, excess −0.17.
-**Because:** Triangle inequality: ½[d(A,C)+d(B,C)] ≥ ½d(A,B) for any metric; only changing the form, then the space, escapes it.
-**Rejected:** Rescuing the form with cosine/L2 (tested; cosine is worst).
-**Implication:** Prologue + Act 3 of artifact; H4 supported. evidence/fig49, fig60, fig61.
-
-## D07 — 2026-09-19 — On-category coverage curve is between-category; Q2 not identifiable with this design
-**Decided/Observed:** Coverage on-category binned r −0.78 looked graded; bins sort by category (>100 neighbours = airplane/bench/car/lamp/telephone/watercraft; 0 = chair/table/sofa/…). Category-centred r +0.013 (p 0.72); within each category mean r +0.04; 12 category points r +0.30 (p 0.34, chair the counterexample). Seven coverage variants incl. category-calibrated percentile: all ≈ 0.
-**Because:** One training set per category ⇒ "far from training set" ≡ "unusual object" within a category. Pretrained control cannot catch category identity.
-**Rejected:** More estimator variants on the existing models.
-**Implication:** Q2 needs within-category training-set variation → D09. evidence/fig54, fig57.
+## D09 — 2026-09-19 — Run interventions instead of searching for another metric
+**State:** Coverage is the best ruler for Q1; every estimator gives r ≈ 0 within category after category centring (D07); the level-3 test on the training-specific margin is −0.02 (object) / −0.07, p 0.06 (image).
+**Observation:** With one training set per category, "far from the training set" and "unusual object" are one variable — no metric can separate them; only varying the training set within a category can.
+**Decision:** Launch (a) encoder-space upper bound — features of 311k renders + MOCHI under pretrained and chair/airplane/table fine-tunes (job 8519397); (b) support knockout — chair/airplane/table, 4 random groups × k∈{10,50} nearest-neighbour removal + 2 size-matched random controls, 30 fine-tunes, pilot 8519673; (c) knock-in from pretrained — 8 random + 6 targeted + 6 cross-category subsets of 100 chairs, designed.
+**Because:** A knockout raises the own group's knn_mean 3–4× more than other groups' and 5× more than random removal, so each trial gets 11 training sets with Δknn 0–0.2, stimulus fixed; random knock-in runs make metric comparison free (any x recomputed on the same runs).
+**Rejected:** Hyperparameter search (LoRA rank, lr) — pinned to the original recipe; only epochs earns an ablation. Radius-based knockout — did not transfer across categories (chairs have ~3 neighbours at ε, airplanes ~280).
+**Implication:** Collaborator pipeline reused unchanged via a patched `train.py` copy; five pilot attempts fixed missing deps and hard-coded paths; run budget waits on the pilot's epoch time.
 
 ## D08 — 2026-09-19 — View-conditioned (image-level) coverage tested; not supported
-**Decided/Observed:** Depth-from-voxels descriptors (projector IoU 0.77–0.95 vs real renders; MOCHI poses recovered, IoU 0.856); bank 20,885 objects × 15 training views. Within-trial r: object voxels −0.424; depth maps at 15 views −0.436, at one random view −0.426, at nearest view −0.422, at the actual MOCHI view −0.266 (also in best-posed tertile: −0.29 vs −0.41). Image-space pooled control fails (+0.06–0.16).
-**Because:** Fine-tuned support behaves as view-invariant within the ~25° grid gaps — consistent with the multi-view contrastive objective. Not pose error, not descriptor resolution (silhouette/depth/pooled variants agree).
+**State:** Object-level coverage established (D05); lead's hypothesis that encoders learn view-dependent appearance, so the training distribution that matters is over images (shape × viewpoint).
+**Observation:** Built model-free depth-from-voxels descriptors (projector IoU 0.77–0.95 vs real renders; MOCHI poses recovered by silhouette matching, IoU 0.856; bank = 20,885 objects × 15 fixed training views). Within-trial r: object voxels −0.424; depth maps at all 15 training views −0.436, one random view −0.426, nearest view −0.422, the actual MOCHI view −0.266 (best-posed tertile −0.29 vs object −0.41 on the same trials). Image-space pooled control fails (+0.06 to +0.16).
+**Decision:** Fine-tuned support behaves as view-invariant within the training grid's ~25° gaps; use object-level coverage.
+**Because:** Any on-grid view recovers the full effect, so the descriptor is fine and single-view noise is not the cause; only the off-grid viewpoint loses it — consistent with the multi-view contrastive objective. Robust to silhouette/depth/pooled variants.
 **Rejected:** Pseudo-depth for non-ShapeNet MOCHI (reintroduces a model; no per-category fine-tunes there).
-**Implication:** H3 killed within the training grid; untested beyond ~25°. evidence/fig58.
+**Implication:** Untested beyond ~25° (needs new renders); Act 8 of the artifact.
 
-## D09 — 2026-09-19 — Run interventions instead of searching metrics
-**Decided/Observed:** Launched (a) encoder-space upper bound: features of 311k renders + MOCHI under pretrained/chair/airplane/table fine-tunes (job 8519397); (b) support knockout: chair/airplane/table, 4 random groups × k∈{10,50} nearest-neighbour removal + 2 random controls = 30 fine-tunes, pilot job 8519673; (c) knock-in from pretrained: 8 random + 6 targeted + 6 cross-category subsets of 100 chairs (designed, pending pilot timing).
-**Because:** D07 — the within-category question is a design problem; random knock-in subsets also make metric comparison free (any x recomputed on the same runs, within trial).
-**Rejected:** Hyperparameter search (LoRA rank, lr) — pinned to the original recipe; only epochs earns one ablation.
-**Implication:** Collaborator pipeline reused untouched via patched train.py copy; five pilot attempts fixed deps/paths.
+## D07 — 2026-09-19 — The on-category coverage curve is category identity; Q2 is a design problem
+**State:** Coverage adopted (D05); lead read its on-category row (binned r −0.78, clean control) as the within-category result the paper wanted.
+**Observation:** The bins sort by category: ">100 neighbours" is airplane/bench/car/lamp/telephone/watercraft (homogeneous shapes), "0" is chair/table/sofa/cabinet/display/loudspeaker (diverse, biggest banks). Category-centred r +0.013 (p 0.72); within each category mean r +0.04, four of twelve negative; twelve category points r +0.30 (p 0.34), chair the counterexample. Seven coverage variants incl. category-calibrated percentile: all ≈ 0.
+**Decision:** The within-category question is not identifiable with one training set per category; stop searching estimators for it.
+**Because:** The pretrained control rules out "hard for every model", not "this category's model is good at its category"; category centring is the test, and everything fails it.
+**Rejected:** More estimator variants on the existing 12 models (two exhaustive searches, same answer).
+**Implication:** → D09. Anatomy figure fig57 added to the artifact so the reasoning is visible.
 
-## D10 — 2026-09-19 — Adopt the STATE/REASONING documentation system (this file)
-**Decided/Observed:** Replaced the RECAP + narrative-checkpoints draft with STATE.md / REASONING.md / meetings / evidence / background per the lab HANDOFF; repo initialised on branch `docs-system`.
-**Because:** Lead wants the process — what changed our confidence and why — presentable to the lab; projects as citable objects.
-**Rejected:** Keeping two "current truth" documents.
-**Implication:** narrative-checkpoints kept under background/ as source; every STATE change now needs a Dxx.
+## D06 — 2026-09-19 — D01's shapegen headline withdrawn: the entangled shift was d(A,B)
+**State:** Packet and artifact drafted with "model-free beats the incumbent on shapegen" as a lead result; lead asked whether the A/B entanglement had been removed everywhere.
+**Observation:** The Eq. 1–3 shift correlates with d(A,B) at r 0.993 (shapegen); d(A,B) alone predicts the encoder proxy better (0.79) than the shift (0.74); the oddity-blind form gives |r| 0.12. The incumbent's r with d(A,B) is 0.07 — it was never riding this. Every distance obeys the bound (L1 / unit-L1 / cosine: floor holds 100%, r with d(A,B) 0.73 / 0.75 / 0.78). Decomposed: the floor predicts the pretrained margin +0.57 (wrong sign), the excess −0.17 (right sign).
+**Decision:** Withdraw the shapegen claim; state the triangle inequality explicitly; the honest Act-2 sentence is "matches the incumbent on shapenet".
+**Because:** ½[d(A,C)+d(B,C)] ≥ ½·d(A,B) for any metric; changing the form (own neighbour) takes r to 0.66 in encoder space; leaving the encoder's space finishes it (+0.45 / −0.36).
+**Rejected:** Rescuing the form with cosine or L2 (tested; cosine is worst).
+**Implication:** Prologue + fig60/fig61 added to the artifact; README and packet corrected.
+
+## D05 — 2026-09-19 — Coverage (training mass within ε) adopted as the primary ruler
+**State:** Within-trial result solid but pooled rows fail the base-DINOv2 control (D02); lead asked for density-based rather than nearest-neighbour estimates.
+**Observation:** coverage = −log(1 + #category objects within cosine ε), mean over trial images. voxel16: within-trial r −0.424 (kNN −0.329); pooled −0.268 with control −0.030 (kNN −0.223 / −0.137). Split-half over ε: wins 20/20, held-out −0.414 vs −0.328, control −0.041 vs −0.143. Holds ε 0.03–0.20 on d57 and voxel16.
+**Decision:** Coverage replaces kNN mean as the primary estimate.
+**Because:** The hard cut-off saturates atypicality — "no neighbours" is the most shift there is — so it cannot spread into the pooled row; soft kernel mass, Gaussian KDE and percentile variants do not reproduce this.
+**Rejected:** Gaussian KDE with per-category bandwidth (r −0.08, bandwidths differ 20×).
+**Implication:** First single-model pooled measure that passes the control; fig50/52/56.
+
+## D04 — 2026-09-18 — Human RT / accuracy results set aside (external feedback)
+**State:** Optimistic packet drafted with human accuracy (+0.20) and RT (−0.31) vs geometric distance — opposite in sign to the model effect — proposed as the lead result.
+**Observation:** Lead: MOCHI's ShapeNet trials were selected adversarially, so a trial-geometry ↔ human-performance relationship may be a property of trial construction.
+**Decision:** Remove it from the packet and artifact.
+**Because:** Human measures are trial-constant across the 12 models, so no within-trial version exists to separate construction from robustness.
+**Rejected:** Keeping it as a secondary result.
+**Implication:** Listed under "set aside" in STATE.
+
+## D03 — 2026-09 (recalled) — Within-category relationship weak; exhaustive search finds a ceiling
+**State:** Within-trial design established (D02); the rank curve is mostly a step (on-category model far above the other eleven).
+**Observation:** On-category row, one point per trial, n = 706: voxel16 r −0.097, category-centred +0.014. Hill climb of 1,895 candidates (8 representations × ~20 estimators × 12 trial-level metrics, 50 × 5-fold CV over trials, permutation null on the max): held-out 0.113 vs fixed baseline 0.133 — nothing wins.
+**Decision:** Read at the time as "the metric is weak".
+**Because:** In that row "which model" and "which category" are one variable; in-sample winners (0.184, corrected p 0.001) did not generalise.
+**Rejected:** Fitted-weight combinations of descriptors (excluded by design); further single-combination search.
+**Implication:** The pessimism conflated a weak answer to Q2 with the strong answer to Q1 — separated at D05–D07.
+
+## D02 — 2026-09 (recalled) — The pretrained control fails pooled; adopt the within-trial design and the oddity-blind estimator
+**State:** First results looked finished (D01); no control had been run.
+**Observation:** Base DINOv2, never fine-tuned on any set, tracks the pooled geometric shift as strongly as the fine-tuned models (r −0.121 vs −0.135). Within a trial the pretrained margin, d(A,B) and the human data have sd = 0.
+**Decision:** Rank or centre within trial, so every trial-level property — including the control — is flat by construction; switch the estimator to mean-over-images kNN (never differencing A and B).
+**Because:** The pooled relation is a stimulus property (atypical objects are hard for every model); the shared-neighbour form is bounded by ½·d(A,B). Result: 84.1% of 706 slopes negative, permutation p 1e-4, category-cluster CI [−0.22, −0.03], accuracy 81 → 56% with the pretrained model flat.
+**Rejected:** Keeping the pooled row as the headline.
+**Implication:** Q1 answered; fig7/9/46/48. The D01 encoder comparison still used the old form — not revisited until D06.
+
+## D01 — 2026-09 (recalled) — Build a model-free shift ruler; first results look finished
+**State:** The manuscript's shift is computed in the encoder's own feature space; the in-repo audit shows r(shift, ‖φ‖₁) 0.95 (ResNet-50), 0.89 (DeiT); MOCHI ShapeNet/ShapeGen geometry is known.
+**Observation:** Replacing φ in Eq. 1–3 with geometric descriptors (d57, voxel grids from ShapeNet voxels; 20-d silhouettes for ShapeGen) gives shapegen |r| 0.74–0.80 vs incumbent 0.53–0.64 across three encoders; the pooled 8,472-point curve has binned r −0.84.
+**Decision:** Treat the circularity critique as answered; the geometric ruler as a drop-in replacement.
+**Because:** No learned parameter anywhere in the ruler; the numbers beat the incumbent.
+**Rejected:** Mesh-based descriptors (no mesh library on the cluster); pixel-space metrics (the audit shows pix_l1 = a coverage confound).
+**Implication:** Superseded by D02 (control) and D06 (the shapegen result was d(A,B)).

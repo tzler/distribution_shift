@@ -1,6 +1,7 @@
 Read STATE.md first (current truth), then REASONING.md (why). Weight
 meetings/ "Notes (human)" over "Summary (machine)".
-- REASONING.md is append-only; next sequential ID; ≤6 lines per entry.
+- REASONING.md is append-only; NEWEST ENTRY AT THE TOP; next sequential ID; one line per
+  field: State · Observation · Decision · Because · Rejected · Implication.
 - STATE.md rewritten in place; ≤5-min read; cite [Dxx].
 - Invariant: every substantive STATE change is justified by a REASONING
   entry in the same commit/PR.
