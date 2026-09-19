@@ -15,7 +15,7 @@ name their commit in this table.
 | fig52_coverage_pooled_control.png | `scratch/fig_coverage_gallery.py` | `bank/{bank,test}_voxel16.npz`, ε = 0.12 | D05 |
 | fig54_oncat_three_metrics.png | `scratch/fig_three_metrics.py` | `out/coverage_shapenet_voxel16_percat.csv` + `trial_distance_(L1_not_normalized)` per category | D07 |
 | fig56_pooled_three_metrics.png | `scratch/fig_coverage_recipe.py` | same | D05, D06 |
-| fig57_oncat_anatomy.png | `scratch/fig_oncat_anatomy.py` | `out/coverage_shapenet_voxel16_percat.csv` | D07 |
+| fig57_oncat_anatomy.png | `scratch/fig_oncat_recipe.py` | `out/coverage_shapenet_voxel16_percat.csv` | D07 |
 | fig58_viewdepth_ladder.png | `scratch/fig_coverage_recipe.py` | `out/viewdepth_battery_*.csv` (from `scratch/viewdepth_pipeline.py`, SLURM 8515465/8515516/8515529/8515554/8515600/8515622) | D08 |
 | fig60_why_wrong.png | `scratch/fig_why_wrong.py` | `../L1norm_vs_distshift/trials_*.csv`; three-metric numbers from `scratch/fig_three_metrics.py` | D06 |
 | manuscript_fig1.png | rendered from `Human-3D-generalization-copy/paper-to-follow-*/distributionshift_neurips2026-3.pdf` p.4 (pymupdf), cropped | the submitted manuscript | State 0 |
