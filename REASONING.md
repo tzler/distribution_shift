@@ -18,7 +18,7 @@ Template — one line each:
 **Rejected:** Submitting everything at once (30 % of the budget on the least specific manipulation before seeing the specific one).
 **Implication:** Results arrive in `knockout/eval/<cat>_<cond>/ood_analysis_results.csv` over the next ~10 h; analysis script to be written while they run.
 **Steering:** agent, under the lead's cost constraint.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the cost; medium on holding k = 50.
+**Confidence:** lead (TB): medium — deferring to Claude on staging; I want the money stated *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high on the cost; medium on holding k = 50.
 
 <a id="D13"></a>
 ## D13 — 2026-09-19 — D11's framing corrected: the reviews were not the source of the findings
@@ -29,7 +29,7 @@ Template — one line each:
 **Rejected:** Editing D11 in place (append-only); dropping the recognitions entirely (they are real, just later).
 **Implication:** Supersedes D11's third sentence. Pattern for future external feedback: log what was said and what we made of it then; log recognitions when they happen.
 **Steering:** lead.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+**Confidence:** lead (TB): high — this correction was mine *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high.
 
 <a id="D12"></a>
 ## D12 — 2026-09-19 — Pilot fine-tune timed; the full 50-run design is affordable and goes ahead
@@ -40,7 +40,7 @@ Template — one line each:
 **Rejected:** Reducing triplets per epoch for small subsets (changes the recipe; comparability matters more than 40 GPU-hours). Whole-node requests (wait far longer than 1-GPU jobs).
 **Implication:** ~a day of wall time at 6–8 jobs in parallel; each run ends with `eval/<cat>_<cond>/ood_analysis_results.csv` in the same format as the 12 category models.
 **Steering:** agent — the lead asked to be resource-rational; the agent chose the staging.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the timing; medium on the run order.
+**Confidence:** lead (TB): medium — letting Claude steer the run order; I care about cost and this weekend *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high on the timing; medium on the run order.
 
 <a id="D11"></a>
 ## D11 — 2026-09-19 — The NeurIPS reviews ingested into the trace (external feedback)
@@ -51,7 +51,7 @@ Template — one line each:
 **Rejected:** Quoting review text verbatim in the repo.
 **Implication:** State 0 now opens with the reviews; the framing decision (claim category coverage vs wait for within-category) is TB's, listed in STATE next steps.
 **Steering:** agent.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): medium: I mapped the reviews onto findings too confidently.
+**Confidence:** lead (TB): low — I was confused by the reviewers' language at the time and did not want the trace to pretend otherwise *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): medium: I mapped the reviews onto findings too confidently.
 
 <a id="D10"></a>
 ## D10 — 2026-09-19 — Adopt the STATE/REASONING documentation system
@@ -62,7 +62,7 @@ Template — one line each:
 **Rejected:** Keeping RECAP + checkpoints as the primary record.
 **Implication:** Every substantive STATE change now ships with a Dxx in the same commit; add the MOCHI project's STATE.md to background/ when it exists.
 **Steering:** lead.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+**Confidence:** lead (TB): high *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high.
 
 <a id="D09"></a>
 ## D09 — 2026-09-19 — Run interventions instead of searching for another metric
@@ -73,7 +73,7 @@ Template — one line each:
 **Rejected:** Hyperparameter search (LoRA rank, lr) — pinned to the original recipe; only epochs earns an ablation. Radius-based knockout — did not transfer across categories (chairs have ~3 neighbours at ε, airplanes ~280).
 **Implication:** Collaborator pipeline reused unchanged via a patched `train.py` copy; five pilot attempts fixed missing deps and hard-coded paths; run budget waits on the pilot's epoch time.
 **Steering:** joint — the agent proposed interventions repeatedly; the lead came round and then owned the design.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high that the design is the fix; low on whether the graded effect exists.
+**Confidence:** lead (TB): high now — Claude said this several times before I heard it; the experiment is the right move *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high that the design is the fix; low on whether the graded effect exists.
 
 <a id="D08"></a>
 ## D08 — 2026-09-19 — View-conditioned (image-level) coverage tested; not supported
@@ -84,7 +84,7 @@ Template — one line each:
 **Rejected:** Pseudo-depth for non-ShapeNet MOCHI (reintroduces a model; no per-category fine-tunes there).
 **Implication:** Untested beyond ~25° (needs new renders); Act 8 of the artifact.
 **Steering:** lead — the hypothesis was the lead's; the agent built the test.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the ladder of controls; medium on the interpretation (only ~25° of viewpoint range was tested).
+**Confidence:** lead (TB): medium — my hypothesis; the ladder is convincing but 25° of viewpoint range is not much *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high on the ladder of controls; medium on the interpretation (only ~25° of viewpoint range was tested).
 
 <a id="D07"></a>
 ## D07 — 2026-09-19 — The on-category coverage curve is category identity; Q2 is a design problem
@@ -95,7 +95,7 @@ Template — one line each:
 **Rejected:** More estimator variants on the existing 12 models (two exhaustive searches, same answer).
 **Implication:** → D09. Anatomy figure fig57 added to the artifact so the reasoning is visible.
 **Steering:** agent — the lead read the curve as the result; the agent dissected it.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high after category-centring; the lead was initially unconvinced and asked to be shown.
+**Confidence:** lead (TB): medium — I was unconvinced until the anatomy figure; I still find it hard to give up the on-category curve *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high after category-centring; the lead was initially unconvinced and asked to be shown.
 
 <a id="D06"></a>
 ## D06 — 2026-09-19 — D01's shapegen headline withdrawn: the entangled shift was d(A,B)
@@ -106,7 +106,7 @@ Template — one line each:
 **Rejected:** Rescuing the form with cosine or L2 (tested; cosine is worst).
 **Implication:** Prologue + fig60/fig61 added to the artifact; README and packet corrected.
 **Steering:** joint — the lead asked whether the entanglement had been removed everywhere.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: r = 0.993 is not subtle; I should have checked this before the packet.
+**Confidence:** lead (TB): high once shown; I had assumed the entanglement was gone everywhere and asked to be sure *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high: r = 0.993 is not subtle; I should have checked this before the packet.
 
 <a id="D05"></a>
 ## D05 — 2026-09-19 — Coverage (training mass within ε) adopted as the primary ruler
@@ -117,7 +117,7 @@ Template — one line each:
 **Rejected:** Gaussian KDE with per-category bandwidth (r −0.08, bandwidths differ 20×).
 **Implication:** First single-model pooled measure that passes the control; fig50/52/56.
 **Steering:** joint — the lead asked for density-based estimates; the agent built and validated them.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: split-half 20/20 across ε and descriptors; medium on why the hard cut-off matters.
+**Confidence:** lead (TB): high — coverage was my ask and the within-trial figures convinced me; I over-read the on-category curve (see D07) *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high: split-half 20/20 across ε and descriptors; medium on why the hard cut-off matters.
 
 <a id="D04"></a>
 ## D04 — 2026-09-18 — Human RT / accuracy results set aside (external feedback)
@@ -128,7 +128,7 @@ Template — one line each:
 **Rejected:** Keeping it as a secondary result.
 **Implication:** Listed under "set aside" in STATE.
 **Steering:** lead.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: this was the lead's knowledge of how MOCHI was built, not mine.
+**Confidence:** lead (TB): high — I know how MOCHI was built *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high: this was the lead's knowledge of how MOCHI was built, not mine.
 
 <a id="D03"></a>
 ## D03 — 2026-09 (recalled) — Within-category relationship weak; exhaustive search finds a ceiling
@@ -139,7 +139,7 @@ Template — one line each:
 **Rejected:** Fitted-weight combinations of descriptors (excluded by design); further single-combination search.
 **Implication:** The pessimism conflated a weak answer to Q2 with the strong answer to Q1 — separated at D05–D07.
 **Steering:** agent.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high that the search found nothing; medium about what that implied — I read a weak Q2 as a weak project.
+**Confidence:** lead (TB): low — this is where I stopped believing the project; I did not yet see that Q1 and Q2 were different questions *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high that the search found nothing; medium about what that implied — I read a weak Q2 as a weak project.
 
 <a id="D02"></a>
 ## D02 — 2026-09 (recalled) — The pretrained control fails pooled; adopt the within-trial design and the oddity-blind estimator
@@ -150,7 +150,7 @@ Template — one line each:
 **Rejected:** Keeping the pooled row as the headline.
 **Implication:** Q1 answered; fig7/9/46/48. The D01 encoder comparison still used the old form — not revisited until D06.
 **Steering:** joint.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: the within-trial invariants are arithmetic.
+**Confidence:** lead (TB): high — the design argument is arithmetic and the figures showed it *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high: the within-trial invariants are arithmetic.
 
 <a id="D01"></a>
 ## D01 — 2026-09 (recalled) — Build a model-free shift ruler; first results look finished
@@ -161,4 +161,4 @@ Template — one line each:
 **Rejected:** Mesh-based descriptors (no mesh library on the cluster); pixel-space metrics (the audit shows pix_l1 = a coverage confound).
 **Implication:** Superseded by D02 (control) and D06 (the shapegen result was d(A,B)).
 **Steering:** agent.
-**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: the numbers were clean; low, in hindsight, about what they meant.
+**Confidence:** lead (TB): high at the time — the numbers beat the incumbent; in hindsight, misplaced *(drafted by the agent from the record; TB to correct)* · agent (Claude Opus 5): high: the numbers were clean; low, in hindsight, about what they meant.
