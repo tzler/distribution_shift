@@ -36,8 +36,8 @@ The on-category row under coverage looks graded (binned r −0.78). Test whether
 | | this state | cumulative |
 |---|---|---|
 | agent time | 9 h | 27 h |
-| lead time (guess) | 3 h | 8.5 h |
-| compute, unsub / sub | $0.20 / $0.10 | $8.70 / $2.80 |
+| lead time (guess) | 3 h | 13 h |
+| compute, unsub / sub | $0.20 / $0.10 | $16.50 / $4.60 |
 
 Compute: coverage sweeps on the login node; the depth-map pipeline, six `genoa-std-mem` jobs. Still no new models.
 

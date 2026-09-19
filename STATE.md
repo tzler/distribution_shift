@@ -56,7 +56,8 @@ The core plan is ~6M billing-minutes, 10 % of the account's annual cap (17 % use
 
 ## Next steps
 - [x] Pilot epoch time → run budget: ~3 min/epoch, all 50 runs affordable [D12]. (Claude)
-- [ ] Encoder-space within-category test from the extracted features. (Claude)
+- [x] Encoder-space within-category test: signal present (−0.10 to −0.15 category-centred; airplane −0.42) [D15]. (Claude)
+- [ ] Finer geometric descriptors aimed at the within-category signal; encoder-space x's in the knock-in metric comparison. (Claude)
 - [x] Build subset dirs and per-condition similarity tables; verify chained evaluation; submit batch 1 [D14]. (Claude)
 - [ ] Route targeted/cross knock-ins by the mig45 timing; decide on k = 50 from the k = 10 results. (Claude)
 - [ ] Analysis script for knockout and knock-in results (within-trial regressions of Δmargin on Δcoverage; own vs other vs random). (Claude)
@@ -68,7 +69,7 @@ The core plan is ~6M billing-minutes, 10 % of the account's annual cap (17 % use
 ## Open questions
 1. Is the within-category relationship graded once the training set varies?
 2. Which estimate best predicts margin *change* under intervention?
-3. Does the encoder's own space carry a within-category signal that geometry misses?
+3. ~~Does the encoder's own space carry a within-category signal that geometry misses?~~ Yes — category-centred −0.10 to −0.15, and −0.42 in the airplane model's own space on airplane trials [[D15](REASONING.md#D15)]. So: which finer geometric descriptors recover it?
 4. What is the margin's noise floor? One model per category, no repeat seeds; the 0.13 within-category ceiling could be noise.
 5. Does view-invariance hold beyond ~25° from the training grid? (Needs new renders.)
 

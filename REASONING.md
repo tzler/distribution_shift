@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D15"></a>
+## D15 — 2026-09-19 — The oddity-blind estimate inside the encoders' own spaces: leaving the encoder was a choice, and the encoder sees within-category structure geometry does not
+**State:** Track A features extracted (pretrained DINOv2-L and the chair/airplane/table fine-tunes, 311k renders + MOCHI); lead reviewing the states and asking, for State 2, what actually showed the encoder space to be insufficient.
+**Observation:** Same form, same 20,750-object bank, in the encoders' own features (image-level knn): within-trial r −0.42 to −0.48 (geometric coverage −0.42); pooled −0.23 to −0.32 with the pretrained control at 0.00 to +0.08 (passes); on-category −0.17 to −0.28 with control −0.10 to −0.28 (fails); category-centred on-category −0.09 to −0.15, p ≤ .01 (geometric: +0.01). In the airplane model's own space on airplane trials: r −0.42, control −0.22; chair −0.24, control 0.00; table null.
+**Decision:** State 2 is rewritten: the model-free space was a *choice* — no learned parameters, reviewer-proof, and the only ruler that applies to humans — not a necessity forced by failure of the form fix. Open question 3 is answered yes: the encoder's own representation carries a within-category signal our descriptors lack, so finer geometric descriptors are worth building, and encoder-space x's join the knock-in metric comparison.
+**Because:** Fixing the form is enough for the pooled control even in encoder space; the earlier "level 1 alone fails" was measured in DINO ViT-B against ImageNet, not this bank. Encoder-space distance and encoder-space atypicality are more entangled (on-category control), which is why the within-trial design matters even more there.
+**Rejected:** Keeping State 2's "the encoder space still leaks, so we left it" framing — it was true for the wrong reason.
+**Implication:** Level-3 diagnosis revised: not only the design — the descriptors too. evidence/fig62.
+**Steering:** lead — asked the question that exposed it; agent — ran the battery and corrected its own earlier claim.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the numbers; medium on how much of the encoder-space within-category signal is training-specific (the on-category controls say roughly half).
+
 <a id="D14"></a>
 ## D14 — 2026-09-19 — Batch 1 submitted; cost made explicit; k = 50 held; documentation instructions revised
 **State:** Pilot at ~3 min/epoch (D12); eval step verified on its epoch-10 checkpoint (same columns, pretrained margins bit-identical to the reference); all 50 subset directories and per-condition similarity tables built; lead offline for the afternoon, asked for resource-rational compute and for the cost in money.

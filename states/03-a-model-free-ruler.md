@@ -31,8 +31,8 @@ Two things remain. The pooled rows — the single-model view a paper would natur
 | | this state | cumulative |
 |---|---|---|
 | agent time | 13 h | 18 h |
-| lead time (guess) | 2 h | 5.5 h |
-| compute, unsub / sub | $3.70 / $1.20 | $8.50 / $2.70 |
+| lead time (guess) | 2 h | 10 h |
+| compute, unsub / sub | $3.70 / $1.20 | $16.30 / $4.50 |
 
 Compute: descriptor banks (`hida_bank` 114 core-h), representation variants, pose features; the 10k-permutation analysis on the login node. All results from the 12 inherited fine-tunes.
 

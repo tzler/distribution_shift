@@ -24,8 +24,8 @@ Not a better metric — a finer-grained assay. Vary the training set *within* a 
 | | this state | cumulative |
 |---|---|---|
 | agent time | 7 h | 34 h |
-| lead time (guess) | 4 h | 12.5 h |
-| compute, unsub / sub | $16.30 / $3.70 | $25 / $6.50 |
+| lead time (guess) | 4 h | 17 h |
+| compute, unsub / sub | $8.50 / $1.90 | $25 / $6.50 |
 
 Compute: the 1,895-candidate search ($0.09), the encoder-space extraction (1.7 GPU-h), the pilot fine-tune (1.7 GPU-h so far), the evaluation test. **Committed**: batch 1, 22 fine-tunes ≈ 44 GPU-h ≈ $200 / $44. **Held**: 12 targeted/cross knock-ins + 15 k = 50 knockouts ≈ 54 GPU-h ≈ $245 / $54. First new models of the project.
 

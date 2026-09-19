@@ -19,6 +19,7 @@ name their commit in this table.
 | fig58_viewdepth_ladder.png | `scratch/fig_viewdepth.py` | `out/viewdepth_battery_*.csv` (from `scratch/viewdepth_pipeline.py`, SLURM 8515465/8515516/8515529/8515554/8515600/8515622) | D08 |
 | fig60_why_wrong.png | `scratch/fig_why_wrong.py` | `../L1norm_vs_distshift/trials_*.csv`; three-metric numbers from `scratch/fig_three_metrics.py` | D06 |
 | manuscript_fig1.png | rendered from `Human-3D-generalization-copy/paper-to-follow-*/distributionshift_neurips2026-3.pdf` p.4 (pymupdf), cropped | the submitted manuscript | State 0 |
+| fig62_encoder_space.png | `scratch/fig_encoder_space.py` | `knockout/eval/encoder_space_battery.csv` (from `scratch/encoder_space_battery.py`, SLURM 8522238; features from job 8519397) | D15, State 2 |
 | fig61_triangle.png | `scratch/fig_triangle.py` | `../L1norm_vs_distshift/trials_vit_base_patch16_224.dino.csv` | D06 |
 
 Numbers quoted in STATE that have no figure: hill-climb (`out/hillclimb_candidates.npz`,
