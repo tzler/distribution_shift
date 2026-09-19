@@ -1,8 +1,8 @@
 # evidence/ — admission rule: only figures cited from STATE.md or a REASONING entry
 
 Every file: the script that regenerates it (run from the repo root with the `dev` conda env
-unless noted), the data it reads, and the entry that cites it. Commit hashes: see git log
-for the commit that added each file.
+unless noted), the data it reads, and the entry that cites it. All thirteen files were admitted at commit 69f2534 (2026-09-19); later additions
+name their commit in this table.
 
 | file | script | data | cited by |
 |---|---|---|---|

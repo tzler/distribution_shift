@@ -50,6 +50,5 @@ Set aside: human RT/accuracy vs geometric distance [D04]; pseudo-depth for non-S
 
 ## TODOs (back-fill)
 - D01–D03 dates are approximate (recalled); exact dates recoverable from `out/figures/` mtimes.
-- `evidence/` provenance lists script paths; commit hashes to be added after the first commit.
 - Verify the manuscript's published shapenet r = .91 (Fig. 1) — never reproduced (got +0.34); unresolved.
 - `background/` is empty apart from the narrative draft; add the audit README and the MOCHI STATE.md when available.
