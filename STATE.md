@@ -1,54 +1,61 @@
-# geometric_shift — model-free distribution shift for the oddity margin
+# Distribution shift and the oddity margin
 *Last meaningful update: 2026-09-19 · Lead: TB · Status: active*
 
 ## Goal
-The manuscript (*Human perception under distribution shift*) measures train–test distribution shift inside the same encoder whose oddity margin it explains, with a form that is bounded below by the trial's own difficulty. We want a shift measure with **no learned parameters** — from the stimuli's known 3D geometry and the training set alone — that predicts the margin, passes a control the original cannot, and makes "representational support depends on training data" a causal claim rather than a correlation.
-
-## Hypotheses
-- **H1** The oddity margin responds to which training set the model saw, measured model-free. *Status: supported* [D02].
-- **H2** Within a category, the margin falls gradedly with distance from the training set. *Status: live — not identifiable with one training set per category* [D03, D07]; being tested by intervention [D09].
-- **H3** Fine-tuned support is view-conditioned (training *images*, not objects, are what matter). *Status: killed within the training view grid* [D08].
-- **H4** The manuscript's metric measures the encoder's ease on the trial, not distribution shift. *Status: supported* [D06].
-- **H5** Coverage (training mass within ε) is the right model-free ruler. *Status: supported* [D05]; wins over kNN distance on every criterion.
-
-## Current evidence
-- **Within-trial manipulation** (706 trials × 12 category fine-tunes; images, d(A,B), base margin identical across the 12): slope negative in 84.1% of trials, perm p 1e-4, category-cluster CI [−0.22, −0.03]; accuracy 81.2 → 55.7% nearest→farthest with the pretrained model flat at 50.6%; on/off-category margin advantage d = 1.41. `evidence/fig46_moving_training.png`, `fig48`, `fig7`, `fig9` [D02].
-- **Coverage vs kNN** (voxel16): within-trial −0.424 vs −0.329; pooled −0.268 / control −0.030 vs −0.223 / −0.137; split-half 20/20. `evidence/fig50`, `fig52`, `fig56` [D05].
-- **Original metric**: bounded by ½·d(A,B) under every distance (r with d(A,B) 0.73–0.78); on our data predicts the *pretrained* margin (+0.38 pooled, +0.61 on-category) better than the fine-tuned one, wrong sign; works only after two-way centring. `evidence/fig49`, `fig60`, `fig61` [D06].
-- **On-category row**: apparent graded curve (binned −0.78) is category identity; category-centred ≈ 0 for every estimator. `evidence/fig54`, `fig57` [D07].
-- **Viewpoint**: image-level coverage matches object-level at any training view (−0.42 to −0.44) and loses it only at the actual off-grid view (−0.27). `evidence/fig58` [D08].
-- Robustness: descriptor (57-d invariant → 32³ voxels), 9 estimators, 7 centring schemes, binning, 1,895-candidate CV search — all agree [D02, D03].
+Find a good estimate of distribution shift — how far a test trial sits from what a model was trained on — and establish whether that estimate tracks the model's oddity margin. If it does, the margin is a readout of representational support, and "support depends on training data" becomes a claim we can test by changing the training data rather than just correlate.
 
 ## Current status
-Q1 (H1, H4, H5) is answered and written up (artifact Prologue + Acts 1–8; `README_findings.md`). Q2 (H2) cannot be answered by any analysis of the existing 12 models, so three interventions were launched 19 Sep: encoder-space upper bound (extraction running), support knockout (pilot on its 5th attempt after dependency/path fixes; 29 conditions designed), knock-in from pretrained (20 subsets designed, waiting on the pilot's epoch time). Blocked on: per-epoch cost of one fine-tune, which sets how many of the 50 designed runs are affordable.
+
+**Where we started.** The manuscript's shift estimate is computed inside the encoder whose margin it explains: nearest-neighbour distance in DINOv2 feature space, in the form ½[d(A,C)+d(B,C)] over training images C. That form has a floor — by the triangle inequality it can never be smaller than ½·d(A,B), the very thing the oddity task is decided by — and in raw feature space it is mostly the size of the feature vector (r = 0.95 with ‖φ‖₁). On our data it predicts the *pretrained* model's margin (+0.38 pooled, +0.61 on-category) better than any fine-tuned model's, with the sign backwards. It measures how easy the trial is for the encoder, not shift [D06].
+
+![why the original metric is wrong](evidence/fig60_why_wrong.png)
+![the triangle inequality, and that cosine/L2 do not escape it](evidence/fig61_triangle.png)
+
+**What we did about it.** Two changes. (1) A new estimate: never difference A and B — average a per-image quantity over the trial's images — and count *coverage*, the training mass within a radius of each image, rather than distance to the nearest neighbour. (2) A model-free space: the descriptors come from the stimuli's known 3D geometry (ShapeNet voxels), so no encoder is anywhere in the ruler [D02, D05].
+
+**Where it works.** With 12 category-specific fine-tunes and every trial run through all 12, the stimulus can be held fixed while the training set varies. The margin follows the training set in 84% of trials (permutation p = 10⁻⁴), accuracy falls 81 → 56% from the nearest to the farthest training set while the pretrained model stays flat at 51%, and the base-model control — the thing the original metric fails — is zero by construction. Coverage is the only estimate whose *pooled* relationship also passes that control (−0.27 vs a control of −0.03) [D02, D05].
+
+![moving the training data moves the margin](evidence/fig46_moving_training.png)
+![coverage vs distance vs the original, pooled, control on its own axis](evidence/fig56_pooled_three_metrics.png)
+
+**Where it fails.** Within a condition. Hold the category fixed and ask whether a chair that is farther from the chair training set gets a lower margin from the chair model: r ≈ 0 for every estimator we have, after category centring. The one curve that looked graded turned out to sort trials by category, not by anything within one [D03, D07]. This matters: without a within-condition result, what we have shown is *category* shift — did you train on this kind of object — not distribution shift as a continuous quantity.
+
+![the on-category curve is category identity](evidence/fig57_oncat_anatomy.png)
+
+**Why it fails, and what we are doing now.** With one training set per category, "far from the training set" and "an unusual object" are the same variable; no estimator can separate them. So the current work is not a better metric but a finer-grained assay: fine-tune models on training sets that vary *within* a category — knock out a trial's nearest training objects, or knock in a small targeted subset — and ask whether the margin follows coverage with the trial fixed [D09]. Alongside: an encoder-space upper bound (does the chair model's own representation show a within-category signal that geometry misses?), and a test of whether support is view-conditioned (it is not, within the training view grid) [D08].
+
+## Current approach
+- **Knockout** (30 fine-tunes, chair/airplane/table): remove each test group's k nearest training objects, k ∈ {10, 50}, plus size-matched random removals. Each trial gets 11 training sets, stimulus fixed. Pilot running (job 8519673).
+- **Knock-in** (20 fine-tunes from pretrained, chairs): 8 random subsets of 100, 6 targeted (nearest 100 to a low-margin trial), 6 cross-category controls. The random runs make the metric comparison free: any candidate estimate is recomputed on the same runs, within trial.
+- **Encoder-space bound**: features of all 311k training renders under pretrained and three fine-tuned models (job 8519397).
+- Everything reuses the collaborator's training pipeline unchanged; per-epoch cost from the pilot sets the run budget.
 
 ## Next steps
-- [ ] Pilot epoch time → decide run budget; prioritise knock-in random subsets (metric comparison is free on them) over k=50 knockouts. (Claude)
-- [ ] Encoder-space battery from job 8519397: does the chair model's own space show a within-category signal? (Claude)
-- [ ] Build remaining subset dirs; submit knockout + knock-in as 1-GPU jobs; evaluate each checkpoint with `ood_distance_analysis.py` exactly as the 12 category models were. (Claude)
-- [ ] Metric search on the random knock-in runs; targeted runs with winner + runner-up. (Claude)
-- [ ] Single-trial figure: trial images, selected training chairs, pretrained vs targeted vs random margins. (Claude)
-- [ ] Lab meeting Monday: present STATE + D02/D05/D06/D07 as the arc. (TB)
-- [ ] Decide whether the resubmission claims coverage (binary) or waits for the graded result. (TB)
+- [ ] Pilot epoch time → run budget; random knock-in subsets first. (Claude)
+- [ ] Encoder-space within-category test from the extracted features. (Claude)
+- [ ] Submit knockout + knock-in; evaluate each checkpoint exactly as the 12 category models were. (Claude)
+- [ ] Metric search on the random runs; targeted runs with the winner and runner-up. (Claude)
+- [ ] Single-trial figure: the trial, the training chairs the metric chose, pretrained vs targeted vs random margins. (Claude)
+- [ ] Lab meeting Monday: present this page and the arc D02 → D05 → D06 → D07 → D09. (TB)
+- [ ] Decide whether the resubmission claims category coverage now or waits for the within-category result. (TB)
 
 ## Open questions
-1. Is the within-category relationship graded once the training set varies? (H2; knockout/knock-in.)
-2. Which metric best predicts margin *change* under intervention — kNN k, coverage ε, descriptor, object vs image level?
-3. Does the encoder's own representation carry a within-category signal that geometry misses?
-4. What is the margin's noise floor? One model per category, no repeat seeds; the 0.13 within-category ceiling could be noise.
+1. Is the within-category relationship graded once the training set varies? (The experiments above.)
+2. Which estimate best predicts margin *change* under intervention — coverage radius, kNN k, descriptor, object vs image level?
+3. Does the encoder's own space carry a within-category signal that geometry misses?
+4. What is the margin's noise floor? One model per category, no repeat seeds.
 5. Does view-invariance hold beyond ~25° from the training grid? (Needs new renders.)
-6. Epochs for small knock-in subsets: 10 vs 30 — the one nuisance variable worth an ablation.
+6. Epochs for the small knock-in subsets — the one training variable worth an ablation.
 
-Set aside: human RT/accuracy vs geometric distance [D04]; pseudo-depth for non-ShapeNet MOCHI [D08].
+Set aside: human RT/accuracy vs geometric distance (adversarial trial selection) [D04]; pseudo-depth for non-ShapeNet MOCHI [D08].
 
 ## Pointers
-- Code: this repo (`blind_shift.py` estimator; `scratch/coverage_sweep.py`, `scratch/viewdepth_pipeline.py`, `scratch/fig_moving_training.py`). Data banks in `bank/` (ignored), figures in `out/figures/` (ignored; cited ones in `evidence/`).
-- Experiments: `../knockout/` — `design.json`, `design_knockin.json`, `scripts/`, logs.
-- Write-ups: `README_findings.md` (full factual record); artifact https://claude.ai/artifact/6AhaQJwZjQoZnYEXsBWT9r; `packet/` (figure packet).
-- Upstream: collaborator pipeline `../../Dist-shift/HIDA/hida-tune/` (read-only); category results `ShapeNet_OOD_Analyses/<cat>/ood_analysis_results.csv`; audit `../L1norm_vs_distshift/README.md`.
-- Background: `background/narrative-checkpoints/` (long-form back-fill source); `background/` awaits the MOCHI project's STATE.md.
+- This repo: estimator `blind_shift.py`; coverage `scratch/coverage_sweep.py`; viewpoint `scratch/viewdepth_pipeline.py`; cited figures in `evidence/` with provenance. Full factual record `README_findings.md`. Walkthrough artifact https://claude.ai/artifact/6AhaQJwZjQoZnYEXsBWT9r.
+- Experiments: `../knockout/` (`design.json`, `design_knockin.json`, `scripts/`).
+- Upstream: collaborator pipeline `../../Dist-shift/HIDA/hida-tune/` (read-only); category results `ShapeNet_OOD_Analyses/<cat>/ood_analysis_results.csv`; metric audit `../L1norm_vs_distshift/README.md`.
+- Background: `background/` — narrative back-fill, citation list, slot for the MOCHI project's STATE.md.
 
 ## TODOs (back-fill)
-- D01–D03 dates are approximate (recalled); exact dates recoverable from `out/figures/` mtimes.
-- Verify the manuscript's published shapenet r = .91 (Fig. 1) — never reproduced (got +0.34); unresolved.
-- `background/` is empty apart from the narrative draft; add the audit README and the MOCHI STATE.md when available.
+- D01–D03 dates approximate (recalled); what was tried before this session's record is not yet captured — needs TB.
+- The manuscript's published shapenet r = .91 (Fig. 1) was never reproduced (got +0.34); unresolved.
+- `background/` citation list is a first draft.
