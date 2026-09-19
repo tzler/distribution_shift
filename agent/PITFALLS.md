@@ -22,6 +22,7 @@ Environment, pipeline and code traps that cost time here. Cluster-wide ones are 
 - Job names are how the ledger script finds this project's jobs — keep `<cat>_<cond>`, `viewdepth*`, `enc_extract`, `evaltest`, `geom_*`.
 
 ## Code
+- **`/tmp` is shared and can be permission-denied**; parallel background jobs clobber each other there. Use `$CLAUDE_JOB_DIR/tmp` or read data via `subprocess` inside the script instead of a temp file.
 - **pandas attribute access collides with method names**: `df.sem`, `df.cov`, `df.shift`, `r.cov` on itertuples → use `df['sem']` or rename. Bit three times.
 - **`python - <<'PY'` consumes stdin** — you cannot also pipe data into it. Read via `subprocess` inside the script.
 - `read_binvox` axis order: raw is x, z, y → transpose (0, 2, 1); validated against real renders (IoU 0.77–0.95 with identity perm; 0.2–0.5 for every other).
