@@ -6,7 +6,7 @@ A coverage estimate passes the control in the pooled row where every distance me
 ## Goal
 Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
 ## Status
-**Coverage, not distance.** Every estimator so far asked *how far* the nearest training objects are. Coverage asks *how much* training mass is near the object: count the category's training objects within a cosine radius ε of each image, take −log(1+count), average over the trial. The difference is the ceiling — "no training objects nearby" is the most shift there is — so object atypicality saturates instead of spreading, and stops leaking into the pooled row [../REASONING.md#D05].
+**Coverage, not distance.** Every estimator so far asked *how far* the nearest training objects are. Coverage asks *how much* training mass is near the object: count the category's training objects within a cosine radius ε of each image, take −log(1+count), average over the trial. The difference is the ceiling — "no training objects nearby" is the most shift there is — so object atypicality saturates instead of spreading, and stops leaking into the pooled row [[D05](../REASONING.md#D05)].
 
 | voxel16 | kNN distance | coverage |
 |---|---|---|
@@ -17,17 +17,17 @@ Find a way to use the oddity margin as a proxy for distribution shift — the di
 ![coverage against kNN across ε](../evidence/fig50_coverage.png)
 ![the pooled row in Fig 25's template: the control is flat under coverage](../evidence/fig52_coverage_pooled_control.png)
 
-**Three metrics side by side.** Coverage, kNN, and the manuscript's original per-category distance, with the pretrained control on its own axis. The original metric's control rises with it (binned +0.96; r +0.38 pooled, +0.61 on-category) and its fine-tuned curve is U-shaped — it behaves only after two-way centring [../REASONING.md#D06].
+**Three metrics side by side.** Coverage, kNN, and the manuscript's original per-category distance, with the pretrained control on its own axis. The original metric's control rises with it (binned +0.96; r +0.38 pooled, +0.61 on-category) and its fine-tuned curve is U-shaped — it behaves only after two-way centring [[D06](../REASONING.md#D06)].
 
 ![pooled, three metrics, control on its own axis](../evidence/fig56_pooled_three_metrics.png)
 
-**Images, not objects?** Hypothesis: encoders learn view-conditioned appearance, so coverage should count training *images*. Built model-free (depth maps projected from voxels; MOCHI cameras recovered by silhouette matching, IoU 0.86). Any on-grid view recovers the full effect (−0.42 to −0.44); only the actual off-grid MOCHI view loses it (−0.27), not from pose error. Within the training grid's ~25° gaps, support is view-invariant [../REASONING.md#D08].
+**Images, not objects?** Hypothesis: encoders learn view-conditioned appearance, so coverage should count training *images*. Built model-free (depth maps projected from voxels; MOCHI cameras recovered by silhouette matching, IoU 0.86). Any on-grid view recovers the full effect (−0.42 to −0.44); only the actual off-grid MOCHI view loses it (−0.27), not from pose error. Within the training grid's ~25° gaps, support is view-invariant [[D08](../REASONING.md#D08)].
 
 ![the view-conditioning ladder](../evidence/fig58_viewdepth_ladder.png)
 
 r64w had asked what an object-based measure averaged over all views would do. This is that measure, and it does at least as well as the view-conditioned one — the reviewer's question turned out to be the right test of the hypothesis.
 
-**Correction carried forward.** With the oddity-blind form, the shapegen encoder comparison from State 0's reproduction goes from |r| 0.74 to 0.12: it had been d(A,B) at r = 0.993. Withdrawn [../REASONING.md#D06].
+**Correction carried forward.** With the oddity-blind form, the shapegen encoder comparison from State 0's reproduction goes from |r| 0.74 to 0.12: it had been d(A,B) at r = 0.993. Withdrawn [[D06](../REASONING.md#D06)].
 
 ## Strategy
 The on-category row under coverage looks graded (binned r −0.78). Test whether it is — category-centre it, look inside each category — before claiming a within-category result.
