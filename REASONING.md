@@ -7,6 +7,15 @@ Template — one line each:
 **Decision:** what we concluded or chose · **Because:** the reasoning · **Rejected:** alternatives and why not ·
 **Implication:** what changes / next steps.
 
+<a id="D12"></a>
+## D12 — 2026-09-19 — Pilot fine-tune timed; the full 50-run design is affordable and goes ahead
+**State:** Interventions designed (D09) but unsubmitted, waiting on the cost of one fine-tune; the pilot (chair, group 1, k = 10) reached training on its fifth attempt after four missing-dependency / hard-coded-path failures.
+**Observation:** ~3 min per epoch on a dedicated B200 once the file cache is warm (epochs 5–10: 15 min); 30 epochs ≈ 1.5–2 h. The subset pipeline behaves: 1,831 chairs discovered, 20,000 similarity-binned triplets per epoch, checkpoints saving on val-loss improvement. All 50 runs ≈ 90 GPU-hours.
+**Decision:** Run the whole design as independent 1-GPU jobs, in the order random knock-in → knockout k = 10 → targeted and cross knock-in → knockout k = 50; keep the recipe pinned (20k triplets, 30 epochs) even for 100-object subsets; give each condition its own similarity table filtered to its objects so binned mining fills every epoch; chain the MOCHI evaluation into each job.
+**Because:** Half the estimated cost; small subsets would otherwise silently under-fill the epoch (partners missing from the subset are rejected by the miner); a bare checkpoint without its evaluation is not a result.
+**Rejected:** Reducing triplets per epoch for small subsets (changes the recipe; comparability matters more than 40 GPU-hours). Whole-node requests (wait far longer than 1-GPU jobs).
+**Implication:** ~a day of wall time at 6–8 jobs in parallel; each run ends with `eval/<cat>_<cond>/ood_analysis_results.csv` in the same format as the 12 category models.
+
 <a id="D11"></a>
 ## D11 — 2026-09-19 — The NeurIPS reviews ingested into the trace (external feedback)
 **State:** Documentation system live (D10); State 0 had a placeholder for the reviewer concerns.
