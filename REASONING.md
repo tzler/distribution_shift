@@ -7,6 +7,15 @@ Template — one line each:
 **Decision:** what we concluded or chose · **Because:** the reasoning · **Rejected:** alternatives and why not ·
 **Implication:** what changes / next steps.
 
+<a id="D14"></a>
+## D14 — 2026-09-19 — Batch 1 submitted; cost made explicit; k = 50 held; documentation instructions revised
+**State:** Pilot at ~3 min/epoch (D12); eval step verified on its epoch-10 checkpoint (same columns, pretrained margins bit-identical to the reference); all 50 subset directories and per-condition similarity tables built; lead offline for the afternoon, asked for resource-rational compute and for the cost in money.
+**Observation:** PARCC rates: full B200 $4.51/h unsubsidised, $1.00 subsidised; mig45 exactly a quarter of that, so a quarter slice saves money only if the job runs faster than quarter speed. A run is ~2 GPU-hours (train + eval): ~$9 / ~$2. Account cap 60M billing-min, 17% used; the whole design would add ~12%.
+**Decision:** Submit batch 1 to dgx-b200 (21 runs: knockout k = 10 for all groups + random controls, and the 7 remaining random knock-ins; job IDs in `knockout/logs/batch1_jobs.txt`); hold the 15 k = 50 knockouts until k = 10 results say they are needed; route the 12 targeted/cross knock-ins by the mig45 timing run (8520577); 4.5 h time limits so jobs backfill. Write HANDOFF v2 recording how the documentation system changed in first use.
+**Because:** Batch 1 ≈ $200 / $44, all 50 ≈ $450 / $100 — small either way, but the k = 50 dose is the least informative third and can wait a day; done-this-weekend is met either way.
+**Rejected:** Submitting everything at once (30 % of the budget on the least specific manipulation before seeing the specific one).
+**Implication:** Results arrive in `knockout/eval/<cat>_<cond>/ood_analysis_results.csv` over the next ~10 h; analysis script to be written while they run.
+
 <a id="D13"></a>
 ## D13 — 2026-09-19 — D11's framing corrected: the reviews were not the source of the findings
 **State:** Reviews ingested (D11) with a table mapping each concern to a later result, as if the work had been a response to them; lead reviewing the trace.
