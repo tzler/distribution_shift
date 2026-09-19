@@ -16,6 +16,7 @@ Each caught a real error in this project. The number in brackets is the entry wh
 - **Permutation null on the max statistic** when reporting a search's best.
 
 ## For any figure
+- **A state figure states its expectation** (what the lines should do if the claim is true; what the control should do) before showing the data, one plot type repeated, verdict boxes graded green / orange / red and worded as concern vs kill honestly. Recipe in FEEDBACK.md. Only measures that existed at that state.
 - **Own axis for the control** when it compresses the effect; **independent y-limits** when panels are compared on shape, not level (fig 17).
 - **Coverage-type measures saturate:** bin on the raw count with log-spaced edges, not on quantiles of the score (85 % of pairs sit at zero).
 - Check the rendered PNG for title/caption collisions before sending; the lead reads on a phone.

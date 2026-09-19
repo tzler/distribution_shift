@@ -20,7 +20,7 @@ for j,(model,name) in enumerate([('pretrained','the pretrained encoder\'s featur
         a.errorbar(bx,bp,yerr=ep,fmt='o--',color=GREY,ms=8,mfc=GREY,mec=SURF,mew=1.3,lw=2.2,ecolor='#d5d3ce',elinewidth=1.4,zorder=3,label='pretrained model — never saw the training set')
         a.errorbar(bx,bf,yerr=ef,fmt='o-',color=BLUE,ms=9,mfc=BLUE,mec=SURF,mew=1.4,lw=2.6,ecolor='#bcd0ea',elinewidth=1.6,zorder=4,label='fine-tuned model — trained on it')
         passed=abs(rp)<0.1
-        verdict=('✓  grey is flat: the distance tracks the training set' if passed else '✗  grey falls with blue: the distance tracks the encoder,\n    not the training set')
+        verdict=('✓  grey is flat: the distance tracks the training set' if passed else '!  grey falls with blue: we have not separated the training set\n    from the encoder here')
         a.set_title(f'{rowname}\n{desc}',loc='left',fontsize=11)
         a.text(0.98,0.96,f'fine-tuned r = {rf:+.2f}     pretrained r = {rp:+.2f}\n{verdict}',transform=a.transAxes,fontsize=9.6,color=OK if passed else BAD,va='top',ha='right',
                bbox=dict(boxstyle='round,pad=.4',fc=SURF,ec=OK if passed else BAD,lw=1.2))
@@ -32,6 +32,6 @@ fig.text(.07,.905,'The oddity-blind distance (mean over the trial\'s images of t
          'this training set — if the distance measured training exposure, grey would be FLAT. Where grey falls with blue, the distance is measuring something about the\n'
          'encoder\'s view of the object, not about what the model was trained on. Left column: the pretrained encoder\'s space. Right: the chair model\'s own space.',fontsize=9.8,color=INK2,va='top')
 fig.legend(h,l,loc='upper left',bbox_to_anchor=(.07,.845),ncol=2,fontsize=10,frameon=False)
-fig.text(.07,.015,'Top row: the distance passes — the pretrained model is flat.\nBottom row (the within-category question we care about): it fails — the pretrained model falls just as steeply as the fine-tuned one. The distance is reporting\nwhich objects the encoder finds hard, and the margin is the same encoder\'s report of the same thing. The ruler and the thing being measured are one object.',fontsize=10,color=INK,va='bottom')
+fig.text(.07,.015,'Top row: the distance passes — the pretrained model is flat.\nBottom row (the within-category question we care about): not settled — the pretrained model falls about as steeply as the fine-tuned one. That is consistent with the distance\nreporting which objects the encoder finds hard, with the margin being the same encoder\'s report of the same thing. Not a kill; a concern that has not gone away.',fontsize=10,color=INK,va='bottom')
 fig.subplots_adjust(bottom=.13,top=.78)
 fig.savefig(f'{G}/out/figures/fig62_encoder_space.png',dpi=300); print('[fig] 62 rebuilt')

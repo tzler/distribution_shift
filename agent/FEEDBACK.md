@@ -1,6 +1,17 @@
 # FEEDBACK — how the lead wants work done here
 Typed like Claude Code `feedback` memories: the correction, why, how to apply. Newest first.
 
+## A state figure: one plot type, the expectation stated, the verdict graded (2026-09-19)
+"With these figures I have to spend a really long time to understand what I should expect." Then, of the replacement: "fantastic".
+**Why:** a state figure is read on a phone by someone who has not been in the analysis for hours; if the reader has to work out what a flat line would mean, the figure has failed regardless of what it shows.
+**Apply — the recipe:**
+- One plot type, repeated. Every panel has the same x, the same y, the same two lines. Rows/columns vary one thing each and the panel title says which (`every trial × every model` / `one model per trial: its own category`).
+- Say the expectation before the data: in the subtitle, one sentence per line — what should happen if the claim is true (blue falls), and what the control should do (grey flat). The reader then checks, not decodes.
+- A verdict box in each panel, in the empty corner, never on the data: the two numbers, then one clause in plain words. Colour the box by grade — green = behaves as expected; orange = a concern, not settled; red is reserved for a conclusive failure and has not yet been needed.
+- Grade honestly. "Grey falls with blue" is a concern that makes the lead pause, not a kill; do not write ✗/fails when the honest state is "we have not separated these yet". A larger r for the fine-tuned than the pretrained model is not the kind of evidence we want; say what the pattern is consistent with instead.
+- Nothing anachronistic: a state figure may only use measures that existed at that state (geometric coverage does not belong in State 2).
+- Footer: two lines that say what each row showed, in the same words as the verdicts. Then check the rendered PNG for collisions and clipping before sending.
+
 ## Never retrofit external feedback onto later findings (2026-09-19)
 Reviews were confusing at the time and the honest belief was "right but miscommunicated". Log what was said and how it read then; log recognitions where they happen, as recognitions.
 **Why:** retrofitting overstates both the reviewers' clarity and our foresight; the trace is about how understanding actually changed.

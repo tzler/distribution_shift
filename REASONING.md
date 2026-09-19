@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D16"></a>
+## D16 — 2026-09-19 — The encoder-space own-category result is a concern, not a kill; how a state figure should be built
+**State:** State 2 under review with the lead; the replacement encoder-space figure (evidence/fig62: one plot type × 4, expectation stated, verdict boxes).
+**Observation:** On the own-category rows the pretrained margin falls with the encoder-space distance about as steeply as the fine-tuned margin (−0.24 vs −0.26). Lead's read: top row looks good (a small upturn at the far right, let go); bottom row "makes me pause" — a subtle, persistent concern, not a conclusive result.
+**Decision:** Record it at that weight in State 2. Grade results as behaves-as-expected / concern / conclusive, not pass/fail. "Fine-tuned r > pretrained r" is not the evidence we are after; what we want is to understand what the distance measures. The figure recipe (one plot type repeated; say the expectation before the data; graded verdict box off the data; nothing anachronistic) goes into agent/FEEDBACK.md and CHECKS.md.
+**Because:** The trace should carry the concerns that did not go away, at the weight they had. Calling this a kill, or hiding it behind a coefficient comparison, both misrepresent the process.
+**Rejected:** Wording the bottom row as a failure of the encoder-space estimate (not established); dropping it (it is why leaving the encoder's space felt necessary).
+**Implication:** The concern carries into States 3–5; the knock-in runs are the test that can settle it. Figure recipe applies to every state figure from here.
+**Steering:** lead — read the result and set its weight; agent — built the figure and drafted the text.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high the pattern is real; medium on "ruler and object are one" as the explanation.
+
 <a id="D15"></a>
 ## D15 — 2026-09-19 — The oddity-blind estimate inside the encoders' own spaces: leaving the encoder was a choice, and the encoder sees within-category structure geometry does not
 **State:** Track A features extracted (pretrained DINOv2-L and the chair/airplane/table fine-tunes, 311k renders + MOCHI); lead reviewing the states and asking, for State 2, what actually showed the encoder space to be insufficient.
