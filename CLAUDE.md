@@ -1,3 +1,17 @@
+WRITING A STATE (STATE.md or states/*.md) — the thing this project has drifted on most:
+- The reader was not here. Title = what we did or found, in a sentence a colleague from
+  another lab would understand. No state numbers anywhere. Unpack every term of art the
+  first time it appears in that file. Status is prose from where we were to where we are.
+- Each figure is introduced by a sentence saying what to expect and what it shows, and is
+  built to the recipe in agent/FEEDBACK.md (one plot type, expectation stated, graded
+  verdict, nothing anachronistic).
+- Before committing: `python scripts/state_lint.py <file>` must be clean (pre-commit runs
+  it; `bash scripts/install_hooks.sh` once per clone). Silence a hit only with
+  `<!-- lint: ok term -->` after the term is defined in that file. Then re-read the whole
+  file once as the year-later reader.
+- When the lead says a state reads as "Claude speak", add the offending phrase to JARGON
+  in scripts/state_lint.py in the same commit as the fix.
+
 Read STATE.md first (current truth), then REASONING.md (why), then agent/ (FEEDBACK,
 CHECKS, PITFALLS, INFLIGHT, RECALL — model-facing; five minutes). Weight meetings/
 "Notes (human)" over "Summary (machine)".

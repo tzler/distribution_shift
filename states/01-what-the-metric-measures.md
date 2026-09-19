@@ -14,6 +14,8 @@ Find a way to use the oddity margin as a proxy for distribution shift — the di
 
 **3 · It is validated against itself.** The proxy is the encoder's margin; the target is computed in the same encoder's features; and the encoder's own d(A,B) — the floor — *is* the margin (r = +0.57 across all 2,019 trials). Decomposed: the floor predicts the pretrained margin at +0.57 (wrong sign), the excess at −0.17 (right sign), and their sum lands at +0.32 [[D06](../REASONING.md#D06)].
 
+The two figures below show the problem. The first: what the estimate is made of — the part that is just the two objects' difference, and the part that is left. The second: the triangle inequality drawn out, and that switching to cosine or Euclidean distance does not escape it.
+
 ![why the metric is wrong](../evidence/fig60_why_wrong.png)
 ![the triangle inequality spelled out; cosine and L2 do not escape it](../evidence/fig61_triangle.png)
 
@@ -36,8 +38,8 @@ Compute: the feature-norm audit, 103 CPU-core-h + 0.4 GPU-h. No new models.
 ## Next steps
 - [ ] Build the oddity-blind estimator (mean over images of distance to the k nearest training items).
 - [ ] Check its correlation with d(A,B) and with the pretrained margin in encoder space.
-- [ ] If the encoder's space still leaks, leave it.
+- [ ] If a distance measured in the encoder's features still partly reports which trials are hard rather than what the model was trained on, leave that space.
 
 ## Open questions
-- Is the form the whole problem, or does the space contribute too?
+- Is the way the estimate is computed the whole problem, or does measuring it in the encoder's features contribute too?
 - Where does the genuine excess signal (−0.17) go once the floor is removed?

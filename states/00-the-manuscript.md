@@ -12,6 +12,8 @@ Characterise human visual perception through distribution shift — the distance
 2. A model-internal quantity, the fine-tuned model's oddity margin, recovers that empirical shift (r = .91 shapenet, .62 shapegen; Fig. 1 right) — so distribution shift can be estimated from test images alone.
 3. Applied to large pretrained encoders, the proxy predicts when humans beat models and how long humans take; restricting viewing to a glance collapses humans to model level.
 
+The manuscript's Figure 1, below, is the whole argument in one panel: shift on the x-axis, margin on the y.
+
 ![Figure 1 of the submitted manuscript](../evidence/manuscript_fig1.png)
 
 **The reviews** (NeurIPS 2026; three reviewers; paraphrased in [background/reviews-neurips2026.md](../background/reviews-neurips2026.md)). All three found the human results real and the statistics sound. All three had trouble with the central term.
