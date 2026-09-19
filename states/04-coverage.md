@@ -1,7 +1,7 @@
 # Coverage: counting training mass rather than measuring distance
 A coverage estimate passes the control in the pooled row where every distance measure failed; two earlier claims are corrected; and a test of whether support is view-conditioned comes back negative within the training grid.
 
-*Snapshot: after the coverage result · Lead: TB* · ← [State 3](03-a-model-free-ruler.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 5](05-the-within-category-limit.md)
+*Snapshot: after the coverage result · Lead: TB* · ← [previous](03-a-model-free-ruler.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [next](05-the-within-category-limit.md)
 
 ## Goal
 Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.

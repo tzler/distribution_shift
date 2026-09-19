@@ -1,6 +1,16 @@
 # FEEDBACK — how the lead wants work done here
 Typed like Claude Code `feedback` memories: the correction, why, how to apply. Newest first.
 
+## Write every state for a reader who was not here (2026-09-19)
+"This is not human language… self-referential Claude talking to Claude stuff… Imagine a person coming back to this state in one year and reading it." Said of a title ("A model-free ruler, and a design in which the control is exact") and a dek built from project shorthand.
+**Why:** a state exists so someone can get up to speed without us. Shorthand that grew up inside the analysis — "ruler", "the control", "flat by construction", "beats", "pooled row" — is meaningless to that reader, and the lead cannot tell from the text whether the work is sound.
+**Apply:**
+- Title = the thing we did or found, in a sentence a colleague from another lab would understand ("Measuring distribution shift on the objects themselves, without an encoder"). Never a state number.
+- Before every term of art, say what it is the first time it appears in that file: not "the control" but "the pretrained model, which never saw any of the training sets"; not "the within-trial design" but "compare the twelve models on the same trial".
+- Status is prose that walks the reader from where we were to where we are — what we built, what we saw, why it was not enough, what we did about it, what is still open — each step with the figure that showed it. Not a list of beats, not a list of statistics.
+- Re-read the draft as the year-later reader: every sentence that needs a prior conversation to parse gets rewritten.
+- The same applies to what I say in chat about a state: no "status in beats", no state numbers.
+
 ## A state figure: one plot type, the expectation stated, the verdict graded (2026-09-19)
 "With these figures I have to spend a really long time to understand what I should expect." Then, of the replacement: "fantastic".
 **Why:** a state figure is read on a phone by someone who has not been in the analysis for hours; if the reader has to work out what a flat line would mean, the figure has failed regardless of what it shows.

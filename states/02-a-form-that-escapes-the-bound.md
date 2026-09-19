@@ -1,7 +1,7 @@
 # A shift estimate that is not bounded by the trial's difficulty
 Averaging over the trial's images instead of differencing A and B removes the floor by construction. It works better inside the encoder's own space than we first thought — and looking at it there is what showed us the problem has two parts, the estimate and the space, and that we wanted a space with no encoder in it.
 
-*Snapshot: after the estimator changed · Lead: TB* · ← [State 1](01-what-the-metric-measures.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 3](03-a-model-free-ruler.md)
+*Snapshot: after the estimator changed · Lead: TB* · ← [previous](01-what-the-metric-measures.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [next](03-a-model-free-ruler.md)
 
 ## Goal
 Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.

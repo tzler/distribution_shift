@@ -8,7 +8,7 @@ name their commit in this table.
 |---|---|---|---|
 | fig7_margin_validation_clean.png | `fig_margin_clean.py` | `out/blindshift_shapenet_percat.csv` (d57) + category csvs | D02 |
 | fig9_margin_rank.png | `fig_margin_rank.py` | same | D02 |
-| fig46_moving_training.png | `scratch/fig_moving_training.py` | `out/blindshift_shapenet_voxel16_percat.csv` + category csvs; 10k permutations, 2k bootstraps | D02, STATE |
+| fig46_moving_training.png | `scratch/fig_moving_training_simple.py` (stats from `scratch/fig_moving_training.py`) | `out/blindshift_shapenet_voxel16_percat.csv` + category csvs; 10k permutations, 2k bootstraps | D02, STATE |
 | fig48_accuracy_within_trial.png | `scratch/fig_accuracy_within_trial.py` | same | D02 |
 | fig49_entanglement.png | `scratch/fig_entanglement_and_coverage.py` | `out/shift{2d,3d}_*.csv`, `out/blindshift_{shapegen,shapenet}.csv`, `all_model_margins.csv` | D06 |
 | fig50_coverage.png | `scratch/fig_entanglement_and_coverage.py` | `out/coverage_sweep_{voxel16,d57}.csv` (from `scratch/coverage_sweep.py`) | D05 |

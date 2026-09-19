@@ -1,7 +1,7 @@
 # What the manuscript's shift metric actually measures
 Taking the metric apart before defending it: it is bounded by the trial's own difficulty, it mostly tracks feature-vector size, and it is validated against the same encoder — and no choice of distance escapes the first of these.
 
-*Snapshot: after taking the metric apart · Lead: TB* · ← [State 0](00-the-manuscript.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 2](02-a-form-that-escapes-the-bound.md)
+*Snapshot: after taking the metric apart · Lead: TB* · ← [previous](00-the-manuscript.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [next](02-a-form-that-escapes-the-bound.md)
 
 ## Goal
 Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
