@@ -1,5 +1,5 @@
 # State 0 — The manuscript, and why we opened it up
-*Snapshot as of the submission's rejection · Lead: TB* · [index](README.md) · next → [State 1](01-what-the-metric-measures.md)
+*Snapshot as of the submission's rejection · Lead: TB* · [index](README.md) · [resources](../RESOURCES.md) · next → [State 1](01-what-the-metric-measures.md)
 
 ## Goal
 Characterise human visual perception through distribution shift — the distance between what a system was trained on and what it is tested on. In a setting where both are known (3D object datasets, fine-tuned vision encoders, the MOCHI benchmark), show that a distance between train and test data predicts model performance, build a proxy for that distance computable from test images alone, and use the proxy to ask when humans outperform models and why.
@@ -21,6 +21,9 @@ Characterise human visual perception through distribution shift — the distance
 
 ## Strategy
 Roll up our sleeves. Rather than argue the reviews, take the metric apart and find out what it measures — if we were right, that will show it, and if not, we would rather know. Work in the tractable setting first — ShapeNet trials, twelve category-specific fine-tunes — where the training data and the stimulus geometry are both known, so any confound can be named.
+
+## Resources used (cumulative, as of this state)
+Nothing on this project's ledger yet. Inherited: the manuscript's 12 category fine-tunes (~25 GPU-h dedicated-equivalent, run by the collaborator), 313k renders per background, their similarity tables and MOCHI evaluations. Available compute: see [RESOURCES.md](../RESOURCES.md).
 
 ## Next steps
 - [ ] Reproduce Fig. 1 right from the stored margins and distances.

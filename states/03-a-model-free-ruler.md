@@ -1,5 +1,5 @@
 # State 3 — A model-free ruler, and the design that makes the control exact
-*Snapshot after the within-trial result* · ← [State 2](02-a-form-that-escapes-the-bound.md) · [index](README.md) · next → [State 4](04-coverage.md)
+*Snapshot after the within-trial result* · ← [State 2](02-a-form-that-escapes-the-bound.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 4](04-coverage.md)
 
 ## Goal
 Show that the oddity margin responds to the training distribution, measured on the stimuli alone, with a control that cannot be gamed.
@@ -25,6 +25,9 @@ This is, we now think, what r64w was describing: a correlation that appears beca
 
 ## Strategy
 Two things remain. The pooled rows — the single-model view a paper would naturally show — still fail the control. And the rank curve is mostly a step (on-category model far above the rest): is there anything graded beyond category membership? Look for an estimate that behaves in the pooled row, and look at the on-category row directly.
+
+## Resources used (cumulative, as of this state)
+Agent time ≈ 18 h (8–9 Sep; fig 7/9 by 09:07 on the 9th, the causal analysis by 21:46). Compute: descriptor banks (`geom_bank3d/2d`, `hida_bank` 114 core-h), representation variants, pose features, the 10k-permutation analysis on the login node ≈ **$8.50 / $2.70** cumulative. No new models; all results from the 12 inherited fine-tunes.
 
 ## Next steps
 - [ ] An estimate whose pooled relationship passes the base-DINOv2 control.

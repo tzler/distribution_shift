@@ -1,5 +1,5 @@
 # Distribution shift and the oddity margin
-*Last meaningful update: 2026-09-19 · Lead: TB · Status: active* · history as snapshots: [states/](states/README.md) · log: [REASONING.md](REASONING.md)
+*Last meaningful update: 2026-09-19 · Lead: TB · Status: active* · history: [states/](states/README.md) · log: [REASONING.md](REASONING.md) · what we have: [RESOURCES.md](RESOURCES.md)
 
 ## Goal
 Find a good estimate of distribution shift — how far a test trial sits from what a model was trained on — and establish whether it tracks the model's oddity margin. If it does, the margin is a readout of representational support, and "support depends on training data" becomes a claim we can test by changing the training data rather than just correlate.
@@ -34,6 +34,9 @@ The within-trial design worked because it varied the training set with the stimu
 **3 · Encoder-space upper bound** — is the within-category signal there at all? Features of all 311k training renders and the MOCHI images under pretrained DINOv2-L and the chair/airplane/table fine-tunes (job 8519397). If the chair model's own representation shows no within-category distance→margin relation, no descriptor will and the descriptor search is over.
 
 **Budget and order.** One fine-tune is ~2 GPU-hours including evaluation (~3 min/epoch): $9 unsubsidised / $2 subsidised on a full B200; all 50 runs ≈ $450 / $100 [[D12](REASONING.md#D12), [D14](REASONING.md#D14)]. Order: random knock-in subsets → knockout k = 10 → targeted and cross knock-ins → knockout k = 50. Training hyperparameters stay pinned; each condition gets its own similarity table so mining fills every epoch; evaluation is chained into each job.
+
+## Resources used (cumulative)
+Agent time ≈ 34 h over 8–9 and 18–19 Sep; lead time intermittent, untracked. Compute to date: 4 GPU-h + 250 CPU-core-h ≈ **$25 unsubsidised / $6.50 subsidised** — banks, the audit, the search, the depth-map pipeline, the extraction, the pilot. Committed: batch 1 ≈ $200 / $44. Held: ≈ $250 / $55. Ledger: `background/compute_ledger.csv`; unit costs and rates in [RESOURCES.md](RESOURCES.md).
 
 ## Next steps
 - [x] Pilot epoch time → run budget: ~3 min/epoch, all 50 runs affordable [D12]. (Claude)

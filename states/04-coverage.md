@@ -1,5 +1,5 @@
 # State 4 — Revisiting the estimate: coverage, and a test of viewpoint
-*Snapshot after the coverage result* · ← [State 3](03-a-model-free-ruler.md) · [index](README.md) · next → [State 5](05-the-within-category-limit.md)
+*Snapshot after the coverage result* · ← [State 3](03-a-model-free-ruler.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 5](05-the-within-category-limit.md)
 
 ## Goal
 An estimate of distribution shift that passes the control in the pooled row, not only within trial — so that a single model's margin can be read against it.
@@ -30,6 +30,9 @@ r64w had asked what an object-based measure averaged over all views would do. Th
 
 ## Strategy
 The on-category row under coverage looks graded (binned r −0.78). Test whether it is — category-centre it, look inside each category — before claiming a within-category result.
+
+## Resources used (cumulative, as of this state)
+Agent time ≈ 27 h (adds the evening of 18 Sep to ~04:00 on the 19th: packet, artifact, coverage, corrections, viewpoint). Compute: coverage sweeps on the login node; the depth-map pipeline on `genoa-std-mem` (six jobs, ~6 core-h) ≈ **$8.70 / $2.80** cumulative. Still no new models.
 
 ## Next steps
 - [ ] Category-centred and per-category versions of the on-category coverage curve.

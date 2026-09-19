@@ -73,6 +73,15 @@ index `states/README.md`. Add a snapshot when the story turns; never edit old on
 first snapshot is the starting point — for a resubmission, the submitted manuscript, its
 claims, and the reviews.
 
+**RESOURCES.md** ▲ — what is available, stated once: data (sizes, working subsets, known
+quirks), models (inherited and new, with their cost), compute (partitions, rates, account
+cap, unit cost of the project's typical job), environments, people. Linked from STATE and
+every snapshot. And every state — snapshots and the live STATE — ends with a **"Resources
+used (cumulative)"** section: agent time, compute (GPU-h, CPU-core-h), dollars at the
+published rates, what is committed and what is held. Build the numbers from the
+scheduler's accounting (a script in the repo), not from memory; place them in time with
+file timestamps.
+
 **meetings/** — one file per meeting, `YYYY-MM-DD.md`, typed sections in order:
 `## Summary (machine)` / `## Decisions & results` / `## Notes (human)`.
 **Raw transcripts and verbatim quotes of lab members NEVER enter this repo.**
@@ -184,7 +193,8 @@ From the first live use (geometric_shift, 19 Sep 2026):
   later finding, which read as if the work had been a response to the reviews. It had
   not; at the time the reviews were confusing and the team believed it was right. The
   trace must preserve that.
-- **Cost in the log.** Resource decisions are decisions; the entry carries GPU-hours and
-  dollars.
+- **Cost in the log, and a resources inventory.** Resource decisions are decisions; the
+  entry carries GPU-hours and dollars. RESOURCES.md states what is available once; every
+  state carries what had been used by then, so the lab can see what each turn cost.
 - **Repo bootstrap, link verification, phone workflow, evidence provenance table** —
   practicalities that cost time when missing.

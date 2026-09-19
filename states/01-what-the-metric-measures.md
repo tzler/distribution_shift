@@ -1,5 +1,5 @@
 # State 1 — What the manuscript's metric actually measures
-*Snapshot after taking the metric apart* · ← [State 0](00-the-manuscript.md) · [index](README.md) · next → [State 2](02-a-form-that-escapes-the-bound.md)
+*Snapshot after taking the metric apart* · ← [State 0](00-the-manuscript.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 2](02-a-form-that-escapes-the-bound.md)
 
 ## Goal
 Same as State 0: a distance between train and test data that predicts the margin. Now with a specific worry — that the manuscript's version is a measure of the encoder's ease on the trial, wearing the wrong name.
@@ -22,6 +22,9 @@ The metric is ½[d(A,C) + d(B,C)] over training images C, with A the matched obj
 
 ## Strategy
 Fix the *form* first: never difference A and B. Average a per-image quantity over the trial's images, so the task's decision variable cannot enter. Test whether that alone is enough, in the encoder's own space.
+
+## Resources used (cumulative, as of this state)
+Agent time ≈ 3 h (evening of 8 Sep). Compute: the feature-norm audit — 103 CPU-core-h + 0.4 GPU-h ≈ **$4.60 / $1.40** (unsub / sub). No new models.
 
 ## Next steps
 - [ ] Build the oddity-blind estimator (mean over images of distance to the k nearest training items).

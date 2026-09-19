@@ -13,4 +13,6 @@ lab walkthrough; the reasoning entries they cite carry the actual dates. Click f
 | 4 | [Coverage](04-coverage.md) | training mass within ε passes the pooled control; viewpoint tested |
 | 5 | [The within-category limit](05-the-within-category-limit.md) | category identity, not distance; the interventions |
 
+Each snapshot ends with the resources used up to that point (agent time, compute, dollars). What was available throughout is in [RESOURCES.md](../RESOURCES.md).
+
 The live page is [STATE.md](../STATE.md); the log is [REASONING.md](../REASONING.md).

@@ -1,5 +1,5 @@
 # State 5 — The within-category limit, and why it needs an experiment
-*Snapshot as of 2026-09-19 — this is the live state; the maintained version is [STATE.md](../STATE.md)* · ← [State 4](04-coverage.md) · [index](README.md)
+*Snapshot as of 2026-09-19 — this is the live state; the maintained version is [STATE.md](../STATE.md)* · ← [State 4](04-coverage.md) · [index](README.md) · [resources](../RESOURCES.md)
 
 ## Goal
 Distribution shift as a continuous quantity, not category membership: does a chair farther from the chair training set get a lower margin from the chair model?
@@ -18,6 +18,9 @@ Not a better metric — a finer-grained assay. Vary the training set *within* a 
 - **Knockout**: for each test group, remove its k nearest training objects (k = 10 removes ~10–16% of the bank and raises the group's own kNN distance 3–4× more than other groups', 5× more than a size-matched random removal). 30 fine-tunes across chair/airplane/table; each trial ends up with 11 training sets.
 - **Knock-in** from pretrained: 8 random subsets of 100 chairs, 6 targeted (the 100 nearest to a low-margin trial), 6 cross-category controls. The random runs make the metric comparison free — any candidate estimate is recomputed on the same runs, within trial — and the targeted runs test whether the metric is *actionable*.
 - **Encoder-space upper bound**: features of all training renders under the fine-tuned models; if the chair model's own space shows nothing within category, no descriptor will [../REASONING.md#D09].
+
+## Resources used (cumulative, as of this state)
+Agent time ≈ 34 h (adds 19 Sep daytime: within-category anatomy, the three levels, experiment design, documentation). Compute: the 1,895-candidate search (3 core-h, $0.09), the encoder-space extraction (1.7 GPU-h, $7.80), the pilot fine-tune (1.7 GPU-h so far, $7.70), the evaluation test ($0.90) → **≈ $25 / $6.50** cumulative. **Committed**: batch 1 (22 fine-tunes ≈ 44 GPU-h ≈ $200 / $44); held: 15 k = 50 knockouts and 12 targeted/cross knock-ins (≈ $250 / $55 if all run). First new models of the project.
 
 ## Next steps
 - [ ] Pilot fine-tune's epoch time → run budget; random knock-in subsets first.
