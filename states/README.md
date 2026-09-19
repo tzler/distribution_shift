@@ -10,7 +10,7 @@ lab walkthrough; the reasoning entries they cite carry the actual dates. Click f
 | 1 | [What the manuscript's shift metric actually measures](01-what-the-metric-measures.md) | bounded by ½·d(A,B); feature norm; validated against itself |
 | 2 | [A shift estimate that is not bounded by the trial's difficulty](02-a-form-that-escapes-the-bound.md) | oddity-blind; helps but the encoder's space still leaks |
 | 3 | [Measuring distribution shift on the objects themselves, without an encoder](03-a-model-free-ruler.md) | distance on 3-D shape; comparing the twelve models on the same trial; moving the training data moves the margin |
-| 4 | [Coverage: counting training mass rather than measuring distance](04-coverage.md) | training mass within ε passes the pooled control; viewpoint tested |
+| 4 | [Counting nearby training data instead of measuring distance to it](04-coverage.md) | a count leaves the pretrained model flat across all trials; the training images' viewpoint does not matter |
 | 5 | [The within-category question needs an experiment, not another metric](05-the-within-category-limit.md) | category identity, not distance; the interventions |
 
 Each snapshot ends with the resources used up to that point (agent time, compute, dollars). What was available throughout is in [RESOURCES.md](../RESOURCES.md).

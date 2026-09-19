@@ -46,6 +46,7 @@ def lint(path):
     for pat, fix in JARGON.items():
         for i, l in enumerate(lines, 1):
             if l.startswith('![') or l.startswith('|') or l.startswith('<'): continue
+            l = re.sub(r'\]\([^)]*\)', ']()', l)   # ignore link targets (filenames)
             mm = re.search(pat, l, flags=re.I)
             if mm:
                 if mm.group(0).lower() not in ok: hits.append((i, 'jargon', f'"{mm.group(0)}" → {fix}  (silence with <!-- lint: ok {mm.group(0).lower()} --> once it is defined in this file)'))

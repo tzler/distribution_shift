@@ -21,7 +21,7 @@ Find a way to use the oddity margin as a proxy for distribution shift — the di
 **In hindsight.** r64w's suggestion of running both metrics on two random halves of one dataset is a version of the pretrained-model check that the new form passes and the original metric fails; and their question about an object-based measure averaged over views is the next thing we built.
 
 ## Strategy
-Fix the second part: leave the encoder's space. MOCHI's ShapeNet and ShapeGen trials come from known 3D assets, so distance to the training data can be measured on the *stimuli* — descriptors computed from the objects' geometry, with no encoder and no learned parameter anywhere in the ruler. The encoder then appears only where it should: as the thing being measured. Keep the encoder-space version as the comparison: if geometry ever does worse than the encoder's own space, that tells us what the descriptors are missing.
+Fix the second part: leave the encoder's space. MOCHI's ShapeNet and ShapeGen trials come from known 3D assets, so distance to the training data can be measured on the *stimuli* — descriptors computed from the objects' geometry, with no encoder and no learned parameter anywhere in the measurement. The encoder then appears only where it should: as the thing being measured. Keep the encoder-space version as the comparison: if geometry ever does worse than the encoder's own space, that tells us what the descriptors are missing.
 
 ## Resources used
 | | this state | cumulative |
@@ -42,4 +42,4 @@ Compute: the first shift computations (`clean_shift`, `cosshift`) and, for the f
 - How to separate "far from this training set" from "an unusual object" — in the encoder's space they are nearly the same distance.
 - The encoder's space shows a small within-category signal (category-centred r ≈ −0.1); will geometry?
 
-<!-- lint: ok the form, the space, by construction, ruler -->
+<!-- lint: ok the form, the space, by construction -->
