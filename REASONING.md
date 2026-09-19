@@ -5,7 +5,9 @@ Cited from STATE.md as [Dxx]. Entries before 2026-09-18 are back-filled and mark
 Template — one line each:
 **State:** the general situation at the time · **Observation:** the specific thing being engaged with ·
 **Decision:** what we concluded or chose · **Because:** the reasoning · **Rejected:** alternatives and why not ·
-**Implication:** what changes / next steps.
+**Implication:** what changes / next steps ·
+**Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
+**Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
 <a id="D14"></a>
 ## D14 — 2026-09-19 — Batch 1 submitted; cost made explicit; k = 50 held; documentation instructions revised
@@ -15,6 +17,8 @@ Template — one line each:
 **Because:** Batch 1 ≈ $200 / $44, all 50 ≈ $450 / $100 — small either way, but the k = 50 dose is the least informative third and can wait a day; done-this-weekend is met either way.
 **Rejected:** Submitting everything at once (30 % of the budget on the least specific manipulation before seeing the specific one).
 **Implication:** Results arrive in `knockout/eval/<cat>_<cond>/ood_analysis_results.csv` over the next ~10 h; analysis script to be written while they run.
+**Steering:** agent, under the lead's cost constraint.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the cost; medium on holding k = 50.
 
 <a id="D13"></a>
 ## D13 — 2026-09-19 — D11's framing corrected: the reviews were not the source of the findings
@@ -24,6 +28,8 @@ Template — one line each:
 **Because:** Retroactively aligning the work to the reviews overstates both their clarity and our foresight; the point of the trace is how understanding actually changed.
 **Rejected:** Editing D11 in place (append-only); dropping the recognitions entirely (they are real, just later).
 **Implication:** Supersedes D11's third sentence. Pattern for future external feedback: log what was said and what we made of it then; log recognitions when they happen.
+**Steering:** lead.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
 
 <a id="D12"></a>
 ## D12 — 2026-09-19 — Pilot fine-tune timed; the full 50-run design is affordable and goes ahead
@@ -33,6 +39,8 @@ Template — one line each:
 **Because:** Half the estimated cost; small subsets would otherwise silently under-fill the epoch (partners missing from the subset are rejected by the miner); a bare checkpoint without its evaluation is not a result.
 **Rejected:** Reducing triplets per epoch for small subsets (changes the recipe; comparability matters more than 40 GPU-hours). Whole-node requests (wait far longer than 1-GPU jobs).
 **Implication:** ~a day of wall time at 6–8 jobs in parallel; each run ends with `eval/<cat>_<cond>/ood_analysis_results.csv` in the same format as the 12 category models.
+**Steering:** agent — the lead asked to be resource-rational; the agent chose the staging.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the timing; medium on the run order.
 
 <a id="D11"></a>
 ## D11 — 2026-09-19 — The NeurIPS reviews ingested into the trace (external feedback)
@@ -42,6 +50,8 @@ Template — one line each:
 **Because:** The trace should show that the reviewers were pointing at the same defect we found, in different words — that is the argument for the resubmission's framing.
 **Rejected:** Quoting review text verbatim in the repo.
 **Implication:** State 0 now opens with the reviews; the framing decision (claim category coverage vs wait for within-category) is TB's, listed in STATE next steps.
+**Steering:** agent.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): medium: I mapped the reviews onto findings too confidently.
 
 <a id="D10"></a>
 ## D10 — 2026-09-19 — Adopt the STATE/REASONING documentation system
@@ -51,6 +61,8 @@ Template — one line each:
 **Because:** Two "current truth" documents drift; the HANDOFF form is what the lab will read.
 **Rejected:** Keeping RECAP + checkpoints as the primary record.
 **Implication:** Every substantive STATE change now ships with a Dxx in the same commit; add the MOCHI project's STATE.md to background/ when it exists.
+**Steering:** lead.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
 
 <a id="D09"></a>
 ## D09 — 2026-09-19 — Run interventions instead of searching for another metric
@@ -60,6 +72,8 @@ Template — one line each:
 **Because:** A knockout raises the own group's knn_mean 3–4× more than other groups' and 5× more than random removal, so each trial gets 11 training sets with Δknn 0–0.2, stimulus fixed; random knock-in runs make metric comparison free (any x recomputed on the same runs).
 **Rejected:** Hyperparameter search (LoRA rank, lr) — pinned to the original recipe; only epochs earns an ablation. Radius-based knockout — did not transfer across categories (chairs have ~3 neighbours at ε, airplanes ~280).
 **Implication:** Collaborator pipeline reused unchanged via a patched `train.py` copy; five pilot attempts fixed missing deps and hard-coded paths; run budget waits on the pilot's epoch time.
+**Steering:** joint — the agent proposed interventions repeatedly; the lead came round and then owned the design.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high that the design is the fix; low on whether the graded effect exists.
 
 <a id="D08"></a>
 ## D08 — 2026-09-19 — View-conditioned (image-level) coverage tested; not supported
@@ -69,6 +83,8 @@ Template — one line each:
 **Because:** Any on-grid view recovers the full effect, so the descriptor is fine and single-view noise is not the cause; only the off-grid viewpoint loses it — consistent with the multi-view contrastive objective. Robust to silhouette/depth/pooled variants.
 **Rejected:** Pseudo-depth for non-ShapeNet MOCHI (reintroduces a model; no per-category fine-tunes there).
 **Implication:** Untested beyond ~25° (needs new renders); Act 8 of the artifact.
+**Steering:** lead — the hypothesis was the lead's; the agent built the test.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the ladder of controls; medium on the interpretation (only ~25° of viewpoint range was tested).
 
 <a id="D07"></a>
 ## D07 — 2026-09-19 — The on-category coverage curve is category identity; Q2 is a design problem
@@ -78,6 +94,8 @@ Template — one line each:
 **Because:** The pretrained control rules out "hard for every model", not "this category's model is good at its category"; category centring is the test, and everything fails it.
 **Rejected:** More estimator variants on the existing 12 models (two exhaustive searches, same answer).
 **Implication:** → D09. Anatomy figure fig57 added to the artifact so the reasoning is visible.
+**Steering:** agent — the lead read the curve as the result; the agent dissected it.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high after category-centring; the lead was initially unconvinced and asked to be shown.
 
 <a id="D06"></a>
 ## D06 — 2026-09-19 — D01's shapegen headline withdrawn: the entangled shift was d(A,B)
@@ -87,6 +105,8 @@ Template — one line each:
 **Because:** ½[d(A,C)+d(B,C)] ≥ ½·d(A,B) for any metric; changing the form (own neighbour) takes r to 0.66 in encoder space; leaving the encoder's space finishes it (+0.45 / −0.36).
 **Rejected:** Rescuing the form with cosine or L2 (tested; cosine is worst).
 **Implication:** Prologue + fig60/fig61 added to the artifact; README and packet corrected.
+**Steering:** joint — the lead asked whether the entanglement had been removed everywhere.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: r = 0.993 is not subtle; I should have checked this before the packet.
 
 <a id="D05"></a>
 ## D05 — 2026-09-19 — Coverage (training mass within ε) adopted as the primary ruler
@@ -96,6 +116,8 @@ Template — one line each:
 **Because:** The hard cut-off saturates atypicality — "no neighbours" is the most shift there is — so it cannot spread into the pooled row; soft kernel mass, Gaussian KDE and percentile variants do not reproduce this.
 **Rejected:** Gaussian KDE with per-category bandwidth (r −0.08, bandwidths differ 20×).
 **Implication:** First single-model pooled measure that passes the control; fig50/52/56.
+**Steering:** joint — the lead asked for density-based estimates; the agent built and validated them.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: split-half 20/20 across ε and descriptors; medium on why the hard cut-off matters.
 
 <a id="D04"></a>
 ## D04 — 2026-09-18 — Human RT / accuracy results set aside (external feedback)
@@ -105,6 +127,8 @@ Template — one line each:
 **Because:** Human measures are trial-constant across the 12 models, so no within-trial version exists to separate construction from robustness.
 **Rejected:** Keeping it as a secondary result.
 **Implication:** Listed under "set aside" in STATE.
+**Steering:** lead.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: this was the lead's knowledge of how MOCHI was built, not mine.
 
 <a id="D03"></a>
 ## D03 — 2026-09 (recalled) — Within-category relationship weak; exhaustive search finds a ceiling
@@ -114,6 +138,8 @@ Template — one line each:
 **Because:** In that row "which model" and "which category" are one variable; in-sample winners (0.184, corrected p 0.001) did not generalise.
 **Rejected:** Fitted-weight combinations of descriptors (excluded by design); further single-combination search.
 **Implication:** The pessimism conflated a weak answer to Q2 with the strong answer to Q1 — separated at D05–D07.
+**Steering:** agent.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high that the search found nothing; medium about what that implied — I read a weak Q2 as a weak project.
 
 <a id="D02"></a>
 ## D02 — 2026-09 (recalled) — The pretrained control fails pooled; adopt the within-trial design and the oddity-blind estimator
@@ -123,6 +149,8 @@ Template — one line each:
 **Because:** The pooled relation is a stimulus property (atypical objects are hard for every model); the shared-neighbour form is bounded by ½·d(A,B). Result: 84.1% of 706 slopes negative, permutation p 1e-4, category-cluster CI [−0.22, −0.03], accuracy 81 → 56% with the pretrained model flat.
 **Rejected:** Keeping the pooled row as the headline.
 **Implication:** Q1 answered; fig7/9/46/48. The D01 encoder comparison still used the old form — not revisited until D06.
+**Steering:** joint.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: the within-trial invariants are arithmetic.
 
 <a id="D01"></a>
 ## D01 — 2026-09 (recalled) — Build a model-free shift ruler; first results look finished
@@ -132,3 +160,5 @@ Template — one line each:
 **Because:** No learned parameter anywhere in the ruler; the numbers beat the incumbent.
 **Rejected:** Mesh-based descriptors (no mesh library on the cluster); pixel-space metrics (the audit shows pix_l1 = a coverage confound).
 **Implication:** Superseded by D02 (control) and D06 (the shapegen result was d(A,B)).
+**Steering:** agent.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high: the numbers were clean; low, in hindsight, about what they meant.

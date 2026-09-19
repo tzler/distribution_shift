@@ -63,6 +63,13 @@ to it. ▲ One line per field, six fields: ▲
 **Implication:** what this changes about the plan / next steps.
 ```
 
+Two more lines, on every entry:
+
+```markdown
+**Steering:** who drove the decision — lead / agent / joint — with a note when the lead is deferring ("letting Claude steer here").
+**Confidence:** lead (TB): high — … · agent (Claude Opus 5): medium — unsure whether …
+```
+
 Null and failed results are first-class entries. Decisions that spend resources (GPU
 hours, money) record the cost and the budget reasoning. ▲
 
@@ -162,6 +169,29 @@ clarity or the team's foresight.
 
 End phase 2 by listing remaining TODOs (unverified claims, missing evidence files, empty
 background/, the lead's pre-history) at the bottom of STATE.md.
+
+## Contributors, oversight, and confidence
+
+A project's reasoning is produced by more than one kind of reasoner — a person, a Claude
+model, possibly other agents — and each knows things the others do not and misses things the
+others catch. The system treats them the same way: each is a **contributor**, named by role
+and identity (`lead (TB)`, `agent (Claude Opus 5)`), never by kind. Every REASONING entry
+records **who steered** the decision and **each contributor's own confidence**, in their own
+words, including what they are unsure of. The lead may say "I am letting the agent steer
+here and do not fully follow"; the agent may say "I recommend this and here is what I
+cannot see". Neither line is filled in by the other.
+
+Why: in the first live project, the lead was slow to accept a recommendation the agent had
+made several times (run an experiment rather than search for another metric), and the agent
+had to be told twice to explain a step rather than assert it, and once to show figures
+rather than a summary table. Misreadings run in both directions; recording who steered and
+how confident each was is how they become visible and get reduced.
+
+**Human oversight, default on.** A change of state — a rewrite of STATE.md, a new states/
+snapshot — is proposed by the agent and confirmed by the lead before it is committed. How
+much review that is, is the lead's call, per project and per state; a project may switch
+the default off in CLAUDE.md. Reasoning entries may be drafted by the agent at any time;
+the lead's confidence line is the lead's to fill.
 
 ## Phase 3 — Ongoing operation
 
