@@ -6,7 +6,7 @@ lab walkthrough; the reasoning entries they cite carry the actual dates. Click f
 
 | | state | the turn |
 |---|---|---|
-| 0 | [The manuscript, and why we opened it up](00-the-manuscript.md) | submitted; the metric lives inside the encoder |
+| 0 | [The manuscript, and why we opened it up](00-the-manuscript.md) | submitted; three reviewers doubt the word "distribution shift"; the metric lives inside the encoder |
 | 1 | [What the metric actually measures](01-what-the-metric-measures.md) | bounded by ½·d(A,B); feature norm; validated against itself |
 | 2 | [A form that escapes the bound](02-a-form-that-escapes-the-bound.md) | oddity-blind; helps but the encoder's space still leaks |
 | 3 | [A model-free ruler](03-a-model-free-ruler.md) | geometry; the within-trial design; the causal result |

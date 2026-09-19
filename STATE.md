@@ -42,8 +42,7 @@ The within-trial design worked because it varied the training set with the stimu
 - [ ] Metric comparison on the random knock-in runs; targeted runs with the winner and runner-up. (Claude)
 - [ ] Single-trial figure. (Claude)
 - [ ] Lab meeting Monday: walk [states/](states/README.md) 0 → 5. (TB)
-- [ ] Reviewer concerns into [State 0](states/00-the-manuscript.md). (TB)
-- [ ] Decide whether the resubmission claims category coverage now or waits for the within-category result. (TB)
+- [ ] Decide the resubmission's framing — claim category coverage now, or wait for the within-category result; r64w's reframing advice is the live constraint [[D11](REASONING.md#D11)]. (TB)
 
 ## Open questions
 1. Is the within-category relationship graded once the training set varies?

@@ -7,6 +7,15 @@ Template — one line each:
 **Decision:** what we concluded or chose · **Because:** the reasoning · **Rejected:** alternatives and why not ·
 **Implication:** what changes / next steps.
 
+<a id="D11"></a>
+## D11 — 2026-09-19 — The NeurIPS reviews ingested into the trace (external feedback)
+**State:** Documentation system live (D10); State 0 had a placeholder for the reviewer concerns.
+**Observation:** Three reviews (June 2026) and a post-rebuttal follow-up: the human results are real and the statistics sound; the word "distribution shift" is doubted by all three — inter-class distance (SCwg); within-set weirdness with no shift required, test it on two random halves of one set (r64w); compare against existing shift metrics, scope, overclaims (HVBU). r64w recommends resubmitting after a large reframing or dropping the framing.
+**Decision:** Record the reviews paraphrased in background/ and map each concern to what we later found — the ½·d(A,B) floor is SCwg's inter-class distance [D06]; the pretrained control is r64w's two-halves test in a stronger form [D02]; the object-based view-averaged measure r64w asked for is what we built and it wins [D08].
+**Because:** The trace should show that the reviewers were pointing at the same defect we found, in different words — that is the argument for the resubmission's framing.
+**Rejected:** Quoting review text verbatim in the repo.
+**Implication:** State 0 now opens with the reviews; the framing decision (claim category coverage vs wait for within-category) is TB's, listed in STATE next steps.
+
 <a id="D10"></a>
 ## D10 — 2026-09-19 — Adopt the STATE/REASONING documentation system
 **State:** Q1 answered and written up as an artifact; Q2 handed to experiments; a RECAP + five narrative checkpoints drafted that afternoon.

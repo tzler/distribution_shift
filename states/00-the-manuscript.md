@@ -12,7 +12,12 @@ Characterise human visual perception through distribution shift — the distance
 
 ![Figure 1 of the submitted manuscript](../evidence/manuscript_fig1.png)
 
-**The concerns.** [Reviewer text to be added by TB.] Internally, the audit in `L1norm_vs_distshift/` had already found that the empirical shift correlates with the size of the test images' feature vectors at r = 0.95 (ResNet-50) and 0.89 (DeiT), and that for DeiT it adds nothing to the norm in a nested regression. If the "distance to training data" is mostly a property of the encoder's response to the test image, then claim 2 is validating one encoder quantity against another, and claim 1 is not about the training data.
+**The reviews** (NeurIPS 2026; three reviewers; paraphrased in [background/reviews-neurips2026.md](../background/reviews-neurips2026.md)). All three agreed the human results were real and the statistics sound. All three doubted the central word.
+- *SCwg:* the margin is better named **inter-class distance**; every result survives the renaming, and the novelty does not. "Distribution shift" is never defined in the main text.
+- *r64w:* the results are consistent with **no distribution shift at all** — the margin and the trial distance both measure how unusual an example is, one within the test set and one across train and test, and would correlate even if train and test were the same distribution. Proposed control: run both metrics on two random halves of one dataset. Asked what an object-based, view-averaged measure would do. After the rebuttal: not fixable in a minor revision; resubmit after a large reframing, or drop the framing.
+- *HVBU:* overclaims (difficulty "not intrinsic to the stimulus"; evaluable "in any biological system"); many shift metrics already exist and none were compared; scope limited to the oddity task.
+
+Internally, the audit in `L1norm_vs_distshift/` had already found the same thing from the other side: the empirical shift correlates with the size of the test images' feature vectors at r = 0.95 (ResNet-50) and 0.89 (DeiT), and for DeiT adds nothing to the norm in a nested regression. If "distance to training data" is mostly a property of the encoder's response to the test image, claim 2 validates one encoder quantity against another and claim 1 is not about the training data.
 
 ## Strategy
 Roll up our sleeves: take the metric apart and find out what it measures. Work in the tractable setting first — ShapeNet trials, twelve category-specific fine-tunes — where the training data and the stimulus geometry are both known, so any confound can be named.
