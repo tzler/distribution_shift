@@ -7,6 +7,7 @@ Template — one line each:
 **Decision:** what we concluded or chose · **Because:** the reasoning · **Rejected:** alternatives and why not ·
 **Implication:** what changes / next steps.
 
+<a id="D10"></a>
 ## D10 — 2026-09-19 — Adopt the STATE/REASONING documentation system
 **State:** Q1 answered and written up as an artifact; Q2 handed to experiments; a RECAP + five narrative checkpoints drafted that afternoon.
 **Observation:** Lead supplied the lab HANDOFF: STATE = current truth, REASONING = why, evidence = only what is cited, git = history; wants the process presentable and projects citable.
@@ -15,6 +16,7 @@ Template — one line each:
 **Rejected:** Keeping RECAP + checkpoints as the primary record.
 **Implication:** Every substantive STATE change now ships with a Dxx in the same commit; add the MOCHI project's STATE.md to background/ when it exists.
 
+<a id="D09"></a>
 ## D09 — 2026-09-19 — Run interventions instead of searching for another metric
 **State:** Coverage is the best ruler for Q1; every estimator gives r ≈ 0 within category after category centring (D07); the level-3 test on the training-specific margin is −0.02 (object) / −0.07, p 0.06 (image).
 **Observation:** With one training set per category, "far from the training set" and "unusual object" are one variable — no metric can separate them; only varying the training set within a category can.
@@ -23,6 +25,7 @@ Template — one line each:
 **Rejected:** Hyperparameter search (LoRA rank, lr) — pinned to the original recipe; only epochs earns an ablation. Radius-based knockout — did not transfer across categories (chairs have ~3 neighbours at ε, airplanes ~280).
 **Implication:** Collaborator pipeline reused unchanged via a patched `train.py` copy; five pilot attempts fixed missing deps and hard-coded paths; run budget waits on the pilot's epoch time.
 
+<a id="D08"></a>
 ## D08 — 2026-09-19 — View-conditioned (image-level) coverage tested; not supported
 **State:** Object-level coverage established (D05); lead's hypothesis that encoders learn view-dependent appearance, so the training distribution that matters is over images (shape × viewpoint).
 **Observation:** Built model-free depth-from-voxels descriptors (projector IoU 0.77–0.95 vs real renders; MOCHI poses recovered by silhouette matching, IoU 0.856; bank = 20,885 objects × 15 fixed training views). Within-trial r: object voxels −0.424; depth maps at all 15 training views −0.436, one random view −0.426, nearest view −0.422, the actual MOCHI view −0.266 (best-posed tertile −0.29 vs object −0.41 on the same trials). Image-space pooled control fails (+0.06 to +0.16).
@@ -31,6 +34,7 @@ Template — one line each:
 **Rejected:** Pseudo-depth for non-ShapeNet MOCHI (reintroduces a model; no per-category fine-tunes there).
 **Implication:** Untested beyond ~25° (needs new renders); Act 8 of the artifact.
 
+<a id="D07"></a>
 ## D07 — 2026-09-19 — The on-category coverage curve is category identity; Q2 is a design problem
 **State:** Coverage adopted (D05); lead read its on-category row (binned r −0.78, clean control) as the within-category result the paper wanted.
 **Observation:** The bins sort by category: ">100 neighbours" is airplane/bench/car/lamp/telephone/watercraft (homogeneous shapes), "0" is chair/table/sofa/cabinet/display/loudspeaker (diverse, biggest banks). Category-centred r +0.013 (p 0.72); within each category mean r +0.04, four of twelve negative; twelve category points r +0.30 (p 0.34), chair the counterexample. Seven coverage variants incl. category-calibrated percentile: all ≈ 0.
@@ -39,6 +43,7 @@ Template — one line each:
 **Rejected:** More estimator variants on the existing 12 models (two exhaustive searches, same answer).
 **Implication:** → D09. Anatomy figure fig57 added to the artifact so the reasoning is visible.
 
+<a id="D06"></a>
 ## D06 — 2026-09-19 — D01's shapegen headline withdrawn: the entangled shift was d(A,B)
 **State:** Packet and artifact drafted with "model-free beats the incumbent on shapegen" as a lead result; lead asked whether the A/B entanglement had been removed everywhere.
 **Observation:** The Eq. 1–3 shift correlates with d(A,B) at r 0.993 (shapegen); d(A,B) alone predicts the encoder proxy better (0.79) than the shift (0.74); the oddity-blind form gives |r| 0.12. The incumbent's r with d(A,B) is 0.07 — it was never riding this. Every distance obeys the bound (L1 / unit-L1 / cosine: floor holds 100%, r with d(A,B) 0.73 / 0.75 / 0.78). Decomposed: the floor predicts the pretrained margin +0.57 (wrong sign), the excess −0.17 (right sign).
@@ -47,6 +52,7 @@ Template — one line each:
 **Rejected:** Rescuing the form with cosine or L2 (tested; cosine is worst).
 **Implication:** Prologue + fig60/fig61 added to the artifact; README and packet corrected.
 
+<a id="D05"></a>
 ## D05 — 2026-09-19 — Coverage (training mass within ε) adopted as the primary ruler
 **State:** Within-trial result solid but pooled rows fail the base-DINOv2 control (D02); lead asked for density-based rather than nearest-neighbour estimates.
 **Observation:** coverage = −log(1 + #category objects within cosine ε), mean over trial images. voxel16: within-trial r −0.424 (kNN −0.329); pooled −0.268 with control −0.030 (kNN −0.223 / −0.137). Split-half over ε: wins 20/20, held-out −0.414 vs −0.328, control −0.041 vs −0.143. Holds ε 0.03–0.20 on d57 and voxel16.
@@ -55,6 +61,7 @@ Template — one line each:
 **Rejected:** Gaussian KDE with per-category bandwidth (r −0.08, bandwidths differ 20×).
 **Implication:** First single-model pooled measure that passes the control; fig50/52/56.
 
+<a id="D04"></a>
 ## D04 — 2026-09-18 — Human RT / accuracy results set aside (external feedback)
 **State:** Optimistic packet drafted with human accuracy (+0.20) and RT (−0.31) vs geometric distance — opposite in sign to the model effect — proposed as the lead result.
 **Observation:** Lead: MOCHI's ShapeNet trials were selected adversarially, so a trial-geometry ↔ human-performance relationship may be a property of trial construction.
@@ -63,6 +70,7 @@ Template — one line each:
 **Rejected:** Keeping it as a secondary result.
 **Implication:** Listed under "set aside" in STATE.
 
+<a id="D03"></a>
 ## D03 — 2026-09 (recalled) — Within-category relationship weak; exhaustive search finds a ceiling
 **State:** Within-trial design established (D02); the rank curve is mostly a step (on-category model far above the other eleven).
 **Observation:** On-category row, one point per trial, n = 706: voxel16 r −0.097, category-centred +0.014. Hill climb of 1,895 candidates (8 representations × ~20 estimators × 12 trial-level metrics, 50 × 5-fold CV over trials, permutation null on the max): held-out 0.113 vs fixed baseline 0.133 — nothing wins.
@@ -71,6 +79,7 @@ Template — one line each:
 **Rejected:** Fitted-weight combinations of descriptors (excluded by design); further single-combination search.
 **Implication:** The pessimism conflated a weak answer to Q2 with the strong answer to Q1 — separated at D05–D07.
 
+<a id="D02"></a>
 ## D02 — 2026-09 (recalled) — The pretrained control fails pooled; adopt the within-trial design and the oddity-blind estimator
 **State:** First results looked finished (D01); no control had been run.
 **Observation:** Base DINOv2, never fine-tuned on any set, tracks the pooled geometric shift as strongly as the fine-tuned models (r −0.121 vs −0.135). Within a trial the pretrained margin, d(A,B) and the human data have sd = 0.
@@ -79,6 +88,7 @@ Template — one line each:
 **Rejected:** Keeping the pooled row as the headline.
 **Implication:** Q1 answered; fig7/9/46/48. The D01 encoder comparison still used the old form — not revisited until D06.
 
+<a id="D01"></a>
 ## D01 — 2026-09 (recalled) — Build a model-free shift ruler; first results look finished
 **State:** The manuscript's shift is computed in the encoder's own feature space; the in-repo audit shows r(shift, ‖φ‖₁) 0.95 (ResNet-50), 0.89 (DeiT); MOCHI ShapeNet/ShapeGen geometry is known.
 **Observation:** Replacing φ in Eq. 1–3 with geometric descriptors (d57, voxel grids from ShapeNet voxels; 20-d silhouettes for ShapeGen) gives shapegen |r| 0.74–0.80 vs incumbent 0.53–0.64 across three encoders; the pooled 8,472-point curve has binned r −0.84.

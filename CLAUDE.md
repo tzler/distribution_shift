@@ -12,6 +12,9 @@ meetings/ "Notes (human)" over "Summary (machine)".
 - Changes via PR (or commits on a branch the lead reviews); never to main directly.
 
 Project-specific:
+- states/ holds retroactive STATE snapshots for the lab walkthrough (prev/next links, index in
+  states/README.md); add a new snapshot only when the story turns, never edit old ones.
+- Cite reasoning entries as [Dxx](REASONING.md#Dxx); each entry heading carries an <a id> anchor.
 - The intervention experiments live in ../knockout/ (same conventions apply; cite from here).
 - The collaborator's ../../Dist-shift/HIDA/hida-tune is read-only; use the patched copy
   in ../knockout/scripts/.
