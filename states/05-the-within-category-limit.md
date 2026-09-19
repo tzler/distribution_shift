@@ -1,5 +1,7 @@
-# State 5 — The within-category limit, and why it needs an experiment
-*Snapshot as of 2026-09-19 — this is the live state; the maintained version is [STATE.md](../STATE.md)* · ← [State 4](04-coverage.md) · [index](README.md) · [resources](../RESOURCES.md)
+# The within-category question needs an experiment, not another metric
+Every estimator is flat within a category once category identity is removed, for a structural reason: with one training set per category, distance-to-training and object atypicality are the same variable. So we vary the training set within a category and measure the margin.
+
+*Snapshot: 2026-09-19 — the live state; the maintained version is [STATE.md](../STATE.md) · Lead: TB* · ← [State 4](04-coverage.md) · [index](README.md) · [resources](../RESOURCES.md)
 
 ## Goal
 Distribution shift as a continuous quantity, not category membership: does a chair farther from the chair training set get a lower margin from the chair model?

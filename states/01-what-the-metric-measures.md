@@ -1,5 +1,7 @@
-# State 1 — What the manuscript's metric actually measures
-*Snapshot after taking the metric apart* · ← [State 0](00-the-manuscript.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 2](02-a-form-that-escapes-the-bound.md)
+# What the manuscript's shift metric actually measures
+Taking the metric apart before defending it: it is bounded by the trial's own difficulty, it mostly tracks feature-vector size, and it is validated against the same encoder — and no choice of distance escapes the first of these.
+
+*Snapshot: after taking the metric apart · Lead: TB* · ← [State 0](00-the-manuscript.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 2](02-a-form-that-escapes-the-bound.md)
 
 ## Goal
 Same as State 0: a distance between train and test data that predicts the margin. Now with a specific worry — that the manuscript's version is a measure of the encoder's ease on the trial, wearing the wrong name.

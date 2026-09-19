@@ -1,5 +1,7 @@
-# State 4 — Revisiting the estimate: coverage, and a test of viewpoint
-*Snapshot after the coverage result* · ← [State 3](03-a-model-free-ruler.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 5](05-the-within-category-limit.md)
+# Coverage: counting training mass rather than measuring distance
+A coverage estimate passes the control in the pooled row where every distance measure failed; two earlier claims are corrected; and a test of whether support is view-conditioned comes back negative within the training grid.
+
+*Snapshot: after the coverage result · Lead: TB* · ← [State 3](03-a-model-free-ruler.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 5](05-the-within-category-limit.md)
 
 ## Goal
 An estimate of distribution shift that passes the control in the pooled row, not only within trial — so that a single model's margin can be read against it.

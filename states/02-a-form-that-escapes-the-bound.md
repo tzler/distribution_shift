@@ -1,5 +1,7 @@
-# State 2 — A form that escapes the bound, and what it does in the encoder's space
-*Snapshot after the estimator changed* · ← [State 1](01-what-the-metric-measures.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 3](03-a-model-free-ruler.md)
+# A shift estimate that is not bounded by the trial's difficulty
+Averaging over the trial's images instead of differencing A and B removes the floor by construction. It helps inside the encoder's own feature space and is not enough there — which is what sends us out of that space.
+
+*Snapshot: after the estimator changed · Lead: TB* · ← [State 1](01-what-the-metric-measures.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 3](03-a-model-free-ruler.md)
 
 ## Goal
 A distance to the training data that is not bounded by the trial's own difficulty, and that does not predict the margin of a model which never saw the training set.

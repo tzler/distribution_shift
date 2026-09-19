@@ -1,11 +1,13 @@
-# State 0 — The manuscript, and why we opened it up
-*Snapshot as of the submission's rejection · Lead: TB* · [index](README.md) · [resources](../RESOURCES.md) · next → [State 1](01-what-the-metric-measures.md)
+# Re-evaluating our distribution-shift measure after the NeurIPS reviews
+After submitting to NeurIPS we received reviews — positive in places, negative in the end — and responded. A decision is pending; we expect it to be a rejection. Either way the reviews push us to rethink some design choices, how we are approaching the problem, and how much has to change before submitting elsewhere.
+
+*Snapshot: after the reviews and our response, before a decision · Lead: TB* · [index](README.md) · [resources](../RESOURCES.md) · next → [State 1](01-what-the-metric-measures.md)
 
 ## Goal
 Characterise human visual perception through distribution shift — the distance between what a system was trained on and what it is tested on. In a setting where both are known (3D object datasets, fine-tuned vision encoders, the MOCHI benchmark), show that a distance between train and test data predicts model performance, build a proxy for that distance computable from test images alone, and use the proxy to ask when humans outperform models and why.
 
 ## Status
-**What the manuscript claimed** (*Humans adapt to distribution shift with increasing test-time compute*, NeurIPS 2026 submission):
+**What the manuscript claims** (*Humans adapt to distribution shift with increasing test-time compute*, submitted to NeurIPS 2026):
 1. An empirical distribution shift — nearest-neighbour ℓ₁ distance from a MOCHI trial to the fine-tuning set, in the pretrained encoder's feature space — predicts the benefit of fine-tuning: large close to the training data, none far away (Fig. 1 left).
 2. A model-internal quantity, the fine-tuned model's oddity margin, recovers that empirical shift (r = .91 shapenet, .62 shapegen; Fig. 1 right) — so distribution shift can be estimated from test images alone.
 3. Applied to large pretrained encoders, the proxy predicts when humans beat models and how long humans take; restricting viewing to a glance collapses humans to model level.

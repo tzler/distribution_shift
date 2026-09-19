@@ -1,5 +1,7 @@
-# State 3 — A model-free ruler, and the design that makes the control exact
-*Snapshot after the within-trial result* · ← [State 2](02-a-form-that-escapes-the-bound.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 4](04-coverage.md)
+# A model-free ruler, and a design in which the control is exact
+Distance measured on the stimuli's geometry, with no encoder in the ruler; and, because every trial runs through all twelve category models, a within-trial design in which the base model's margin is flat by construction and the fine-tuned margin still falls.
+
+*Snapshot: after the within-trial result · Lead: TB* · ← [State 2](02-a-form-that-escapes-the-bound.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 4](04-coverage.md)
 
 ## Goal
 Show that the oddity margin responds to the training distribution, measured on the stimuli alone, with a control that cannot be gamed.
