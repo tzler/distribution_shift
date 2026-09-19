@@ -1,0 +1,12 @@
+# personal scratch, by design
+notes/
+*.local.md
+# data and bulk outputs (regenerable; provenance is in evidence/)
+bank/
+out/
+logs/
+web/img/
+packet/*.png
+packet.tar.gz
+__pycache__/
+*.pyc

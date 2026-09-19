@@ -1,0 +1,813 @@
+<title>The Model-Free Ruler</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#f4f5f7; --panel:#ffffff; --ink:#15181d; --muted:#5b6068; --rule:#d9dce2; --rule-soft:#e8eaee;
+  --geom:#2a78d6; --geom-soft:#e3eefb; --turn:#eb6834; --turn-soft:#fdeae1; --ctrl:#8a8884; --ctrl-soft:#eeedeb;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#121417; --panel:#1a1d22; --ink:#e8eaee; --muted:#9aa0aa; --rule:#2c3038; --rule-soft:#22262c;
+    --geom:#5b9cf0; --geom-soft:#172a44; --turn:#f08557; --turn-soft:#3d2216; --ctrl:#a09e9a; --ctrl-soft:#2a2927;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121417; --panel:#1a1d22; --ink:#e8eaee; --muted:#9aa0aa; --rule:#2c3038; --rule-soft:#22262c;
+  --geom:#5b9cf0; --geom-soft:#172a44; --turn:#f08557; --turn-soft:#3d2216; --ctrl:#a09e9a; --ctrl-soft:#2a2927;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-block:0 96px;padding-inline:20px}
+a{color:var(--geom);text-decoration:none;border-bottom:1px solid transparent}
+a:hover,a:focus-visible{border-bottom-color:var(--geom);outline:none}
+:focus-visible{outline:2px solid var(--geom);outline-offset:3px}
+
+/* header */
+.masthead{padding-block:56px 40px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(38px,6vw,64px);line-height:1.05;letter-spacing:-.01em;margin:14px 0 20px;text-wrap:balance;max-width:16ch}
+.dek{font-family:var(--serif);font-size:clamp(19px,2.2vw,23px);line-height:1.45;color:var(--muted);max-width:52ch;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:28px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:500}
+
+/* two-column shell */
+.shell{display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px;align-items:start;margin-top:8px}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);padding-top:40px}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:baseline;padding:8px 10px;border-radius:6px;color:var(--muted);border-bottom:0;font-size:14px;line-height:1.3}
+.rail a:hover{background:var(--panel);color:var(--ink)}
+.rail a.on{color:var(--ink);background:var(--panel)}
+.rail .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.rail .mood{display:block;font-family:var(--mono);font-size:11px;margin-top:3px;letter-spacing:.04em}
+.rail .up .mood{color:var(--geom)} .rail .down .mood{color:var(--turn)} .rail .flat .mood{color:var(--ctrl)}
+.rail .legend{margin-top:22px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7}
+.rail .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.main{min-width:0}
+
+/* acts */
+.act{padding-block:48px 8px;scroll-margin-top:24px}
+.act + .act{border-top:1px solid var(--rule)}
+.act-head{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:baseline;margin-bottom:14px}
+.act-num{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.06em}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.6vw,38px);line-height:1.15;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.stand{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin:0 0 26px;padding-left:2px}
+.stand b{font-weight:500}
+.stand.up b{color:var(--geom)} .stand.down b{color:var(--turn)} .stand.flat b{color:var(--ctrl)}
+.prose{max-width:66ch}
+.prose p{margin:0 0 18px}
+.prose p.lead{font-family:var(--serif);font-size:20px;line-height:1.5}
+.prose h3{font-family:var(--sans);font-weight:600;font-size:15px;letter-spacing:.02em;text-transform:uppercase;color:var(--muted);margin:34px 0 10px}
+.prose ul{padding-left:22px;margin:0 0 18px}
+.prose li{margin-bottom:8px}
+code,.mono{font-family:var(--mono);font-size:.92em}
+code{background:var(--panel);border:1px solid var(--rule-soft);border-radius:4px;padding:1px 6px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+mark{background:var(--geom-soft);color:inherit;padding:0 3px;border-radius:3px}
+mark.t{background:var(--turn-soft)}
+
+/* figures */
+figure{margin:30px 0 34px;background:var(--panel);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+figure img{display:block;width:100%;height:auto;max-width:100%}
+figcaption{padding:14px 18px 16px;font-size:14.5px;line-height:1.55;color:var(--muted);border-top:1px solid var(--rule-soft)}
+figcaption b{color:var(--ink);font-weight:500}
+figcaption .file{font-family:var(--mono);font-size:12px;display:block;margin-top:6px;color:var(--muted);opacity:.85}
+
+/* callouts & tables */
+.callout{max-width:66ch;border-left:3px solid var(--geom);padding:4px 0 4px 20px;margin:26px 0 30px;font-family:var(--serif);font-size:19px;line-height:1.5}
+.callout.turn{border-left-color:var(--turn)}
+.callout.ctrl{border-left-color:var(--ctrl)}
+.callout small{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;letter-spacing:.03em}
+.tablewrap{overflow-x:auto;margin:22px 0 30px}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:520px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+th{font-family:var(--sans);font-weight:600;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hi td{background:var(--geom-soft)}
+tr.lo td{background:var(--turn-soft)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0 30px}
+.stat{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.stat .v{font-family:var(--mono);font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat .v.g{color:var(--geom)} .stat .v.t{color:var(--turn)} .stat .v.c{color:var(--ctrl)}
+.stat .l{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.35}
+
+/* Q1/Q2 */
+.qq{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:26px 0 32px}
+.q{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:18px 20px}
+.q .tag{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.q.one .tag{color:var(--geom)} .q.two .tag{color:var(--turn)}
+.q .ask{font-family:var(--serif);font-size:18px;line-height:1.4;margin:8px 0 12px}
+.q .ans{font-size:14.5px;color:var(--muted);line-height:1.55}
+.q .ans b{color:var(--ink);font-weight:500}
+
+.coda{margin-top:56px;padding-top:28px;border-top:1px solid var(--rule);font-size:14.5px;color:var(--muted);max-width:66ch}
+.coda p{margin:0 0 12px}
+
+
+/* recipe blocks */
+details.recipe{max-width:100%;margin:22px 0 30px;border:1px solid var(--rule);border-radius:8px;background:var(--panel)}
+details.recipe summary{cursor:pointer;list-style:none;padding:12px 18px;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+details.recipe summary::-webkit-details-marker{display:none}
+details.recipe summary::before{content:"+";font-size:16px;width:14px;color:var(--geom)}
+details.recipe[open] summary::before{content:"−"}
+details.recipe summary:hover{color:var(--ink)}
+.recipe-body{padding:4px 18px 18px;border-top:1px solid var(--rule-soft);font-size:15px;line-height:1.6}
+.recipe-body h4{font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px}
+.recipe-body ol,.recipe-body ul{padding-left:20px;margin:0 0 8px}
+.recipe-body li{margin-bottom:5px}
+.recipe-body p{margin:0 0 8px}
+.recipe-body .kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;font-size:14px;margin:6px 0 10px}
+.recipe-body .kv dt{font-family:var(--mono);color:var(--muted);white-space:nowrap}
+.recipe-body .kv dd{margin:0}
+.eq{font-family:var(--mono);font-size:14px;background:var(--ground);border:1px solid var(--rule-soft);border-radius:6px;padding:10px 14px;margin:8px 0 10px;overflow-x:auto;white-space:pre}
+/* appendix */
+.appendix{margin-top:64px;padding-top:36px;border-top:2px solid var(--ink)}
+.appendix h2{margin-bottom:8px}
+.appendix .prose p{max-width:66ch}
+.spec{position:relative;margin-top:22px;border:1px solid var(--rule);border-radius:8px;background:var(--panel)}
+.spec pre{margin:0;padding:22px 22px 26px;font-family:var(--mono);font-size:13px;line-height:1.55;white-space:pre-wrap;word-wrap:break-word;color:var(--ink)}
+.spec .copy{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;padding:6px 12px;border-radius:6px;border:1px solid var(--rule);background:var(--ground);color:var(--ink);cursor:pointer}
+.spec .copy:hover{border-color:var(--geom);color:var(--geom)}
+.spec .copy:focus-visible{outline:2px solid var(--geom)}
+
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr;gap:0}
+  .rail{position:static;padding-top:28px;border-bottom:1px solid var(--rule);padding-bottom:18px}
+  .rail ol{flex-direction:row;flex-wrap:wrap;gap:6px}
+  .rail a{grid-template-columns:auto 1fr;padding:6px 10px;background:var(--panel);border:1px solid var(--rule-soft)}
+  .rail .mood{display:none}
+  .rail .legend{display:none}
+  .qq{grid-template-columns:1fr}
+  .recipe-body .kv{grid-template-columns:1fr}
+  .spec .copy{position:static;margin:12px 0 0 22px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">Working notes · geometric distribution shift · September 2026</div>
+    <h1>The Model-Free Ruler</h1>
+    <p class="dek">How we built a distribution-shift measure with no learned parameters, watched it work, watched the control track it, fixed that by design, asked one question too many, and worked out what actually stands. Then a measure of coverage rather than distance that does better, and a test of whether the models care about viewpoint. Each act carries a recipe; the appendix is a build spec you can hand to Claude.</p>
+    <div class="meta">
+      <span><b>706</b> MOCHI ShapeNet trials</span>
+      <span><b>12</b> category fine-tunes of DINOv2</span>
+      <span><b>8,472</b> trial × model observations</span>
+      <span><b>20,885</b> training objects in the bank</span>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="rail" aria-label="Acts">
+      <ol>
+        <li class="flat"><a href="#a0"><span class="n">0</span><span>Why the metric is wrong<span class="mood">the problem</span></span></a></li>
+        <li class="flat"><a href="#a1"><span class="n">1</span><span>Build the ruler<span class="mood">no belief yet</span></span></a></li>
+        <li class="up"><a href="#a2"><span class="n">2</span><span>It works<span class="mood">belief ↑</span></span></a></li>
+        <li class="down"><a href="#a3"><span class="n">3</span><span>Two things were wrong<span class="mood">belief ↓</span></span></a></li>
+        <li class="up"><a href="#a4"><span class="n">4</span><span>Remove difficulty by design<span class="mood">belief ↑↑</span></span></a></li>
+        <li class="down"><a href="#a5"><span class="n">5</span><span>One question too many<span class="mood">belief ↓</span></span></a></li>
+        <li class="up"><a href="#a6"><span class="n">6</span><span>What stands<span class="mood">settled</span></span></a></li>
+        <li class="up"><a href="#a7"><span class="n">7</span><span>Coverage, not distance<span class="mood">new · belief ↑</span></span></a></li>
+        <li class="flat"><a href="#a8"><span class="n">8</span><span>Images, not objects<span class="mood">tested · not supported</span></span></a></li>
+        <li class="flat"><a href="#reproduce"><span class="n">§</span><span>Reproduce it<span class="mood">build spec</span></span></a></li>
+      </ol>
+      <div class="legend">
+        <i style="background:var(--geom)"></i>geometric metric<br>
+        <i style="background:var(--turn)"></i>the turn / on-category<br>
+        <i style="background:var(--ctrl)"></i>pretrained control
+      </div>
+    </nav>
+
+    <main class="main">
+
+
+      <!-- PROLOGUE -->
+      <section class="act" id="a0">
+        <div class="act-head"><span class="act-num">PROLOGUE</span><h2>Why the manuscript's metric is the wrong one</h2></div>
+        <p class="stand flat">the problem, stated plainly</p>
+        <div class="prose">
+          <p class="lead">The manuscript measures distribution shift like this. For a trial with matched object A and oddity B, run both through the pretrained encoder, find the single training image C whose features are closest to both, and call the shift <span class="num">½[d(A,C) + d(B,C)]</span>, with d the ℓ₁ distance in the encoder's raw feature space.</p>
+          <p>Three things are wrong with that number, and each one is a way for it to be large without the trial being far from the training data.</p>
+          <h3>1 · It contains the trial's own difficulty — the triangle inequality, spelled out</h3>
+          <p>For any way of measuring distance that deserves the name, the direct route between two points is never longer than a detour through a third: <span class="num">d(A,B) ≤ d(A,C) + d(C,B)</span>. That is the triangle inequality, and it is part of the definition of a distance — L1, L2 and angular distance all obey it. Halve both sides: <span class="num">½[d(A,C) + d(C,B)] ≥ ½·d(A,B)</span>.</p>
+          <p>Now look at what the shift is: the <em>smallest</em> value of the left-hand side over every training image C. Minimising over C can make the left side as small as the training set allows — but it can never push it below <span class="num">½·d(A,B)</span>, because no C does. The floor is reached only if some training image sits exactly on the straight path from A to B. Every real training image sits off that path, and the shift is the floor plus however far off it the best one is:</p>
+          <div class="eq">shift  =  ½·d(A,B)  +  excess,        excess ≥ 0
+           └── the task's own difficulty      └── the only part that is about the training set</div>
+          <p>The oddity task is decided by d(A,B) — how different the two objects look to the encoder. So a trial whose objects are very different is guaranteed a large "shift" whatever the training set contains, and a trial whose objects are nearly identical is guaranteed a small one. The picture makes it obvious: for L2, the set of points C with a given value of d(A,C)+d(B,C) is an ellipse with A and B as its foci, and the shift is the smallest ellipse that touches a training image. Move A and B apart and every ellipse grows, the training images included.</p>
+        </div>
+        <figure>
+          <img src="img/61_triangle.png" alt="Four panels: ellipses with foci A and B around scattered training images for a hard and an easy trial; a scatter of shift against half d(A,B) under cosine and normalised L1 with a floor line; a bar chart splitting the shift into floor and excess and their correlations with the margin; a bar chart of correlation with d(A,B) under different distances, forms and spaces" loading="lazy">
+          <figcaption><b>A</b> the same training images and the same nearest one, but A and B further apart: the floor rises from 0.80 to 1.70 and the "shift" with it. <b>B</b> the real data, DINO ViT-B on all 2,019 MOCHI trials: nothing below the floor line, under cosine or normalised L1 alike. <b>C</b> split the raw-L1 shift into floor and excess: the floor predicts the pretrained margin at +0.57 (wrong sign — more difference, easier trial), the excess at −0.17 (right sign, the real signal), and their sum lands at +0.32. <b>D</b> what changes the correlation with d(A,B): not the distance.<span class="file">out/figures/fig61_triangle.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <h3>Does cosine, or L2, get around it?</h3>
+          <p><b>No.</b> The bound is a property of every metric, not of L1. On the same 2,019 trials, with the shift recomputed under three distances:</p>
+        </div>
+        <div class="tablewrap"><table>
+          <tr><th>distance d</th><th class="n">floor ½·d(A,B) holds</th><th class="n">r(shift, d(A,B))</th><th class="n">share of the shift's variance that is just the floor</th></tr>
+          <tr><td>L1, raw features (the manuscript)</td><td class="n">100 %</td><td class="n">+0.73</td><td class="n">53 %</td></tr>
+          <tr><td>L1, unit-normalised features</td><td class="n">100 %</td><td class="n">+0.75</td><td class="n">57 %</td></tr>
+          <tr class="lo"><td>1 − cosine</td><td class="n">100 %</td><td class="n">+0.78</td><td class="n">60 %</td></tr>
+        </table></div>
+        <div class="prose">
+          <p>Cosine is slightly <em>worse</em>. (Strictly, 1 − cosine is not a metric — its square root, the chord length, is — so it can violate the bound by a small slack; on ShapeNet it holds in 96.5 % of trials rather than 100 %. That slack does not help.) Normalising the features fixes fault 2, the norm, and leaves fault 1 exactly where it was.</p>
+          <p>What does help is changing the <em>form</em>: give each object its own nearest training image, <span class="num">½[min<sub>C</sub> d(A,C) + min<sub>C′</sub> d(B,C′)]</span>, and there is no shared C, so no bound. In the encoder's space that takes r(shift, d(A,B)) from 0.78 to 0.66 — still high, no longer a theorem but a property of that space, where both quantities scale with how the encoder spreads images out. Leaving the encoder's space finishes it: the oddity-blind form on geometric descriptors gives +0.45 on ShapeNet and −0.36 on ShapeGen (panel D). And the within-trial design of Act 4 removes the floor a third way: d(A,B) is a constant across the twelve models of a trial, so whatever it contributes is the same in every column and vanishes under centring.</p>
+          <h3>2 · It is mostly the size of the feature vector</h3>
+          <p>In raw feature space, the ℓ₁ distance between two vectors is dominated by how long they are. The audit found <span class="num">r(shift, ‖φ‖₁) = 0.95</span> for ResNet-50 and <span class="num">0.89</span> for DeiT-III (panel B), and for DeiT the shift adds nothing to the norm in a nested regression (χ² = 0.3, p = 0.59). Feature norm is a property of how the encoder responds to the test image, not of where the training set is.</p>
+          <h3>3 · It is validated against itself</h3>
+          <p>The paper's test-time proxy <span class="num">ŝ = 1 + εm</span> is the encoder's margin. The "empirical shift" it is validated against is computed in that same encoder's features. Both numbers come out of the same box — and the encoder's own d(A,B), which the shift is bounded by, <em>is</em> its margin, near enough: <span class="num">r = +0.57</span> for DINO ViT-B over all 2,019 MOCHI trials, <span class="num">+0.72</span> for DINOv2-L on ShapeNet (panel C). A correlation between ŝ and the shift is what any shared property of the box would produce, with no distribution shift required.</p>
+        </div>
+        <figure>
+          <img src="img/60_whywrong.png" alt="Four panels: triangle-inequality diagram; shift vs feature norm scatter (r = 0.95); encoder d(A,B) vs pretrained margin scatter (r = 0.57); bar chart of what the original metric and coverage each predict" loading="lazy">
+          <figcaption><b>A</b> the bound. <b>B</b> shift against the test images' feature norm, ResNet-50, r = +0.949. <b>C</b> the encoder's own d(A,B) against its margin, r = +0.568. <b>D</b> on the data where we can check — 706 trials × 12 fine-tuned models — the manuscript's metric correlates with the fine-tuned margin at −0.01 (pooled) and <em>+0.33</em> (on-category) and with the <em>pretrained</em> margin at +0.38 and +0.61. It predicts the behaviour of the model that never saw the training set better than the model that did, with the sign backwards. Coverage, in green: −0.27 vs a control of −0.03.<span class="file">out/figures/fig60_why_wrong.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <h3>The consequence</h3>
+          <p>A "shift" that goes up when the objects are easy to tell apart, goes up when the encoder's activations are large, and is read off the same encoder whose margin it is meant to explain, is a measure of how the encoder responds to the trial. It correlates with the margin because both are the encoder's response. That is why, on the one dataset where we have models that <em>did</em> and <em>did not</em> see each training set, the metric tracks the one that did not (panel D) — and why it only behaves after two-way centring (Act 7), which strips out every trial-level and category-level thing it was tracking.</p>
+          <h3>What a right metric has to do</h3>
+          <p>Three things, one for each fault. Be computed <b>without the encoder</b>, from the stimuli and the training set alone. <b>Never difference A and B</b> — average a per-image quantity over the trial, so the task's decision variable cannot enter. And be <b>unable to predict the pretrained margin</b>: a model that never saw the training set is the control, and a valid shift measure has to leave it flat. The rest of this page is the search for a measure that does all three; coverage in voxel space (Act 7) is where it ends up.</p>
+        </div>
+        <div class="callout turn">The original number is not a bad estimate of distribution shift. It is a good estimate of something else — the encoder's ease on the trial — wearing the wrong name.</div>
+      </section>
+
+      <!-- ACT 1 -->
+      <section class="act" id="a1">
+        <div class="act-head"><span class="act-num">ACT 1</span><h2>Build a ruler with no parameters</h2></div>
+        <p class="stand flat">where belief stood · <b>not yet earned</b></p>
+        <div class="prose">
+          <p class="lead">The manuscript's distribution-shift metric is model-based twice over. The trial-to-training distance is a nearest-neighbour search inside the pretrained encoder's own feature space, and the test-time proxy is that same encoder's oddity margin.</p>
+          <p>The prologue says why that fails. Here is what we built instead.</p>
+          <p>MOCHI's ShapeNet and ShapeGen trials are rendered from known 3D assets. Stimulus geometry is <em>known</em>, not inferred. So the question was whether a shift measure computed from geometry alone — no encoder, no learned parameters — could stand in for the circular one.</p>
+
+          <h3>What we measured</h3>
+          <p>Every object's <code>model_normalized.solid.binvox</code> (a 128³ solid voxelisation), reduced to descriptors with no fitted parameters: a 57-d rotation-invariant shape distribution, raw occupancy grids at 8³, 16³ and 32³, seven numbers from the bounding-box JSON, and a handful of pose-referenced silhouette statistics. Cosine distance on z-scored, L2-normalised descriptors.</p>
+
+          <h3>The estimator</h3>
+          <p>Oddity-blind, hub-robust, norm-free. Average a per-image distance over <em>all</em> a trial's images — never difference them — because the shared-neighbour form <span class="num">min<sub>C</sub> ½[d(A,C)+d(B,C)]</span> is bounded below by half the trial's own decision variable <span class="num">d(A,B)</span>, and difficulty leaks in. Mean over the 50 nearest training objects, not a single argmin. A ruler that training cannot reshape.</p>
+
+          <h3>The design that would matter later</h3>
+          <p>Twelve models, one per ShapeNet category, each fine-tuned from the same DINOv2 on that category alone. Every trial goes through all twelve. The trial's images, its objects, its difficulty and the base model's margin are identical across the twelve — only the training set differs. We didn't fully appreciate what this bought us until Act 4.</p>
+        </div>
+        <details class="recipe" open>
+          <summary>Recipe · data, descriptors, estimator, models</summary>
+          <div class="recipe-body">
+            <h4>Data files</h4>
+            <dl class="kv">
+              <dt>MOCHI/mochi_trials.csv</dt><dd>2,019 rows. Columns used: <code>dataset</code>, <code>condition</code>, <code>trial</code>, <code>oddity_index</code>, <code>images</code> (a Python-literal list of filenames). ShapeNet filenames are <code>&lt;synset&gt;_&lt;modelid&gt;_&lt;view&gt;.png</code>; the object key is <code>synset/modelid</code>.</dd>
+              <dt>ShapeNet trials</dt><dd>867 total; <b>706</b> where every image shares one synset — these are the usable "single-category" trials.</dd>
+              <dt>ShapeNet_OOD_Analyses/&lt;cat&gt;/ood_analysis_results.csv</dt><dd>One file per category model, 2,019 rows positionally aligned to <code>mochi_trials.csv</code>. Columns used: <code>fine_tuned_oddity_margin</code>, <code>pretrained_oddity_margin</code>, <code>fine_tuned_correct</code>, <code>pretrained_correct</code>, <code>d_AB_(L1_not_normalized)</code>.</dd>
+              <dt>ShapeNet assets</dt><dd><code>model_normalized.solid.binvox</code> (128³ solid voxelisation) and <code>model_normalized.json</code> per object.</dd>
+            </dl>
+            <h4>The 12 categories (synset IDs)</h4>
+            <p class="mono" style="font-size:13px">airplane 02691156 · bench 02828884 · cabinet 02933112 · car 02958343 · chair 03001627 · display 03211117 · lamp 03636649 · loudspeaker 03691459 · sofa 04256520 · table 04379243 · telephone 04401088 · watercraft 04530566</p>
+            <h4>Training bank</h4>
+            <p>All ShapeNet objects in those 12 synsets, <b>minus the 897 objects that appear in any MOCHI trial</b> → 20,885 objects. The per-category bank is the subset with that synset.</p>
+            <h4>Descriptor A — 57-d rotation-invariant (<code>d57</code>)</h4>
+            <ol>
+              <li>Parse the binvox: header lines <code>dim / translate / scale / data</code>, then run-length pairs (value, count); raw order is x-major, then z, then y, so transpose (0,2,1) to xyz.</li>
+              <li>Take occupied voxel coordinates. Subsample 4,096 (RNG seed 0). Centre on centroid; scale to unit RMS radius.</li>
+              <li><b>D2</b>: 200,000 random point pairs, histogram of pairwise distances, 32 bins on [0, 4], density-normalised.</li>
+              <li><b>Shell</b>: histogram of distance-to-centroid, 16 bins on [0, 3], density.</li>
+              <li><b>9 scalars</b>: eigenvalues of the point covariance normalised to sum 1 → elongation <span class="num">λ₂/λ₁</span>, flatness <span class="num">λ₃/λ₁</span>; compactness <span class="num">n_surface / n_vox^(2/3)</span> where surface voxels are occupied with an unoccupied 6-neighbour; norm_vol <span class="num">n_vox / rms³</span>; convexity <span class="num">norm_vol / hull_volume</span> (ConvexHull of the normalised points); r_mean, r_std (of the shell distances); d2_mean, d2_std (of the D2 distances).</li>
+            </ol>
+            <h4>Descriptor B — raw occupancy grids (<code>voxel8/16/32</code>)</h4>
+            <p>Reshape the 128³ grid to <span class="num">(N, 128/N, N, 128/N, N, 128/N)</span> and take the mean over the three block axes → N³ occupancy fractions. Pose-sensitive by construction. 512 / 4,096 / 32,768 dims.</p>
+            <h4>Descriptor C — bounding box (<code>bbox</code>, 7-d)</h4>
+            <p>From <code>model_normalized.json</code>: sort extents descending and divide by the largest → <span class="num">[e₁, e₂, e₁·e₂, vol^(1/3), |centroid − box centre| / |diag|, log₁₀ numVertices, log₁₀ vol]</span>.</p>
+            <h4>The estimator (<code>blind_k50</code>)</h4>
+            <div class="eq">z-score every dimension with the BANK's mean and sd (sd &lt; 1e-9 → 1)
+L2-normalise rows;  D(t, b) = 1 − t·b   (cosine distance)
+per test object:  mean of its 50 smallest D to the category bank
+per trial:        mean of that over every image's object   (oddity-blind)</div>
+            <p>Averaging over all images, never differencing them, is what keeps trial difficulty out: the shared-neighbour form <span class="num">min_C ½[d(A,C)+d(B,C)]</span> is bounded below by <span class="num">½·d(A,B)</span>, the task's own decision variable.</p>
+            <h4>The 12 fine-tuned models</h4>
+            <dl class="kv">
+              <dt>backbone</dt><dd><code>vit_large_patch14_reg4_dinov2</code> (DINOv2-L with registers), CLS token, 224 px, layer-normed</dd>
+              <dt>adaptation</dt><dd>LoRA r=16, α=8, dropout 0.1; backbone otherwise frozen</dd>
+              <dt>loss</dt><dd>multi-similarity (margin 0.1, α=2, β=10, base_pos 0.95, base_neg 0.5)</dd>
+              <dt>optimiser</dt><dd>Adam lr 1e-6, weight decay 1e-4, β=(0.9, 0.999); 30 epochs, batch 32</dd>
+              <dt>training data</dt><dd>20,000 triplets per category per epoch, regenerated every epoch (seed 42), from rendered ShapeNet objects of <em>that category only</em>; backgrounds white/black/random in equal thirds; similarity-binned triplet ratios 0.15/0.25/0.60. MOCHI test objects excluded.</dd>
+              <dt>the 13th model</dt><dd>same recipe on all 12 categories together (<code>all_categories</code>); not used in the within-trial analyses.</dd>
+            </dl>
+            <h4>The oddity margin (per trial, per model)</h4>
+            <div class="eq">F = L2-normalised CLS features of the trial's n images
+S = F Fᵀ;   avg_i = mean_{j≠i} S_ij
+prediction = argmin_i avg_i;   correct = (prediction == oddity_index)
+margin = mean_{i≠oddity} avg_i  −  avg_oddity</div>
+            <p>The pretrained margin is the same formula on the un-adapted DINOv2-L. It is identical across the 12 category files for a given trial.</p>
+          </div>
+        </details>
+
+      </section>
+
+      <!-- ACT 2 -->
+      <section class="act" id="a2">
+        <div class="act-head"><span class="act-num">ACT 2</span><h2>It looks like it works</h2></div>
+        <p class="stand up">where belief stood · <b>rising — too fast</b></p>
+        <div class="prose">
+          <p class="lead">The manuscript's Figure 1-right, reproduced with the metric swapped. Same trials, same three pretrained encoders, same proxy. Top row is the model-free geometric shift; bottom row is the incumbent.</p>
+        </div>
+        <figure>
+          <img src="img/01_shapegen.png" alt="Six panels: three encoders' oddity-margin proxy against geometric shift (top) and the incumbent DINOv2 L1 shift (bottom), ShapeGen, 30 quantile bins" loading="lazy">
+          <figcaption><b>What it looked like at the time: on ShapeGen the model-free metric beat the incumbent for every encoder.</b> Geometric: −0.739 / −0.805 / −0.800. Incumbent DINOv2-ℓ₁: −0.547 / −0.635 / −0.526. <mark class="t">This figure uses the entangled shift, and Act 3 shows why those numbers are not what they seem.</mark><span class="file">out/fig_margin_vs_geometric_shapegen.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <p>A distance with zero learned parameters appeared to match or beat the one computed inside the encoder. Then we looked at all 8,472 observations at once.</p>
+        </div>
+        <figure>
+          <img src="img/03_allpoints.png" alt="Every trial times every model: scatter and quantile-bin panels showing margin falling with geometric distance" loading="lazy">
+          <figcaption><b>Every trial × every model, raw axes, nothing centred.</b> Point-level <span class="num">r = −0.223</span> (p = 4×10⁻⁹⁶); in quantile bins the conditional mean margin falls monotonically across the whole range — binned r of −0.84 at 10 bins, still −0.76 at 70.<span class="file">out/figures/fig40_allpoints_bins_voxel16.png</span></figcaption>
+        </figure>
+        <div class="callout">These are the figures that made the project look finished. It wasn't — for two different reasons.</div>
+        <details class="recipe">
+          <summary>Recipe · the Figure-1 reproduction with φ swapped</summary>
+          <div class="recipe-body">
+            <p>This act used an earlier, simpler shift — the manuscript's own Eqs. 1–3 with only the feature function replaced — before the oddity-blind estimator existed.</p>
+            <div class="eq">z-score descriptors with the bank mean/sd (no L2 normalisation here)
+d = cityblock (L1)
+3D (shapenet):  φ(A) = the matched object's d57;   φ(B) = the oddity's d57
+2D (shapegen):  φ(A) = mean silhouette descriptor over the matched images;  φ(B) = oddity image's
+D(trial, C_i) = ½ [ d(φ(A), C_i) + d(φ(B), C_i) ]
+shift = min_i D(trial, C_i)</div>
+            <h4>2D silhouette descriptor (20-d), for shapegen</h4>
+            <ol>
+              <li>Silhouette: alpha channel for RGBA renders; for MOCHI's RGB images a border-connected flood fill (not a threshold — specular highlights reach 255 on a white ground).</li>
+              <li>Boundary = mask minus its 4-connected erosion. Eccentricity from the 2×2 inertia tensor; solidity = area / convex-hull area; compactness = perimeter² / (4π·area).</li>
+              <li>Radial profile: max boundary radius in each of 64 angular sectors, radius divided by √(area/π); interpolate empty sectors. Then radial_cv, roughness (mean |Δprofile| / mean), radial mean/min/max, and the first 12 FFT magnitudes of the profile (÷ mean).</li>
+            </ol>
+            <p>Every 2D descriptor is invariant to translation, rotation and scale; scale invariance is mandatory because MOCHI renders at 1000², shapegen at 518², shapenet at 224².</p>
+            <h4>Bank and margins</h4>
+            <dl class="kv">
+              <dt>shapegen bank</dt><dd>19,200 training renders (2D descriptors)</dd>
+              <dt>margins</dt><dd><code>Distribution-shift-Analyses/data/all_model_margins.csv</code>, 2,019 rows × 8 pretrained encoders, aligned to <code>mochi_trials.csv</code>; proxy ŝ = 1 − m (ε = −1 for pretrained encoders)</dd>
+              <dt>incumbent</dt><dd><code>trial_distance_(L1_not_normalized)</code> from <code>L1norm_vs_distshift/trials_vit_base_patch16_224.dino.csv</code></dd>
+              <dt>statistic</dt><dd>30 quantile bins on x; Pearson r on the 30 bin means (binning inflates r ~3× over trial level — same convention as the manuscript)</dd>
+            </dl>
+          </div>
+        </details>
+      </section>
+
+      <!-- ACT 3 -->
+      <section class="act" id="a3">
+        <div class="act-head"><span class="act-num">ACT 3</span><h2>Two things were wrong</h2></div>
+        <p class="stand down">where belief stood · <b>falling</b></p>
+        <div class="prose">
+          <p class="lead">Two separate problems, found at different times. The first is the one everyone had already complained about. The second we only fully measured when writing this page.</p>
+          <h3>Problem 1 — the shift was entangled with the trial's own difficulty</h3>
+          <p>The Act 2 shift is the manuscript's Eq. 1–3 with the feature swapped: <span class="num">min<sub>i</sub> ½[d(A,C<sub>i</sub>) + d(B,C<sub>i</sub>)]</span>. By the triangle inequality that is bounded below by <span class="num">½·d(A,B)</span> — the dissimilarity of the two objects, which is the oddity task's own decision variable. We knew it was a bound. We did not know how tight.</p>
+        </div>
+        <figure>
+          <img src="img/49_entangle.png" alt="Bar charts: on shapegen the entangled shift correlates with d(A,B) at 0.99 and the oddity-blind metric gives near zero; on shapenet a modest relationship survives" loading="lazy">
+          <figcaption><b>On shapegen the entangled shift correlates with d(A,B) at r = +0.993.</b> It <em>is</em> object dissimilarity, and d(A,B) alone predicts the encoder proxy better (|r| = 0.79) than the "shift" did (0.74). Replace it with the oddity-blind metric — mean over the trial's images, never differenced — and the shapegen relationship goes to <span class="num">|r| = 0.12</span>. The incumbent's correlation with d(A,B) is only +0.07: it was never riding this confound. We "beat" it by being more entangled than it was. On shapenet a modest blind relationship survives (0.43), comparable to the incumbent (0.55).<span class="file">out/figures/fig49_entanglement.png</span></figcaption>
+        </figure>
+        <div class="callout turn">The shapegen headline from Act 2 is withdrawn. "Dissimilar objects are easier to tell apart" is true and uninteresting.</div>
+        <div class="prose">
+          <h3>Problem 2 — the control tracks it too</h3>
+          <p>We had a natural control: the pretrained DINOv2, which never saw any of the twelve fine-tuning sets. A valid shift measure should not predict its margin. It did.</p>
+        </div>
+        <figure>
+          <img src="img/A1_pessimistic.png" alt="Accuracy against geometric shift, pooled (A) and on-category only (B), fine-tuned in blue and pretrained in grey" loading="lazy">
+          <figcaption><b>Panel A: the grey line falls with the blue one.</b> Pooled, the fine-tuned model tracks geometric shift at <span class="num">r = −0.135</span>; the pretrained control tracks it at <span class="num">−0.121</span>. They fall in parallel. Panel B is a preview of Act 5.<span class="file">out/figures/fig25_accuracy_vs_shift.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <p>The caption we wrote at the time says it exactly: <em>"pooled across trials, the pretrained margin tracks geometric shift more strongly than the fine-tuned one, though it cannot possibly depend on these training sets. The pooled correlation is therefore a stimulus property, not a distributional effect."</em></p>
+          <p>Objects that are geometrically far from every training set are also, plausibly, just hard — for every model. The pooled figure has two things in it, training exposure and object atypicality, and cannot separate them. Act 2's beautiful curve was real, but it was not yet evidence about training.</p>
+        </div>
+        <div class="callout turn">Entanglement is fixed by the blind metric. Atypicality is not — the pooled relationship is a property of the stimuli. We needed a design in which the stimuli could not vary.</div>
+        <details class="recipe">
+          <summary>Recipe · the control test</summary>
+          <div class="recipe-body">
+            <p>Build the long table: for each of the 12 category models, merge that model's <code>ood_analysis_results.csv</code> (aligned by row to <code>mochi_trials.csv</code>) with the per-category <code>blind_k50</code> shift for that category. Keep the 706 single-category trials → 8,472 rows of <span class="num">(trial, category, x = shift, ft = fine_tuned_oddity_margin, pre = pretrained_oddity_margin, fc, pc)</span>.</p>
+            <div class="eq">pooled:   r(x, ft)   vs   r(x, pre)      # both on all 8,472 rows, raw
+pass ⇔ r(x, pre) ≈ 0.   Observed: r(x, ft) = −0.223,  r(x, pre) = −0.137  → FAIL</div>
+            <p>Verify the premise of Act 4 while you are here: <span class="num">groupby(trial).std()</span> of <code>pre</code>, <code>d_AB</code>, <code>human_accuracy</code>, <code>human_rt</code> must all be exactly 0.</p>
+            <h4>Entanglement check (do this for any shift metric)</h4>
+            <div class="eq">r(shift, d_AB) across trials.   entangled Eq.1-3 shift: +0.993 (shapegen), +0.996 (shapenet)
+                                oddity-blind knn_mean:   −0.36,  +0.45
+if it is ≈ 1 the metric is measuring the trial, not the training set</div>
+          </div>
+        </details>
+      </section>
+
+      <!-- ACT 4 -->
+      <section class="act" id="a4">
+        <div class="act-head"><span class="act-num">ACT 4</span><h2>Remove trial difficulty by design</h2></div>
+        <p class="stand up">where belief stood · <b>rising, and now earned</b></p>
+        <div class="prose">
+          <p class="lead">Two fixes, and from here on both are always in place. The oddity-blind estimator (Act 1's recipe) removes the entanglement. The twelve-model design removes atypicality: within a trial, the pretrained margin is a constant — variance ~10⁻³⁵ — so centre or rank within trial and the control becomes a flat line <em>by construction</em>. The fine-tuned margin still falls.</p>
+        </div>
+        <figure>
+          <img src="img/06_bydesign.png" alt="The oddity margin recovers distance to training with trial difficulty removed by design" loading="lazy">
+          <figcaption><b>The oddity margin recovers distance-to-training, with trial difficulty removed by design.</b> Each of 706 trials appears twelve times. x is a property of the stimuli and the training set only; y is that model's behaviour. d(A,B) has zero within-trial variance, so difficulty cannot contribute.<span class="file">out/figures/fig7_margin_validation_clean.png</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/07_rank.png" alt="Margin by within-trial rank of the training set, nearest to farthest" loading="lazy">
+          <figcaption><b>Rank each trial's twelve training sets, nearest → farthest.</b> All twelve points hold the same 706 trials — identical objects, identical d(A,B), identical difficulty. Both axes raw.<span class="file">out/figures/fig9_margin_rank.png</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/09_accuracy.png" alt="Accuracy by rank: fine-tuned falls from 81 to 56 percent, pretrained flat at 51 percent" loading="lazy">
+          <figcaption><b>The same design for accuracy — the panel Act 3's figure was missing.</b> Fine-tuned accuracy falls from <span class="num">81.2%</span> at the nearest training set to <span class="num">55.7%</span> at the farthest. The pretrained model sits at <span class="num">50.6%</span> in every rank, because every rank holds the same trials.<span class="file">out/figures/fig48_accuracy_within_trial.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <p>Then the formal version, at the honest grain: one slope per trial, a permutation null that respects the within-trial structure, and a confidence interval clustered on the twelve training categories rather than the 706 trials.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="v g">84.1%</div><div class="l">of 706 trials have a negative within-trial slope</div></div>
+          <div class="stat"><div class="v g">10⁻⁴</div><div class="l">permutation p, 10,000 within-trial shuffles of x</div></div>
+          <div class="stat"><div class="v g">[−0.22, −0.03]</div><div class="l">95% CI, cluster bootstrap over 12 categories</div></div>
+          <div class="stat"><div class="v c">4×10⁻¹⁸</div><div class="l">control r on the same axis — zero by construction</div></div>
+          <div class="stat"><div class="v g">25.5 pts</div><div class="l">accuracy, nearest → farthest training set</div></div>
+          <div class="stat"><div class="v g">d = 1.41</div><div class="l">on- vs off-category margin advantage</div></div>
+        </div>
+        <figure>
+          <img src="img/10_causal.png" alt="Five-panel causal analysis: schematic, dose-response, per-trial slope histogram with permutation null, transfer matrix, cell-mean scatter" loading="lazy">
+          <figcaption><b>Moving the training data moves the margin.</b> A: stimulus fixed, training varied. B: a hundred trials' dose–response, with the decile overlay. C: one OLS slope per trial against a permutation null that is a spike at zero. D: the 12×12 transfer matrix and its 144 cell means. C2 belongs to Act 5.<span class="file">out/figures/fig46_moving_training.png</span></figcaption>
+        </figure>
+        <div class="callout">The training set is assigned, fully crossed with trial, and the margin moves in five trials out of six. That is a manipulation, not a correlation — and the control is zero for arithmetic reasons.</div>
+        <details class="recipe" open>
+          <summary>Recipe · within-trial statistics</summary>
+          <div class="recipe-body">
+            <p>Pivot the long table to two 706 × 12 arrays, <b>X</b> (shift) and <b>Y</b> (fine-tuned margin), columns in a fixed category order. Everything below is row-wise arithmetic.</p>
+            <h4>Rank profile (figs 7, 9)</h4>
+            <div class="eq">rank each row of X (1 = smallest, ties by order);  for each rank k: mean X, mean Y, SEM of Y over the 706 trials
+the pretrained margin / accuracy by rank must be constant (sd = 0) — assert it</div>
+            <h4>Trial-centred correlation</h4>
+            <div class="eq">Xc = X − rowmean(X);  Yc = Y − rowmean(Y)
+r = pearson(Xc.ravel(), Yc.ravel())                           # −0.329
+control: pearson(Xc.ravel(), PRE.ravel()) is exactly 0, because PRE is row-constant</div>
+            <h4>One slope per trial</h4>
+            <div class="eq">slope_t = Σ_j Xc[t,j]·Yc[t,j]  /  Σ_j Xc[t,j]²           # OLS through 12 points
+report mean(slope), fraction(slope &lt; 0)                  # −0.171, 84.1 %</div>
+            <h4>Permutation null (within-trial)</h4>
+            <div class="eq">repeat 10,000×:  permute the 12 entries of each row of Xc independently;  recompute mean(slope)
+Σ_j Xc² is invariant under a within-row permutation, so only the cross term moves
+p = (1 + #{null ≤ observed}) / (10,000 + 1)                   # 0.0001</div>
+            <h4>Cluster bootstrap over training categories</h4>
+            <div class="eq">repeat 2,000×:  draw 12 column indices with replacement;  X_b = X[:, idx], Y_b = Y[:, idx]
+recompute per-trial slopes (skip rows with Σ Xc² &lt; 1e-12);  take the mean
+95 % CI = 2.5th / 97.5th percentiles                           # [−0.219, −0.028]</div>
+            <h4>Accuracy by rank (fig 9 of the packet)</h4>
+            <p>Same rank profile with Y = <code>fine_tuned_correct</code> and the control Y = <code>pretrained_correct</code>: 81.2 % → 55.7 %, control 50.6 % everywhere.</p>
+            <h4>Transfer matrix</h4>
+            <div class="eq">own[t]  = the trial's synset category
+adv     = ft − pre                                   # margin advantage; base differences out only within trial, so aggregate on adv
+cell[i, j] = mean adv over trials with own == i, for model j        # 12 × 12
+scatter the 144 cells: x = mean shift in the cell, y = cell adv;  r over all 144, r over the 132 off-diagonal</div>
+          </div>
+        </details>
+      </section>
+
+      <!-- ACT 5 -->
+      <section class="act" id="a5">
+        <div class="act-head"><span class="act-num">ACT 5</span><h2>One question too many</h2></div>
+        <p class="stand down">where belief stood · <b>falling — for the wrong reason</b></p>
+        <div class="prose">
+          <p class="lead">Look at the rank curve again. It is mostly a step: the on-category model sits far above the other eleven, which are roughly flat. So we asked a second question. <em>Holding category membership fixed, does graded geometric distance still predict the margin?</em></p>
+          <p>That is the <mark class="t">within-category</mark> row: keep only the model trained on each trial's own category. One point per trial, n = 706.</p>
+        </div>
+        <figure>
+          <img src="img/A2_oncat.png" alt="On-category trials only: weak, noisy relationship that degrades as bins get finer" loading="lazy">
+          <figcaption><b>Barely.</b> <span class="num">r = −0.097</span> (p = 0.01). The binned version gets <em>noisier</em> as the bins get finer — −0.56 at 10 bins, −0.30 at 70 — the opposite of what a real graded relationship does. The accuracy version is <span class="num">r = −0.031</span>.<span class="file">out/figures/fig41_oncategory_bins_voxel16.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <h3>We searched for a metric that would work there</h3>
+          <p>A hill climb over <span class="num">1,895</span> candidates — eight representations, twenty-odd estimators, twelve trial-level metrics — with the within-category margin advantage as the objective, fifty repeats of five-fold cross-validation over trials, and a permutation null on the maximum statistic. In-sample the winner reached <span class="num">|r| = 0.184</span> with a corrected p of 0.001. Out of sample it scored <span class="num">0.113</span> against <span class="num">0.133</span> for the fixed baseline, losing in 72% of repeats.</p>
+          <p>There is no single model-free metric that makes the within-category relationship strong. About 0.13 is the ceiling for that question in these data.</p>
+          <h3>The causal analysis said the same thing</h3>
+          <p>Remove the on-category model from each trial and the per-trial slopes go to the null (mean −0.004, p = 0.29). Remove the diagonal from the transfer matrix and the 144 cell means go from <span class="num">r = −0.364</span> to <span class="num">−0.024</span>. Within this dataset the effect is <mark>coverage</mark> — did you train on this kind of object — with at most a small graded component beyond it.</p>
+        </div>
+        <div class="callout turn">This is where it got sad. Every follow-up figure was about the second question, and every one of them came back weak. It started to feel like the whole thing had not worked.</div>
+        <details class="recipe">
+          <summary>Recipe · the within-category row and the metric search</summary>
+          <div class="recipe-body">
+            <h4>Within-category row</h4>
+            <div class="eq">keep rows where category == own[trial]   → 706 rows, one per trial
+r(x, ft), r(x, pre)                                       # −0.097 (p = 0.01), −0.004 (control passes)
+r(x, ft − pre)                                            # −0.115 (p = 0.002)</div>
+            <p>Note this row is also where trial-centring is undefined (one observation per trial) and where category-centring removes the effect entirely (+0.014): "which model" and "which category" are the same variable here.</p>
+            <h4>The 1,895-candidate search</h4>
+            <ol>
+              <li>Candidate = (representation, estimator, trial-level metric). Representations: d57, voxel8/16/32, bbox, multiview, volatility, structure. Estimators: nn_min, knn_mean and knn_kth for k ∈ {1, 10, 50, 200}, centroid, mahalanobis, pca_recon (10 components), energy_lse, local_norm, rank_pct. Trial-level metrics from the per-image distances dA, dB and the within-trial d_AB and bank spread d_TT: both_mean, oddity_only, closer_one, over_dAB, minus_dTT, and seven more. Single combinations only — no concatenation, no fitted weights.</li>
+              <li>Objective: |r| against within-category margin advantage on the 706 trials.</li>
+              <li>Validation: 50 repeats × 5-fold CV <em>over trials</em>. In each fold select the best candidate on the 4 training folds, score it on the held-out fold. Compare its mean held-out |r| to the fixed baseline <code>voxel16 | knn_mean_k50 | both_mean</code> scored on the same folds. Report the paired difference, its CI, and the fraction of repeats where the search wins.</li>
+              <li>Permutation null on the maximum: shuffle y 2,000 times, recompute max |r| over all 1,895 candidates each time; compare the observed in-sample max to that distribution.</li>
+            </ol>
+            <p>Result: in-sample max 0.184 (corrected p = 0.001) — held-out 0.113 vs baseline 0.133, gain −0.020 [−0.072, +0.013], search wins 28 % of repeats.</p>
+            <h4>Excluding the on-category model</h4>
+            <div class="eq">mask the on-category column in each row (11 points per trial);  recompute slopes and the permutation null
+mean slope −0.004, 56 % negative, p = 0.29</div>
+          </div>
+        </details>
+      </section>
+
+      <!-- ACT 6 -->
+      <section class="act" id="a6">
+        <div class="act-head"><span class="act-num">ACT 6</span><h2>What actually stands</h2></div>
+        <p class="stand up">where belief stood · <b>settled</b></p>
+        <div class="prose">
+          <p class="lead">The pessimism was half right. The other half was a conflation: a weak answer to the second question got read as a weak result overall, when the first question — the one the paper needs — had already been answered strongly in Act 4.</p>
+        </div>
+        <div class="qq">
+          <div class="q one">
+            <div class="tag">Question 1 · what the paper needs</div>
+            <div class="ask">Does the margin respond to the training distribution, measured model-free, with a control that cannot be gamed?</div>
+            <div class="ans"><b>Yes.</b> 84% of trials, permutation p = 10⁻⁴, 25 accuracy points, d = 1.4, control zero by construction, robust to descriptor, estimator, centring and binning, and to a 1,895-metric search.</div>
+          </div>
+          <div class="q two">
+            <div class="tag">Question 2 · a finer follow-up</div>
+            <div class="ask">Beyond category membership, does graded distance within a category's training set predict the margin?</div>
+            <div class="ans"><b>Barely.</b> r ≈ −0.10, ceiling ≈ 0.13 after the search; the coverage metric of Act 7 does not change this once category is centred. Not resolvable with twelve categorical training sets — the dose range among off-category sets spans a factor of about five, where the literature that finds graded laws spans orders of magnitude.</div>
+          </div>
+        </div>
+        <div class="prose">
+          <p>The every-trial-×-every-model figure from Act 2 is not wrong either: it uses the blind metric, so it is free of entanglement, and it contains a training effect plus an atypicality effect that the within-trial design separates. The shapegen encoder comparison <em>was</em> wrong, and it is gone. Question 2's honest answer is a scope condition worth stating plainly — not a reason to doubt Question 1.</p>
+          <h3>Robustness, briefly</h3>
+        </div>
+        <figure>
+          <img src="img/11_centring.png" alt="Seven ways of centring the axes; the four that remove trial difficulty agree" loading="lazy">
+          <figcaption><b>Does the conclusion depend on how we centre the axes?</b> Methods 1–3 leave between-trial variation in play. Methods 4–7 remove it by different routes, and agree.<span class="file">out/figures/fig12_centring_variants.png</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/16_simple.png" alt="Three panels: full pipeline, one scalar r_std, one scalar log bbox volume — each on its own y-axis" loading="lazy">
+          <figcaption><b>How simple can the measure be?</b> One scalar per object — the spread of centroid-to-surface distance, or log bounding-box volume straight from the JSON — as |z| against the category's training objects. No neighbours, no cosine. 82 / 75 / 74% of trials negative.<span class="file">out/figures/fig17_simplest.png</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/17_randinit.png" alt="Trained encoders' margins predict human accuracy and RT across 11 architectures; random-init twins do not" loading="lazy">
+          <figcaption><b>And the margin itself needs a trained encoder.</b> Across eleven architectures the trained margin tracks human accuracy at −0.295 and RT at +0.323; random-init twins give −0.014 and −0.006. The manuscript's §5 passes its control.<span class="file">out/figures/fig29_randinit_control.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <h3>If we want Question 2 anyway</h3>
+          <p>Not a better metric — the search settled that. A different design. Convert the categorical factor into a dose: fine-tune on mixtures with a varying share of the test category (0, 1, 5, 25, 100%), or on the test category with the k most similar objects held out, sweeping k. Either gives an x-axis that spans orders of magnitude, and the same within-trial machinery applies unchanged. A second seed per category would also tell us whether 0.13 is the phenomenon or the noise floor.</p>
+        </div>
+        <div class="callout">Representational support is set by the training distribution. We can move it by moving the training data. We can measure the training data's relation to the stimulus without touching the model. The graded form is the natural follow-up, and the tools for it are built.</div>
+        <details class="recipe">
+          <summary>Recipe · robustness checks</summary>
+          <div class="recipe-body">
+            <h4>Descriptors</h4>
+            <p>Repeat the Act 4 statistics with X built from each descriptor in turn. Within-trial r / fraction negative: d57 −0.270 / 82.2 %; voxel8 −0.300 / 82.0 %; voxel16 −0.329 / 84.1 %; voxel32 −0.338 / 83.7 %.</p>
+            <h4>One scalar per object</h4>
+            <div class="eq">s = r_std (from d57)   or   s = log10(bbox volume)
+z = |s_test − mean_bank_cat| / sd_bank_cat        # against THAT category's training objects
+trial shift = mean z over the trial's images
+rank profile as in Act 4 — each panel on its own y-range</div>
+            <h4>Centring variants</h4>
+            <p>Raw; trial-centred x; category-centred x; both. y always raw. Report point-level r and 50-bin r for the within-category, across-category and all-trials rows. The slope is identical whether or not y is also centred (centred x has zero covariance with any trial-constant); only r changes.</p>
+            <h4>§5 random-init control</h4>
+            <p>For each of 11 architectures, compute the oddity margin from the trained encoder and from a random-initialisation twin on all 2,019 MOCHI trials; correlate each with human accuracy and RT. Trained: −0.295 / +0.323. Random-init: −0.014 / −0.006.</p>
+          </div>
+        </details>
+      </section>
+
+
+
+      <!-- ACT 7 -->
+      <section class="act" id="a7">
+        <div class="act-head"><span class="act-num">ACT 7</span><h2>Coverage, not distance</h2></div>
+        <p class="stand up">where belief stood · <b>rising — new, split-half validated, with one honest limit</b></p>
+        <div class="prose">
+          <p class="lead">Every estimator so far asks <em>how far</em> the nearest training objects are. A different question: <em>how much</em> training mass is near the object at all. Count the category's training objects inside a fixed cosine radius ε, take −log(1 + count), average over the trial's images.</p>
+          <p>The difference is the ceiling. Under a distance measure, an object that is far from <em>every</em> training set keeps getting farther, and that between-trial variance is exactly the atypicality that leaked into the pooled row. Under coverage, "no training objects nearby" is the most shift there is; nothing beyond it counts.</p>
+          <p>Three metrics are compared side by side from here on: <span style="color:var(--turn)">coverage</span>, the oddity-blind <span style="color:var(--geom)">knn_mean</span>, and the <span style="color:var(--turn)">original</span> — the manuscript's own per-category DINOv2-ℓ₁ distance, read straight from each category's results file. The pretrained control is always drawn on its own axis; it was compressing the fine-tuned range when shared.</p>
+        </div>
+        <figure>
+          <img src="img/56_pooled3.png" alt="Pooled row, three metrics: fine-tuned margin on top, pretrained control below on its own axis. Coverage's control is flat; knn_mean's falls; the original metric's control rises steeply" loading="lazy">
+          <figcaption><b>The pooled row, all 8,472 observations, raw x.</b> Top: fine-tuned margin. Bottom: the pretrained control, own axis. Coverage's fine-tuned curve is graded across the whole range — 0.055 with no training objects nearby to 0.18 with more than 200 — and its control stays inside 0.04–0.06 (r = −0.030). knn_mean's control falls with the effect (r = −0.137). <mark class="t">The original metric's control rises monotonically (binned r = +0.96, r = +0.38) and its fine-tuned curve is U-shaped</mark>: in raw form it tracks how easy the trial is for any DINOv2, not the training set. That is the audit's norm complaint, drawn.<span class="file">out/figures/fig56_pooled_three_metrics.png</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/52_covpooled.png" alt="fig 25 template: accuracy and margin against knn_mean (left) and coverage (right), with the pretrained control; grey falls with blue on the left and is flat on the right" loading="lazy">
+          <figcaption><b>The same thing in fig 25's own template — the figure that made us pessimistic, redrawn.</b> Left, distance: the grey control falls with the blue fine-tuned line. Right, coverage: grey flat, blue still falls. Accuracy and margin both.<span class="file">out/figures/fig52_coverage_pooled_control.png</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/55_centred3.png" alt="fig 7 template with three metrics: two-way centred x and y, 30 quantile bins, all three fall cleanly" loading="lazy">
+          <figcaption><b>fig 7's template — the one with negative and positive values — for all three.</b> x and y centred within trial and within training set; the values are relative to each trial's own average over its 12 training sets. In this view the control is identically zero for every metric, and all three work: coverage binned −0.964 / trial-level −0.436, knn_mean −0.874 / −0.350, original −0.968 / −0.448. This is the only view in which the original metric behaves — the centring has removed every trial-level and category-level thing it was tracking.<span class="file">out/figures/fig55_centred_three_metrics.png</span></figcaption>
+        </figure>
+        <div class="stats">
+          <div class="stat"><div class="v g">20 / 20</div><div class="l">held-out splits where coverage beats knn_mean (ε chosen on the other half)</div></div>
+          <div class="stat"><div class="v g">−0.414</div><div class="l">held-out within-trial r (knn_mean −0.328)</div></div>
+          <div class="stat"><div class="v c">−0.041</div><div class="l">held-out pooled control (knn_mean −0.143)</div></div>
+          <div class="stat"><div class="v g">−0.436</div><div class="l">two-way centred trial-level r — survives category centring</div></div>
+        </div>
+
+        <div class="prose">
+          <h3>The on-category row, thought through</h3>
+          <p>This is the row that was weak under distance — one point per trial, only the model trained on the trial's own category, n = 706 — and the first coverage pass made it look rescued: r = −0.118, binned −0.78, a clean-looking curve. Here it is for all three metrics, with the control on its own axis.</p>
+        </div>
+        <figure>
+          <img src="img/54_oncat3.png" alt="On-category row, three metrics, control on its own axis. Coverage shows a step above 100 neighbours; knn_mean is noisy; the original metric's fine-tuned and control curves both rise steeply" loading="lazy">
+          <figcaption><b>On-category, one point per trial.</b> Coverage (left): a step, not a gradient — trials with more than 100 own-category training objects within ε sit at 0.204, everything below at 0.158, and inside the below-100 group there is no relationship at all (r = +0.01, p = 0.78). knn_mean (middle): the noisy −0.097 from before, control clean. Original (right): <mark class="t">the fine-tuned margin <em>rises</em> with "shift" (r = +0.33) and so does the control, harder (r = +0.61)</mark> — on its own row the manuscript's metric is a measure of how easy the trial is.<span class="file">out/figures/fig54_oncat_three_metrics.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <p>So is the coverage step a within-category graded effect? <b>No.</b> The more-than-100 group is entirely airplane, bench, car, lamp, telephone and watercraft — geometrically homogeneous categories in which hundreds of training objects sit within ε of almost any member. Chair, table, cabinet, sofa, display and loudspeaker never reach 100, despite having the largest banks, because their shapes are diverse. The step is a difference <em>between</em> categories.</p>
+          <p>Centre within category and it is gone: r(step, margin) = +0.030, p = 0.42; among the six categories that contain both groups, the mean within-category difference is +0.007, positive in four of six (sign test p = 0.69). Same for the margin advantage. This is exactly what happened to the distance metric in Act 5, for the same reason: in the on-category row "which category" and "which training set" are the same variable, and category identity carries everything.</p>
+          <p>What the on-category row can honestly say is a category-level sentence with n = 12: <em>models fine-tuned on homogeneous categories produce larger margins on those categories</em>. That may well be true and is worth a line, but it is not the graded within-category relationship Question 2 asks for, and coverage does not deliver it either.</p>
+        </div>
+        <div class="callout turn">Coverage is the better ruler — cleaner pooled row, stronger within-trial effect, survives category centring — but Question 2 still has the same answer. What moves within a trial is which training set the model saw; how much of it resembled the object matters between categories, not within one.</div>
+        <div class="prose">
+          <p>Caveat, stated once: this is 14 estimator variants tried in a day, and the hill climb taught us what in-sample winners are worth. The reasons to take it seriously are that it is not a spike — it holds across ε from 0.03 to 0.20, on a rotation-invariant and a pose-sensitive descriptor, in every one of 20 held-out halves — and that the gain is qualitative: a control passing where it failed before. The reason not to over-read it is the paragraph above.</p>
+        </div>
+        <details class="recipe" open>
+          <summary>Recipe · coverage, and the three-metric comparison</summary>
+          <div class="recipe-body">
+            <div class="eq">same z-scored, L2-normalised descriptors and cosine distances as Act 1
+D = 1 − TN @ BN_C.T                                  # test objects × category-C bank
+coverage_C(x) = −log(1 + #{ i : D[x, i] &lt; ε })        # ε = 0.12 (0.10–0.15 all work) for voxel16 and d57
+trial shift   = mean of coverage_C over the trial's images      # oddity-blind, as before
+original_C    = trial_distance_(L1_not_normalized) from ShapeNet_OOD_Analyses/C/ood_analysis_results.csv
+then every statistic of Act 4, for each of {coverage, knn_mean, original}</div>
+            <h4>Plotting coverage</h4>
+            <p>It saturates — 85 % of off-category pairs and 13 % of on-category pairs have zero training objects within ε — so quantile bins on the score pile up at zero. Bin on the raw count instead, log-spaced: 0, 1–2, 3–5, 6–10, 11–20, 21–50, 51–100, 101–200, &gt;200. Read the axis right-to-left as increasing shift. Draw the pretrained control on its own axis, always.</p>
+            <h4>The category check, which you must run on any on-category result</h4>
+            <div class="eq">w = rows where category == own            # 706
+step = (count &gt; 100)
+centre step, margin, pretrained within own-category;  r(step_c, margin_c)      # +0.030 here → not within-category
+per category with ≥5 in each group: mean(margin | step) − mean(margin | ¬step);  sign test</div>
+            <h4>To choose ε honestly</h4>
+            <p>Split trials in half, pick the ε with the largest within-trial |r| on one half, report everything on the other. The soft version <span class="num">−log Σ<sub>i</sub> exp(−D[x,i]/ε)</span> behaves like knn_mean, which shows the hard cut-off is doing the work.</p>
+          </div>
+        </details>
+      </section>
+
+
+      <!-- ACT 8 -->
+      <section class="act" id="a8">
+        <div class="act-head"><span class="act-num">ACT 8</span><h2>Images, not objects</h2></div>
+        <p class="stand flat">where belief stood · <b>a hypothesis tested, and not supported — but informative</b></p>
+        <div class="prose">
+          <p class="lead">Every metric so far compares <em>objects</em>: is there a training shape like this shape? The hypothesis behind this act is that encoders learn view-conditioned appearance, so the training distribution that matters is over <em>images</em> — shape × viewpoint — and coverage should be counted there: is there a training image like this image?</p>
+          <p>The training set makes this testable without a renderer. Every training object was rendered from the same 15 fixed cameras (a Fibonacci sphere at radius 2), with the pose stored per image. So we can project each object's voxels from those cameras to a depth + silhouette map, and get a model-free descriptor of "this shape, seen from this angle" for all 313,275 training images. For the MOCHI images the camera isn't stored, but the object is known, so the pose is recovered by matching the image's silhouette against voxel projections over 800 candidate cameras — mean IoU 0.856 over 2,257 images.</p>
+        </div>
+        <figure>
+          <img src="img/59_calibration.png" alt="Grid of render silhouettes, voxel projections and overlays for airplane, chair, car and lamp at stored camera poses" loading="lazy">
+          <figcaption><b>Calibration.</b> Voxel projections at the stored training camera poses against the actual renders' alpha silhouettes: IoU 0.77–0.95 with only edge-thickness differences. The lamp is a voxelization artifact (the solid fill made the shade a ball), not a camera error, and it is on both sides of every comparison.<span class="file">out/figures/dbg_projection_overlay.png</span></figcaption>
+        </figure>
+        <figure>
+          <img src="img/58_viewdepth.png" alt="Ladder of within-trial correlations for five test descriptors, and a pose-quality split" loading="lazy">
+          <figcaption><b>The result is a ladder, and the rung that matters is the last one.</b> Object coverage: −0.424. Image coverage with the test object at all 15 training views: −0.436. At one random training view: −0.426. At the single training view nearest the MOCHI camera: −0.422. At the <em>actual</em> MOCHI view: <span class="num">−0.266</span>. The depth-map descriptor is a fine shape representation — as good as voxels — and one on-grid view is enough. Only the off-grid viewpoint loses the effect. Panel B: it loses it even in the 395 best-posed trials (image −0.29 vs object −0.41 on the same trials), so pose-estimation error is not the main cost.<span class="file">out/figures/fig58_viewdepth_ladder.png</span></figcaption>
+        </figure>
+        <div class="prose">
+          <p>Read against the hypothesis: if the models' support were view-conditioned, a MOCHI image taken 21° off the training grid (the median) would have <em>less</em> support even for a well-covered shape, and image-level coverage at the actual view should predict the margin <em>better</em>. It predicts it worse, on every descriptor variant (silhouette only, depth only, pooled to 16×16 and 8×8) and every ε. What predicts the fine-tuned margin is whether the training set contained the shape, evaluated from any of the views the model was trained at. Within the ~25° gaps of the training grid, the fine-tuned support behaves as view-invariant — which is what a multi-view contrastive objective, pairing the same object across its 15 views, was built to produce.</p>
+          <p>Two honest limits. The gaps are small: no MOCHI camera is more than ~25° from a training camera, so this says nothing about 60° or 120°. And image-space coverage fails the pooled control in every variant (+0.06 to +0.16, the wrong sign): something about silhouette/depth similarity tracks the base model's ease. Object-level voxel coverage remains the only pooled-clean measure. The view-only shift — angular distance to the nearest training camera — is null (r = −0.026), as it must be when every trial sits inside a uniform view grid.</p>
+        </div>
+        <div class="callout ctrl">The view-conditioned metric was the right thing to build and the right thing to test. Its answer is that these models' support is for shapes, not for shapes-from-angles — at least across the angles they were trained on.</div>
+        <details class="recipe">
+          <summary>Recipe · depth-from-voxels, pose estimation, image-level coverage</summary>
+          <div class="recipe-body">
+            <h4>Camera model (replicates the training renderer)</h4>
+            <div class="eq">pyrender PerspectiveCamera, yfov = π/3;  look-at from eye to origin with up = (0,1,0);  eye on a sphere of radius 2
+training views: theta_i = acos(1 − 2(i+½)/15), phi_i = 2πi/φ_golden, i = 0..14        # identical for every object
+object: occupied SURFACE voxels of the 128³ solid binvox (xyz after the (0,2,1) transpose), centred on their mean, scaled to unit max-norm
+depth map: rotate points into the camera frame, perspective-project to a 32×32 grid, keep the nearest depth per pixel
+descriptor: [silhouette (1024) ; depth − median depth over the silhouette (1024)]  → 2,048-d, float16</div>
+            <h4>MOCHI pose estimation</h4>
+            <div class="eq">for each MOCHI image: silhouette by border flood fill (white ground), crop to bbox, pad square, resize 64
+for each of 800 Fibonacci-sphere cameras: project the object's voxels at 80 px, normalise the same way; IoU with the MOCHI silhouette
+take the argmax, refine on a ±0.08 rad grid;  record IoU (mean 0.856) and the runner-up IoU (ties flag symmetric objects)</div>
+            <h4>Coverage in image space</h4>
+            <div class="eq">bank = 20,885 training objects × 15 views (restrict to the SAME objects as the object-level bank)
+z-score per dimension against the bank, L2-normalise, cosine distance;  per category bank C:
+img_knn = mean distance to the 50 nearest training images;   img_cov_ε = −log(1 + #images within ε), ε ∈ {0.15 … 0.7}
+trial shift = mean over the trial's images;  then the Act 4 battery, side by side with obj_cov / obj_knn on the same trials
+controls: the test object at all 15 training views (view marginalised), at one random training view, at the nearest training view;
+          the actual-view run split by pose IoU tier;  view-only shift = degrees to the nearest training camera</div>
+            <p><code>scratch/voxdepth.py</code> (projector), <code>scratch/viewdepth_pipeline.py</code> (stages 1–4, 3b), <code>run_viewdepth*.sbatch</code>. Stage 2 takes two minutes on 64 cores; stage 4 thirty seconds.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="appendix" id="reproduce">
+        <div class="act-head"><span class="act-num">APPENDIX</span><h2>Reproduce it</h2></div>
+        <div class="prose">
+          <p>The whole analysis as a build specification. It assumes the 12 fine-tuned models and their <code>ood_analysis_results.csv</code> files already exist; if they don't, the fine-tune recipe is in Act 1. Copy this block into Claude with the data paths and it should be enough to re-implement the core result without reading any of our code.</p>
+        </div>
+        <div class="spec">
+          <button class="copy" type="button" id="copybtn">Copy spec</button>
+<pre id="spectext">GOAL
+Test whether a model's oddity margin on a trial depends on the geometric distance between the
+trial's objects and the model's training set, using a distance computed from 3D geometry alone
+(no encoder), in a design where the trial is held fixed and only the training set varies.
+
+INPUTS
+1. MOCHI/mochi_trials.csv — 2,019 rows. Use columns: dataset, trial, oddity_index, images.
+   `images` is a Python-literal list of filenames. For dataset == "shapenet", a filename is
+   "&lt;synset&gt;_&lt;modelid&gt;_&lt;view&gt;.png" and the object key is "synset/modelid".
+2. For each of 12 categories C (airplane 02691156, bench 02828884, cabinet 02933112,
+   car 02958343, chair 03001627, display 03211117, lamp 03636649, loudspeaker 03691459,
+   sofa 04256520, table 04379243, telephone 04401088, watercraft 04530566):
+   ShapeNet_OOD_Analyses/C/ood_analysis_results.csv — 2,019 rows, positionally aligned to
+   mochi_trials.csv. Use: fine_tuned_oddity_margin, pretrained_oddity_margin,
+   fine_tuned_correct, pretrained_correct, d_AB_(L1_not_normalized).
+   (Model C = DINOv2-L vit_large_patch14_reg4, LoRA r=16 α=8, multi-similarity loss,
+   Adam 1e-6, 30 epochs, 20k triplets/epoch from rendered ShapeNet objects of category C
+   only, MOCHI test objects excluded. Margin = mean over non-oddities of mean cosine
+   similarity to the other images, minus the same for the oddity, on L2-normalised CLS.)
+3. ShapeNet: model_normalized.solid.binvox (128^3) for every object in the 12 synsets.
+
+STEP 1 — TRIALS
+Keep shapenet trials in which every image has the same synset → 706 trials. Record each
+trial's category ("own").
+
+STEP 2 — BANK
+All objects in the 12 synsets minus every object appearing in any MOCHI trial (897) →
+20,885 objects. Bank for category C = its subset with synset C.
+
+STEP 3 — DESCRIPTOR (voxel16; also run d57 and voxel8/32 for robustness)
+Parse each binvox (RLE byte pairs after the "data" line; raw order x, z, y → transpose to
+xyz). voxel16: reshape 128^3 → (16,8,16,8,16,8), mean over the three size-8 axes → 4,096
+occupancy fractions.
+d57 (rotation-invariant): occupied coords, subsample 4,096 (seed 0), centre, scale to unit
+RMS radius; D2 = density histogram of 200,000 random pairwise distances, 32 bins on [0,4];
+shell = density histogram of distance-to-centroid, 16 bins on [0,3]; plus 9 scalars
+(elongation λ2/λ1, flatness λ3/λ1, compactness n_surface/n_vox^(2/3), convexity
+(n_vox/rms^3)/hull_vol, norm_vol n_vox/rms^3, r_mean, r_std, d2_mean, d2_std).
+
+STEP 4 — SHIFT, per (trial, category)
+z-score each descriptor dimension with the bank mean/sd (sd&lt;1e-9 → 1); L2-normalise rows.
+For each test object: mean cosine distance (1 − dot) to its 50 nearest objects in bank C.
+shift(trial, C) = mean of that over every image in the trial (never difference images).
+→ 706 × 12 matrix X.
+Also compute COVERAGE: −log(1 + #bank-C objects with cosine distance &lt; 0.12 to the test
+object), averaged over the trial's images. It is the better estimator (Act 7): higher
+within-trial r and a pooled control near zero. Run both.
+Entanglement check for any shift you build: r(shift, d_AB) across trials must be far
+from 1. The manuscript's Eq. 1–3 form gives 0.99; do not use it.
+
+STEP 5 — ASSEMBLE
+Y[t, C] = fine_tuned_oddity_margin from file C at trial t. Also PRE (pretrained margin),
+FC / PC (correct flags). Assert: within-trial sd of PRE, PC, d_AB is exactly 0.
+
+STEP 6 — STATISTICS
+a. Rank profile: rank X within each row; mean X, mean Y, SEM per rank. Expect Y to fall
+   from ~0.17 (rank 1) to ~0.05 (rank 12); PRE constant across ranks.
+b. Per-trial slope: Xc = X − rowmean, Yc = Y − rowmean; slope_t = Σ Xc·Yc / Σ Xc².
+   Expect mean ≈ −0.17, ≈84 % of trials negative.
+c. Permutation: 10,000×, permute each row of Xc independently, recompute mean slope;
+   p = (1 + #null ≤ obs)/(N+1). Expect p ≈ 1e-4.
+d. Cluster bootstrap: 2,000×, resample the 12 columns with replacement, recompute mean
+   slope; 95 % percentile CI. Expect ≈ [−0.22, −0.03].
+e. Trial-centred r over all 8,472: pearson(Xc, Yc) ≈ −0.33; pearson(Xc, PRE) = 0 exactly.
+f. Accuracy by rank with FC: ≈ 81 % → 56 %; PC constant ≈ 51 %.
+g. Transfer matrix: adv = Y − PRE; cell[i,j] = mean adv over trials with own == i under
+   model j. Scatter 144 cells (x = mean shift, y = adv): r ≈ −0.36 all cells,
+   ≈ −0.02 with the diagonal removed.
+
+STEP 7 — THE SCOPE CHECK
+Mask the on-category column (where C == own) and repeat 6b–6c on 11 points per trial.
+Expect mean slope ≈ 0, p ≈ 0.3. The effect is a coverage effect; graded distance among
+off-category training sets adds ~nothing.
+
+STEP 8 — CONTROLS TO REPORT
+(i) pooled r(X, PRE) on raw values is NOT zero (≈ −0.14): the pooled row contains object
+atypicality. (ii) Within-trial it is zero by construction. (iii) Repeat 6b with d57 and
+voxel8/32: expect 82–84 % negative under every descriptor. (iv) With COVERAGE in place of
+knn_mean: within-trial r ≈ −0.41, pooled r(X, PRE) ≈ −0.03, 85 % of trials negative.
+(v) With the ORIGINAL metric (trial_distance_(L1_not_normalized) per category file):
+pooled r(X, PRE) ≈ +0.38 and on-category r(X, PRE) ≈ +0.61 — it fails the control in
+every uncentred view and works only after two-way centring (trial-level r ≈ −0.45).
+(vi) Any on-category effect must be re-tested after centring within category; the
+coverage step (>100 neighbours) goes from binned r −0.78 to r = +0.03 when you do.</pre>
+        </div>
+      </section>
+
+      <div class="coda">
+        <p><b>Not included.</b> The human RT and accuracy relationships with geometric distance are left out. MOCHI's ShapeNet trials were selected adversarially, so a trial-geometry ↔ human-performance correlation may be a property of trial construction.</p>
+        <p><b>Provenance.</b> Everything here is in <code>Dist-shift-data/geometric_shift/</code>: <code>blind_shift.py</code> for the estimator, <code>scratch/fig_moving_training.py</code> for Act 4's statistics and sanity checks, <code>scratch/hc_repeated.py</code> and <code>out/hillclimb_candidates.npz</code> for the metric search, <code>README_findings.md</code> for the full factual record including the negative results.</p>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.rail a'));
+  var acts=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){l.classList.remove('on');});
+        var i=acts.indexOf(e.target); if(i>=0) links[i].classList.add('on');
+      }
+    });
+  },{rootMargin:'-30% 0px -60% 0px'});
+  acts.forEach(function(s){ if(s) io.observe(s); });
+})();
+(function(){
+  var b=document.getElementById('copybtn'), t=document.getElementById('spectext');
+  if(!b||!t) return;
+  b.addEventListener('click',function(){
+    var txt=t.textContent;
+    function done(ok){ b.textContent = ok ? 'Copied' : 'Select and copy'; setTimeout(function(){b.textContent='Copy spec';},1800); }
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){done(true);},function(){fallback();}); }
+      else fallback();
+    }catch(e){ fallback(); }
+    function fallback(){
+      try{ var r=document.createRange(); r.selectNodeContents(t); var sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r); done(false);}catch(e){ done(false); }
+    }
+  });
+})();
+</script>
