@@ -82,6 +82,16 @@ published rates, what is committed and what is held. Build the numbers from the
 scheduler's accounting (a script in the repo), not from memory; place them in time with
 file timestamps.
 
+**agent/** ▲ — model-facing files, modelled on Claude Code's own memory layout (typed
+entries with a recall line, why + how-to-apply, verify-before-use, mutable with an index):
+`FEEDBACK.md` (standing corrections from the lead: what, why, how to apply), `CHECKS.md`
+(sanity checks that caught real errors), `PITFALLS.md` (environment and pipeline traps with
+fixes), `INFLIGHT.md` (live jobs, logs, expected outputs, resume commands — refreshed every
+session), `RECALL.md` (every number that gets quoted, with its source), `sessions/` (one
+machine summary per session: done / failed / logged / open). These are what let the next
+agent — or the same one after a context summary — behave correctly on day one; humans
+rarely need them. Mutable; the append-only record stays REASONING.md.
+
 **meetings/** — one file per meeting, `YYYY-MM-DD.md`, typed sections in order:
 `## Summary (machine)` / `## Decisions & results` / `## Notes (human)`.
 **Raw transcripts and verbatim quotes of lab members NEVER enter this repo.**
@@ -198,3 +208,7 @@ From the first live use (geometric_shift, 19 Sep 2026):
   state carries what had been used by then, so the lab can see what each turn cost.
 - **Repo bootstrap, link verification, phone workflow, evidence provenance table** —
   practicalities that cost time when missing.
+- **agent/ — the model-facing layer.** The human-facing files had no place for "how the
+  lead wants work done", the checks that caught errors, the traps, or the live job state;
+  those are exactly what Claude Code's memory system keeps per user, and a project needs
+  them per repo so any agent — not only one account — inherits them.

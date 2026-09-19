@@ -1,5 +1,6 @@
-Read STATE.md first (current truth), then REASONING.md (why). Weight
-meetings/ "Notes (human)" over "Summary (machine)".
+Read STATE.md first (current truth), then REASONING.md (why), then agent/ (FEEDBACK,
+CHECKS, PITFALLS, INFLIGHT, RECALL — model-facing; five minutes). Weight meetings/
+"Notes (human)" over "Summary (machine)".
 - REASONING.md is append-only; NEWEST ENTRY AT THE TOP; next sequential ID; one line per
   field: State · Observation · Decision · Because · Rejected · Implication.
 - STATE.md rewritten in place; ≤5-min read; cite [Dxx].
