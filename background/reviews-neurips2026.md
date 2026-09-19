@@ -37,15 +37,15 @@ already exist (e.g. OOD-Bench); the paper should compare against them and justif
 oddity task. Model choice is inconsistent across figure panels. Notes the proxy is only interpretable in relative
 terms.
 
-## What they were pointing at, in our terms
+## What was unclear to us at the time
 
-| reviewer's concern | what we found |
-|---|---|
-| SCwg: m is inter-class distance, not shift | The metric is bounded by ½·d(A,B); the floor predicts the pretrained margin at +0.57. The "shift" was the inter-object distance [D06]. |
-| r64w: both metrics measure within-set weirdness; no shift needed | Pooled, the pretrained model — which saw none of the training sets — tracks the geometric shift as strongly as fine-tuned models: a stimulus property [D02]. |
-| r64w: apply the metrics to two random halves of one set | Our base-DINOv2 control is the same test in a stronger form; the within-trial design makes it exact [D02]; coverage is the first estimate to pass it pooled [D05]. |
-| r64w: what would an object-based, view-averaged measure do? | Built it. Object-level coverage (view-free) predicts the margin as well as image-level coverage at any training view, and better than at the actual view — support is view-invariant within the training grid [D08]. |
-| SCwg: why view-average φ(C) but not φ(A), φ(B)? | Same asymmetry we removed by making the estimator oddity-blind (per image, never differenced) [D02]. |
-| HVBU: compare against existing shift metrics | kNN (Sun et al. 2022), Mahalanobis (Lee et al. 2018), PCA-reconstruction, energy, density-ratio and percentile estimators in the 1,895-candidate search and the coverage variants [D03, D05]. |
-| SCwg / r64w: define "distribution shift" | The within-trial design defines it operationally: the change in margin when the training set changes and nothing else does [D02]. What it cannot yet define is a graded within-category quantity [D07, D09]. |
-| r64w: reframe, or make "distribution shift" much clearer | Open decision for TB: claim category coverage now, or wait for the within-category interventions. |
+Whether the three reviews were one objection or three. Whether "inter-class distance" (SCwg) and "within-set
+weirdness" (r64w) named the same thing. What experiment would satisfy r64w's construction, and whether the
+two-random-halves control was fair. The prevailing read was that the work was right and miscommunicated.
+
+## Where recognitions were logged later
+
+Recognitions of what a reviewer may have meant are recorded at the state where they happened, not here:
+State 1 (SCwg's inter-class distance and the ½·d(A,B) floor), State 3 (r64w's no-shift construction and the
+pretrained control), State 4 (r64w's object-based view-averaged measure). Each is phrased as "this may be what
+they meant" — the reviews were not the source of those analyses, and the trace should not imply they were.

@@ -9,6 +9,8 @@ Show that the oddity margin responds to the training distribution, measured on t
 
 **The first look was too good, then failed its control.** Pooled over all 8,472 (trial × model) observations the margin fell cleanly with distance (binned r −0.84) — and so did the pretrained model's margin (r −0.121 vs −0.135 fine-tuned). The pooled relation is a stimulus property: objects far from every training set are hard for every model [../REASONING.md#D02].
 
+This is, we now think, what r64w was describing: a correlation that appears because both quantities measure how unusual the example is, with no shift required. The reviewer's proposed control — two random halves of one dataset — is a version of ours: a model that never saw the training set must not be predicted. Their construction checks out on our data.
+
 **The design that fixes it.** Every trial was run through all 12 category fine-tunes. Within a trial the images, the objects, d(A,B), the human data and the pretrained margin are all constants (sd = 0). So rank or centre within trial: every trial-level property — the control included — becomes a flat line *by construction*, and what varies is only which training set the model saw. The fine-tuned margin still falls.
 
 ![the oddity margin recovers distance-to-training with trial difficulty removed by design](../evidence/fig7_margin_validation_clean.png)

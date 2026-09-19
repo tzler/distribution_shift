@@ -7,6 +7,15 @@ Template — one line each:
 **Decision:** what we concluded or chose · **Because:** the reasoning · **Rejected:** alternatives and why not ·
 **Implication:** what changes / next steps.
 
+<a id="D13"></a>
+## D13 — 2026-09-19 — D11's framing corrected: the reviews were not the source of the findings
+**State:** Reviews ingested (D11) with a table mapping each concern to a later result, as if the work had been a response to them; lead reviewing the trace.
+**Observation:** Lead: at the time the reviewers' language was hard to interpret and the honest read was "we were right and miscommunicated"; the sense that they were right came only as our own results pushed back. The trace should show that state faithfully, not a retrofitted clarity.
+**Decision:** State 0 now records what the reviewers said, what was unclear to us, and what we believed; the recognitions ("this may be what they meant") move to the states where they occurred — State 1 (SCwg / the floor), State 3 (r64w / the control), State 4 (r64w / the object-based measure). The mapping table in background/ is replaced by a note on what was unclear and pointers to those states.
+**Because:** Retroactively aligning the work to the reviews overstates both their clarity and our foresight; the point of the trace is how understanding actually changed.
+**Rejected:** Editing D11 in place (append-only); dropping the recognitions entirely (they are real, just later).
+**Implication:** Supersedes D11's third sentence. Pattern for future external feedback: log what was said and what we made of it then; log recognitions when they happen.
+
 <a id="D12"></a>
 ## D12 — 2026-09-19 — Pilot fine-tune timed; the full 50-run design is affordable and goes ahead
 **State:** Interventions designed (D09) but unsubmitted, waiting on the cost of one fine-tune; the pilot (chair, group 1, k = 10) reached training on its fifth attempt after four missing-dependency / hard-coded-path failures.

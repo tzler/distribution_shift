@@ -24,6 +24,8 @@ An estimate of distribution shift that passes the control in the pooled row, not
 
 ![the view-conditioning ladder](../evidence/fig58_viewdepth_ladder.png)
 
+r64w had asked what an object-based measure averaged over all views would do. This is that measure, and it does at least as well as the view-conditioned one — the reviewer's question turned out to be the right test of the hypothesis.
+
 **Correction carried forward.** With the oddity-blind form, the shapegen encoder comparison from State 0's reproduction goes from |r| 0.74 to 0.12: it had been d(A,B) at r = 0.993. Withdrawn [../REASONING.md#D06].
 
 ## Strategy

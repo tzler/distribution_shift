@@ -16,6 +16,8 @@ The metric is ½[d(A,C) + d(B,C)] over training images C, with A the matched obj
 ![why the metric is wrong](../evidence/fig60_why_wrong.png)
 ![the triangle inequality spelled out; cosine and L2 do not escape it](../evidence/fig61_triangle.png)
 
+**In hindsight, one review reads differently.** SCwg's "the margin is inter-class distance, and every result survives the renaming" may be exactly this: the floor is the inter-object distance, and it is the part that carries the correlation. At the time that sentence read as a naming quibble. It was not.
+
 **Does cosine or L2 get around it?** No — the bound is a property of every metric. Recomputed under three distances the floor holds in 100% of trials for all three and cosine is slightly worse (r with d(A,B) 0.78). Normalising the features fixes the norm problem and leaves the floor exactly where it was.
 
 ## Strategy
