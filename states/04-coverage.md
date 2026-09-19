@@ -4,8 +4,7 @@ A coverage estimate passes the control in the pooled row where every distance me
 *Snapshot: after the coverage result · Lead: TB* · ← [State 3](03-a-model-free-ruler.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 5](05-the-within-category-limit.md)
 
 ## Goal
-An estimate of distribution shift that passes the control in the pooled row, not only within trial — so that a single model's margin can be read against it.
-
+Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
 ## Status
 **Coverage, not distance.** Every estimator so far asked *how far* the nearest training objects are. Coverage asks *how much* training mass is near the object: count the category's training objects within a cosine radius ε of each image, take −log(1+count), average over the trial. The difference is the ceiling — "no training objects nearby" is the most shift there is — so object atypicality saturates instead of spreading, and stops leaking into the pooled row [../REASONING.md#D05].
 
@@ -37,7 +36,7 @@ The on-category row under coverage looks graded (binned r −0.78). Test whether
 | | this state | cumulative |
 |---|---|---|
 | agent time | 9 h | 27 h |
-| lead time (guess) | 3 h | 7 h |
+| lead time (guess) | 3 h | 8.5 h |
 | compute, unsub / sub | $0.20 / $0.10 | $8.70 / $2.80 |
 
 Compute: coverage sweeps on the login node; the depth-map pipeline, six `genoa-std-mem` jobs. Still no new models.

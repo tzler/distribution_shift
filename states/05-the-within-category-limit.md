@@ -4,8 +4,7 @@ Every estimator is flat within a category once category identity is removed, for
 *Snapshot: 2026-09-19 — the live state; the maintained version is [STATE.md](../STATE.md) · Lead: TB* · ← [State 4](04-coverage.md) · [index](README.md) · [resources](../RESOURCES.md)
 
 ## Goal
-Distribution shift as a continuous quantity, not category membership: does a chair farther from the chair training set get a lower margin from the chair model?
-
+Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
 ## Status
 **The on-category curve is category identity.** Its bins sort by category — ">100 neighbours" is airplane/bench/car/lamp/telephone/watercraft, "0" is chair/table/sofa/cabinet/display/loudspeaker. Category-centred r = +0.013 (p 0.72); inside each category, mean r = +0.04; the twelve category points give r = +0.30 (p 0.34) with chair the counterexample. Seven coverage variants, including one calibrated to each category's own bank: all ≈ 0 [../REASONING.md#D07].
 
@@ -25,7 +24,7 @@ Not a better metric — a finer-grained assay. Vary the training set *within* a 
 | | this state | cumulative |
 |---|---|---|
 | agent time | 7 h | 34 h |
-| lead time (guess) | 4 h | 11 h |
+| lead time (guess) | 4 h | 12.5 h |
 | compute, unsub / sub | $16.30 / $3.70 | $25 / $6.50 |
 
 Compute: the 1,895-candidate search ($0.09), the encoder-space extraction (1.7 GPU-h), the pilot fine-tune (1.7 GPU-h so far), the evaluation test. **Committed**: batch 1, 22 fine-tunes ≈ 44 GPU-h ≈ $200 / $44. **Held**: 12 targeted/cross knock-ins + 15 k = 50 knockouts ≈ 54 GPU-h ≈ $245 / $54. First new models of the project.

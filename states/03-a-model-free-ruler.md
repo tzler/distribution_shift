@@ -4,8 +4,7 @@ Distance measured on the stimuli's geometry, with no encoder in the ruler; and, 
 *Snapshot: after the within-trial result · Lead: TB* · ← [State 2](02-a-form-that-escapes-the-bound.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 4](04-coverage.md)
 
 ## Goal
-Show that the oddity margin responds to the training distribution, measured on the stimuli alone, with a control that cannot be gamed.
-
+Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
 ## Status
 **The ruler.** Descriptors from ShapeNet's 128³ solid voxelisation — a 57-d rotation-invariant shape distribution and raw occupancy grids at 8³/16³/32³ — z-scored against the training bank, L2-normalised, cosine distance, oddity-blind estimator [../REASONING.md#D01, ../REASONING.md#D02].
 
@@ -32,7 +31,7 @@ Two things remain. The pooled rows — the single-model view a paper would natur
 | | this state | cumulative |
 |---|---|---|
 | agent time | 13 h | 18 h |
-| lead time (guess) | 2 h | 4 h |
+| lead time (guess) | 2 h | 5.5 h |
 | compute, unsub / sub | $3.70 / $1.20 | $8.50 / $2.70 |
 
 Compute: descriptor banks (`hida_bank` 114 core-h), representation variants, pose features; the 10k-permutation analysis on the login node. All results from the 12 inherited fine-tunes.

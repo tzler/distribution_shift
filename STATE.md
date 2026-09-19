@@ -36,7 +36,7 @@ The within-trial design worked because it varied the training set with the stimu
 **Budget and order.** One fine-tune is ~2 GPU-hours including evaluation (~3 min/epoch): $9 unsubsidised / $2 subsidised on a full B200; all 50 runs ≈ $450 / $100 [[D12](REASONING.md#D12), [D14](REASONING.md#D14)]. Order: random knock-in subsets → knockout k = 10 → targeted and cross knock-ins → knockout k = 50. Training hyperparameters stay pinned; each condition gets its own similarity table so mining fills every epoch; evaluation is chained into each job.
 
 ## Resources used, and what the plan will cost
-**Used so far.** Agent ≈ 34 h; lead ≈ 11 h (a guess: reviewing, dictating direction, reading the artifact and these files). Compute: 4 GPU-h + 250 CPU-core-h ≈ **$25 unsubsidised / $6.50 subsidised** — the entire analysis phase, Acts 1–8, cost under $10; the rest is today's extraction and pilot. Ledger: `background/compute_ledger.csv`.
+**Used so far.** Agent ≈ 34 h; lead ≈ 12.5 h (a guess: reviewing, dictating direction, reading the artifact and these files). Compute: 4 GPU-h + 250 CPU-core-h ≈ **$25 unsubsidised / $6.50 subsidised** — the entire analysis phase, Acts 1–8, cost under $10; the rest is today's extraction and pilot. Ledger: `background/compute_ledger.csv`.
 
 **The plan as designed** (one fine-tune ≈ 2 GPU-h incl. evaluation; rates in [RESOURCES.md](RESOURCES.md)):
 

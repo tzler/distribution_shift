@@ -4,8 +4,7 @@ Averaging over the trial's images instead of differencing A and B removes the fl
 *Snapshot: after the estimator changed · Lead: TB* · ← [State 1](01-what-the-metric-measures.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [State 3](03-a-model-free-ruler.md)
 
 ## Goal
-A distance to the training data that is not bounded by the trial's own difficulty, and that does not predict the margin of a model which never saw the training set.
-
+Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
 ## Status
 **The oddity-blind form.** For each image in the trial, the mean distance to its 50 nearest training items; then the mean over the trial's images. No A/B roles, nothing differenced, so no ½·d(A,B) floor by construction. Cosine on unit-normalised features, so vector length cannot enter either [../REASONING.md#D02].
 
@@ -22,7 +21,7 @@ Leave the encoder's space. MOCHI's ShapeNet and ShapeGen trials come from known 
 | | this state | cumulative |
 |---|---|---|
 | agent time | 2 h | 5 h |
-| lead time (guess) | 0.5 h | 2 h |
+| lead time (guess) | 0.5 h | 3.5 h |
 | compute, unsub / sub | $0.20 / $0.10 | $4.80 / $1.50 |
 
 Compute: the first shift computations (`clean_shift`, `cosshift`). No new models.
