@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D17"></a>
+## D17 — 2026-09-19 — First look at batch 1: no own-support effect yet, and our retrained models sit 0.09 below the reference
+**State:** 19 of 22 batch-1 fine-tunes complete with chained evaluations (three table knockouts finishing); the lead asked when the first new results would arrive — they had, unread, while we documented.
+**Observation:** Chair and airplane knockouts (remove the 10 nearest training objects of a group of test objects): the margin change on a trial is the same whether or not that trial's support was removed (within-trial contrast −0.002 chair, −0.0006 airplane; 49 % / 55 % negative) and the same as removing 10 random objects. Trials with *both* objects' support removed drop 0.02–0.03 more (n = 12 / 27, wide error) — a hint, not a result. Every retrained chair model, full bank minus ~10 %, reaches a mean margin of 0.155 on these trials against the collaborator's reference model's 0.241 on the same 2,000-chair bank; and 100 random chairs reach 0.16–0.17. Run-to-run noise among the eight 100-chair models: sd of means 0.006, per-trial sd 0.019, trial ranking agreement r = 0.97. The chair g1 evaluation on disk was the epoch-10 test, not the final checkpoint — re-submitted (job 8522613).
+**Decision:** Do not read the knockout result until a same-bank replication says whether our pipeline reproduces the reference: `chair_full` submitted (job 8522617, ≈ 2 GPU-h, $9 / $2). Also: the design grouped test *objects*, so most trials have one object's support removed per condition — analyse by objects hit (0 / 1 / 2), not by trial group.
+**Because:** A uniform 0.09 offset across every condition including the random control cannot be a support effect; either the patched pipeline differs from the collaborator's or 10 % random removal costs 0.09, and 100 chairs ≈ 1,800 chairs makes the second implausible. Until that is settled, "no effect of removing the 10 nearest" and "the margin does not respond within a category" are not distinguishable from "the retraining is not comparable".
+**Rejected:** Reporting the null now (premature); comparing to the reference model at all until the replication is in.
+**Implication:** If chair_full reproduces 0.24, the knockouts are interpretable as they stand and k = 10 was too small a dose → run k = 50. If it lands at ~0.155, all batch-1 comparisons are within-pipeline only (still valid among themselves) and the reference twelve are not a baseline for the new runs. Either way, 100 chairs saturating the margin is itself a within-category fact worth a figure.
+**Steering:** agent — found it while answering the lead's timing question; lead not yet consulted on the replication spend.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the numbers; medium that the offset is pipeline rather than data; low on the "both objects" hint.
+
 <a id="D16"></a>
 ## D16 — 2026-09-19 — The encoder-space own-category result is a concern, not a kill; how a state figure should be built
 **State:** State 2 under review with the lead; the replacement encoder-space figure (evidence/fig62: one plot type × 4, expectation stated, verdict boxes).

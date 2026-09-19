@@ -1,4 +1,12 @@
-# INFLIGHT — live jobs and how to resume
+# INFLIGHT — what is running or waiting, right now
+*Updated 2026-09-19 evening*
+
+- **8522613** eval chair_g1_k10 at epoch 30 (mig45) — replaces the epoch-10 test that was sitting in `eval/chair_g1_k10` (moved to `eval/chair_g1_k10_epoch10_test`).
+- **8522617** chair_full — full 2,000-chair bank through our pipeline; the control for D17's 0.09 offset. If it reaches ~0.24 the knockouts are interpretable; if ~0.155 the reference twelve are not a baseline for new runs.
+- **8521036/37/38** table_g2/g3/g4_k10 — last three of batch 1, ~2 h in, chained eval.
+- **Held:** 12 targeted/cross knock-ins; 15 k = 50 knockouts. Decide after chair_full.
+- **Unread:** batch 1 first look is D17; a proper `scripts/analyze_knockout.py` (objects-hit dose, within-trial contrast, noise floor from the 8 random knock-ins) is not written yet.
+
 *Machine-maintained by `scratch/inflight.py`; last refreshed 2026-09-19 14:12. Paths relative to `../knockout/`.*
 
 ## Queue right now (23 jobs)
