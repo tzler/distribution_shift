@@ -34,3 +34,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig70_shift_vs_setsize.png | `scratch/fig_shift_vs_setsize.py` | `out/shift_vs_setsize.csv` | D23 |
 | fig71_margin_vs_dose.png | `scratch/fig_margin_vs_dose.py` (re-run as evaluations land) | `out/margin_vs_dose.csv` | D24 |
 | fig72_distance_margin_by_N.png | `scratch/fig_distance_margin_by_N.py` (re-run as evaluations land) | `out/distance_margin_by_N.csv` | D25 |
+| fig73_why_margin_rises.png | `scratch/fig_why_margin_rises.py` | `out/banktrials_dAB.csv` | D26 |

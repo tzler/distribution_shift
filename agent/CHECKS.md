@@ -15,6 +15,9 @@ Each caught a real error in this project. The number in brackets is the entry wh
 - **Split-half:** choose on one half of trials, score on the other, ≥20 splits; report wins and held-out values. The 1,895-candidate in-sample winner (p = 0.001 corrected) lost out of sample. [D03, D05]
 - **Permutation null on the max statistic** when reporting a search's best.
 
+## For any test set built from the bank
+- **Pair-distance confound:** distance-to-training correlates 0.81 with the distance between a trial's two objects when trials pair nearest neighbours; raw margin then RISES with distance. Match or partial out the pair distance, or read only the within-trial version. [D26]
+
 ## For any figure
 - **A state figure states its expectation** (what the lines should do if the claim is true; what the control should do) before showing the data, one plot type repeated, verdict boxes graded green / orange / red and worded as concern vs kill honestly. Recipe in FEEDBACK.md. Only measures that existed at that state.
 - **Own axis for the control** when it compresses the effect; **independent y-limits** when panels are compared on shape, not level (fig 17).

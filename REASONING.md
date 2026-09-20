@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D26"></a>
+## D26 — 2026-09-20 — The rise of the raw margin with distance is how the bank trials were built; seed floor 0.0035; the cluster-free random-subset test passes
+**State:** The lead found the left panel of fig72 unintuitive — why would the margin *rise* as the trial gets farther from the training data? All remaining evaluations landed (seeds, eight random-100, five knockouts on bank trials).
+**Observation:** (1) Distance from a trial to the training set correlates 0.81 with the distance between the trial's own two objects: the bank trials pair each held-out object with one of its ten nearest held-out neighbours, and an object far from the training set sits in a sparse region, so its nearest neighbour is also far, so the pair differs more and the trial is easier for any model (pretrained r with pair distance +0.21; fine-tuned +0.24). Hold the pair distance fixed and the pretrained model's rise with distance-to-training goes from +0.18 to +0.02 (evidence/fig73). (2) Seed floor: three models on the same 104 chairs (seeds 42/43/44) differ per trial by sd 0.0035, means within 0.002; the own-vs-other numbers reproduce to three decimals. So the per-trial spread between models trained on *different* random 100-chair sets (0.0165) is almost entirely data content, and the cluster effect (0.009–0.015) is three to four times the seed floor. (3) The cluster-free test: eight random-100-chair models on the 882 bank trials, within trial, distance to the model's own 100 chairs vs margin: r = −0.077, permutation null sd 0.012 (p = 0.001), 57 % of per-trial slopes negative (p = 8e-8). Smaller than with clusters (−0.26) because the contrast is smaller (distance sd 0.038 vs ~0.25); the slope per unit distance is of the same order (−0.033 vs −0.057).
+**Decision:** Treat (1) as a property of the test set to control in round 3: build trials with matched pair distance (or partial it out), so the raw plot is readable as well as the within-trial one. Treat (3) as the answer to "does clustering matter": no — random composition moves the margin in proportion to the distance contrast it creates.
+**Because:** The pair-distance confound is the same object as the ½·d(A,B) floor of the manuscript's metric (D06), reappearing on the test-set side; naming it once more and designing it out is cheaper than explaining it every time.
+**Rejected:** Reading the raw rise as evidence against the measure; treating the between-subset spread as noise (it is signal — different data, different model).
+**Implication:** Round 3 = random subsets at N = 25 per category on pair-distance-matched bank trials; and the targeted-subset test (D25). Both now have a seed floor to be judged against.
+**Steering:** lead asked the question that exposed the confound; agent tested it.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on all three.
+
 <a id="D25"></a>
 ## D25 — 2026-09-20 — Distance vs margin by training-set size: as measured, size and difficulty are entangled with it; within trial, every size gives the same falling line
 **State:** The lead re-asked the question precisely: distance on x, margin on y, lines by training-set size — are distance and size so entangled that the relationship moves with N?
