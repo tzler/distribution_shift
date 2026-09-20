@@ -33,3 +33,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig69_cluster_shift.png | `scratch/analyze_clusters_shift.py` | `out/cluster_shift_long.csv` | D22 |
 | fig70_shift_vs_setsize.png | `scratch/fig_shift_vs_setsize.py` | `out/shift_vs_setsize.csv` | D23 |
 | fig71_margin_vs_dose.png | `scratch/fig_margin_vs_dose.py` (re-run as evaluations land) | `out/margin_vs_dose.csv` | D24 |
+| fig72_distance_margin_by_N.png | `scratch/fig_distance_margin_by_N.py` (re-run as evaluations land) | `out/distance_margin_by_N.csv` | D25 |

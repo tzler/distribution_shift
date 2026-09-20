@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D25"></a>
+## D25 — 2026-09-20 — Distance vs margin by training-set size: as measured, size and difficulty are entangled with it; within trial, every size gives the same falling line
+**State:** The lead re-asked the question precisely: distance on x, margin on y, lines by training-set size — are distance and size so entangled that the relationship moves with N?
+**Observation:** Bank-built chair trials, 12 models with evaluations (25 / 50 / 100 / 2,000 chairs). As measured: larger training sets are nearer to every trial (the lines shift left: mean distance 0.80 → 0.74 → 0.65 → 0.27), and inside any one size the curve is non-monotone — margin *rises* with distance up to ~0.6 and falls beyond; the pretrained model rises with distance too (against distance to all 2,000 chairs), because inside a category the unusual objects make the easy trials; the fall at the far right is a model scored on a kind of chair it never saw. Point-level r ≈ −0.05 at every N as measured. Within trial (same trial, different training sets of the same size): r = −0.27 / −0.29 / −0.26 at 25 / 50 / 100, the same line at every size, about 0.04 of margin across the range of composition contrast (evidence/fig72).
+**Decision:** State the relationship as a within-trial one and give the raw plot beside it with the confound named. The slope of margin on distance does not depend on training-set size in these units; what depends on size is the range of distances a design can create (D23).
+**Because:** The raw curve mixes three things with different signs (size shifts distance; unusual objects are easy; unseen kinds are hard); the within-trial comparison removes the first two by construction.
+**Rejected:** Reporting the raw r ≈ −0.05 as the effect (it is the sum of opposed effects); centring on the pretrained margin instead of within trial (leaves the size shift in).
+**Implication:** For the lead's next aim — choosing training subsets by distance to raise the margin on chosen MOCHI trials — the relevant slope is the within-trial one: ~0.04 margin per 0.7 of distance contrast, and at N = 25 the achievable contrast is ~0.4 (D23). So a targeted 25-object subset should move a trial's margin by roughly 0.02 against random — small, but with hundreds of neighbouring bank trials as the readout, measurable.
+**Steering:** lead specified the plot; agent built it and added the pretrained control.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high; the 100-chair line will firm up as the remaining random-100 evaluations land.
+
 <a id="D24"></a>
 ## D24 — 2026-09-20 — The margin has two doses: any fine-tuning at all (saturates by 25 objects), and which objects (0.01–0.02, largest at small N)
 **State:** The lead asked how the margin itself behaves across training-set size, to choose the regime where an effect on the fine-tuned models can be expected — "if you train on one object and the margin does not move, that is informative; if it does, that is informative".
