@@ -35,3 +35,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig71_margin_vs_dose.png | `scratch/fig_margin_vs_dose.py` (re-run as evaluations land) | `out/margin_vs_dose.csv` | D24 |
 | fig72_distance_margin_by_N.png | `scratch/fig_distance_margin_by_N.py` (re-run as evaluations land) | `out/distance_margin_by_N.csv` | D25 |
 | fig73_why_margin_rises.png | `scratch/fig_why_margin_rises.py` | `out/banktrials_dAB.csv` | D26 |
+| fig75_one_axis_controlled.png | `scratch/analyze_all_categories.py` (first cut, 8 models; re-run when round 3 completes) | `out/all_categories_long.csv` | D28 |
