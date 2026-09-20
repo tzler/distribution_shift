@@ -25,3 +25,5 @@ name their commit in this table.
 Numbers quoted in STATE that have no figure: hill-climb (`out/hillclimb_candidates.npz`,
 `scratch/hc_repeated.py`); coverage variants (`scratch/coverage_variants.py`);
 level-3 residualised test (session record 2026-09-19; script to be added).
+| fig64_knockout_batch1.png | `scratch/analyze_knockout.py` | `knockout/eval/*_k10`, `chair_full`; `out/knockout_long.csv` | D18 |
+| fig65_knockin_random.png | `scratch/analyze_knockin_random.py` | `knockout/eval/chair_random_100_*`; `out/knockin_random_long.csv` | D18 |
