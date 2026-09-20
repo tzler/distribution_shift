@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D21"></a>
+## D21 — 2026-09-20 — The sub-category calibration works: models specialise to the cluster they were trained on, more so with fewer training chairs; the bank-built test set carries the category effect
+**State:** Round 2 (D19/D20) complete except the seed replicates, which failed on a bad Hydra override and were resubmitted (8528180–81).
+**Observation:** (a) Test-set check: the original twelve models on 882 bank-built chair trials — chair model 0.231, then bench 0.161, display 0.119, the rest 0.08–0.11, pretrained 0.079 (accuracy 65 % → 92 % for the chair model). The ordering of the other eleven cannot be memorisation (evidence/fig68). (b) Cluster models: with each model's overall level and each cluster's difficulty removed, the own-cluster advantage is +0.009 (N ≈ 90–104), +0.012 (N = 50), +0.015 (N = 25), the largest of the six possible model–cluster pairings each time (next best +0.005 / +0.003 / +0.007); per-trial ± 0.004. Two models specialise clearly (tall narrow-backed +0.010–0.017; wide armchair-like +0.014–0.022); the round-backed/office model barely (+0.002–0.007) — the most "typical chair" cluster, useful everywhere (evidence/fig67). The naive "own − others" statistic gave +0.013–0.023 at p < 1e-14 but was inflated by one model being better overall; the interaction is the honest number.
+**Decision:** The assay's operating point is: training sets of ~25–100 objects, hundreds of bank-built hard trials, per-trial statistics with model level and trial difficulty removed, seed replicates for the floor. The graded questions are now asked at this point.
+**Because:** This is the category effect one level down, in the predicted direction at every N, and it grows as the training set shrinks — the recipe registers *which* objects it saw when there are few of them, and not at all when 10 of 2,000 are removed (D18).
+**Rejected:** Reporting the naive per-trial contrast (row effect); calling the effect large (it is ~0.01–0.015 against a per-trial sd of ~0.02 — real, and small).
+**Implication:** Next: seed floor (pending) → then the graded test at N ≈ 50 on bank trials: for held-out objects, train on the 50 nearest vs 50 random vs 50 farthest of the same category, and relate margin change to coverage/distance — the targeted knock-in, done where it can be seen. Also worth one figure: the cluster-3 model's generality vs the descriptors.
+**Steering:** lead designed the calibration; agent ran and analysed; the row-effect correction was the agent's own catch after over-claiming in a first footer.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on (a); high that the interaction is real (consistent sign and monotone growth across three independent N); medium on its size until the seed floor is in.
+
 <a id="D20"></a>
 ## D20 — 2026-09-20 — Round 2 trimmed to the calibration: knock-ins cancelled, seed replicates added
 **State:** 34 jobs pending, none running; the lead asked what we were waiting on and how best to spend.

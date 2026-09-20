@@ -28,3 +28,5 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig64_knockout_batch1.png | `scratch/analyze_knockout.py` | `knockout/eval/*_k10`, `chair_full`; `out/knockout_long.csv` | D18 |
 | fig65_knockin_random.png | `scratch/analyze_knockin_random.py` | `knockout/eval/chair_random_100_*`; `out/knockin_random_long.csv` | D18 |
 | fig66_chair_clusters_montage.png | inline in `knockout/scripts/make_cluster_exp.py` (clustering) | `design_clusters_chair.json` | D19 |
+| fig67_cluster_matrix.png | `scratch/analyze_clusters.py` | `knockout/eval_bank/chair_c*_*`; `banktrials_chair.csv` | D21 |
+| fig68_ref_on_bank.png | `scratch/analyze_clusters.py` | `knockout/eval_bank/ref_*` | D21 |
