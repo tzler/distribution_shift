@@ -35,7 +35,7 @@ Ask the graded question at the operating point the calibration found: training s
 | | this state | cumulative |
 |---|---|---|
 | agent time | 12 h | 46 h |
-| lead time (guess) | 2 h | 19 h |
+| lead time (guess) | 5–6 h | 22–23 h |
 | compute, unsub / sub | $247 / $55 | $272 / $61 |
 
 Compute (from the ledger): first round 22 fine-tunes + the full-bank replication ≈ $180 / $40; second round 9 cluster fine-tunes, 13 evaluations and 2 seed replicates ≈ $65 / $15. 60 GPU-hours in total across the project.
