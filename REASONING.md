@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D20"></a>
+## D20 — 2026-09-20 — Round 2 trimmed to the calibration: knock-ins cancelled, seed replicates added
+**State:** 34 jobs pending, none running; the lead asked what we were waiting on and how best to spend.
+**Observation:** The 12 targeted / cross knock-ins (D19) read out on six MOCHI trials, expect ~0.01–0.03 against ±0.02 per-trial noise, and test on the set the lead had just said not to test on; a cluster model already is a targeted knock-in for a whole sub-population. The cluster matrix cannot be sized without a run-to-run noise floor from identical data.
+**Decision:** Cancel the 12 knock-ins while pending (no compute used; −$110 / −$24). Add two seed replicates of chair_c0_all (seeds 43, 44 on all three seed settings; jobs 8526306–07; +$18 / +$4). Round 2 is now: bank-eval test (C) → reference twelve on bank trials (D) → 9 cluster models (B) → 2 seeds. ≈ $100 / $22 total.
+**Because:** Every remaining job serves the calibration the lead designed, in the order the information is needed; the targeted question is asked once, later, at the N the matrix says works and on bank-built targets.
+**Rejected:** Keeping half the knock-ins (still six trials on MOCHI); cancelling D (cheap, and it validates the test set).
+**Implication:** `scripts/run_train_seed.sbatch` takes a seed as third argument; `data/chair_c0_all_s43/44` are symlinks to the same objects.
+**Steering:** agent proposed; lead: "Go."
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+
 <a id="D19"></a>
 ## D19 — 2026-09-20 — Round 2: calibrate the assay on sub-categories we construct, and test on trials built from the bank, not on MOCHI
 **State:** Batch 1 analysed (D18): knockout flat inside the noise band; a weak graded effect in the random 100-chair arm; MOCHI's 76 chair trials small and built to be hard for the pretrained model.
