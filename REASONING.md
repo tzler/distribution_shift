@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D27"></a>
+## D27 — 2026-09-20 — Round 3 submitted: the sub-category design in all twelve categories at N = 25, scored on every category; and the targeted-trial experiment
+**State:** Lead's read: results so far are promising and point to one visualisation — within-category and across-category points on one trend line, the distance measure working for all of it; the clustered version is "fine, kick it off now"; plus: pick a test trial, build a training set for it, show it and its neighbours improve with distance to it.
+**Observation:** Every category has renders, shape descriptors and similarity tables. Clustered as for chairs (k-means 8, keep the 3 most separated; cluster sizes 86–681), split in half, N = 25 from each training half. Bank trials from every held-out half: 11,634 trials over 12 categories, pair distance recorded per trial (D26). Two MOCHI chair trials with the lowest pretrained margin (shapenet262, shapenet119) each get three 25-chair training sets — the 25 nearest by our distance (mean 0.52–0.67), 25 random (0.91), the 25 farthest (1.10–1.13).
+**Decision:** Submit 33 new cluster models + 6 targeted models (jobs in `knockout/logs/batch3_jobs.txt`), each evaluated on MOCHI and on all 11,634 bank trials; the three existing chair N = 25 models are re-scored on the combined file. ≈ 39 × 1.5 GPU-h training + ~40 min evaluation each ≈ 70 GPU-h ≈ $320 / $70.
+**Because:** The target figure needs every model scored on every category so that within-category distances (other clusters, same category) and across-category distances (other categories) sit on one axis, with the within-trial comparison across 36 models; N = 25 is where composition matters most (D24) and the seed floor is 0.0035 (D26). The targeted experiment is the actionable form of the same claim, sized at ~+0.02 (D25) with the bank neighbourhood as the readout.
+**Rejected:** Waiting for the pair-distance-matched trial builder (pair distance is recorded; matching can be done in analysis); N = 50 as well (doubles cost for a smaller effect).
+**Implication:** Analysis to write while it runs: the one-trend-line figure (x = distance from trial to the model's training set; y = within-trial margin; points coloured by same-cluster / other-cluster-same-category / other-category) and the targeted figure (margin change vs distance of each MOCHI and bank trial to the targeted training set).
+**Steering:** lead — the design and the "kick it off"; agent — construction and submission.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high that the figure can be made from these runs; medium on some categories' clusters being distinct enough (lamp: one cluster of 681).
+
 <a id="D26"></a>
 ## D26 — 2026-09-20 — The rise of the raw margin with distance is how the bank trials were built; seed floor 0.0035; the cluster-free random-subset test passes
 **State:** The lead found the left panel of fig72 unintuitive — why would the margin *rise* as the trial gets farther from the training data? All remaining evaluations landed (seeds, eight random-100, five knockouts on bank trials).

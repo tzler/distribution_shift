@@ -28,3 +28,4 @@ Environment, pipeline and code traps that cost time here. Cluster-wide ones are 
 - `read_binvox` axis order: raw is x, z, y → transpose (0, 2, 1); validated against real renders (IoU 0.77–0.95 with identity perm; 0.2–0.5 for every other).
 - Login node: fine for pandas/matplotlib; a ViT-L forward pass or a 313k×20k distance matrix belongs in a job.
 - `fig17` and other early figures had no saved script; every figure now has one under `scratch/` — keep it that way.
+NOTE: extract job ids with: sbatch ... 2>&1 | tail -1 | grep -o '[0-9]*$'
