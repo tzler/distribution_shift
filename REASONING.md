@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D24"></a>
+## D24 — 2026-09-20 — The margin has two doses: any fine-tuning at all (saturates by 25 objects), and which objects (0.01–0.02, largest at small N)
+**State:** The lead asked how the margin itself behaves across training-set size, to choose the regime where an effect on the fine-tuned models can be expected — "if you train on one object and the margin does not move, that is informative; if it does, that is informative".
+**Observation:** Every chair model placed by its training-set size (evidence/fig71). Bank trials: pretrained 0.079; 25 chairs of one kind → 0.167 on that kind, 0.143 on other kinds; 50 → 0.156 / 0.137; ~100 → 0.145 / 0.132; all 2,000 → 0.138; a random 100 → 0.152. MOCHI: the same shape (pretrained 0.081; 25 → 0.157; 100 → 0.145–0.166; 1,800–2,000 → 0.155; the collaborator's 2,000-chair model 0.241, not reproduced). So: the first effect — fine-tuning at all — is +0.07 to +0.09 and is complete by 25 objects; it does not grow with more data and slightly shrinks. The second effect — which objects — is +0.015 at 25, +0.012 at 50, +0.009 at ~100 (own kind minus other kinds, model level and trial difficulty removed), against a per-trial between-model sd of 0.019.
+**Decision:** Within-category experiments live in the second effect and therefore at small N, with many trials per model. The pipeline's fixed 20,000 triplets per epoch is why the first effect saturates; within-category shift is only visible once the training set is small enough that its composition changes what those triplets contain.
+**Because:** The design quantity is not the margin's level but the part of it that depends on composition, and that part is largest where the composition contrast (D23, right panel) is largest.
+**Rejected:** Reading the falling own-kind line as "smaller is always better" — at N = 1–10 the model may not learn the kind at all; that end has not been measured.
+**Implication:** Worth measuring the low end directly: N = 1, 5, 10 objects of one kind (3 fine-tunes, ≈ $27 / $6) — whether the margin moves with one object is exactly the lead's question. Combined with D23: random subsets at N ≈ 25, many per category.
+**Steering:** lead asked the question; agent assembled the figure.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the shape; the seed floor (still training) will set the error bar on the second effect.
+
 <a id="D23"></a>
 ## D23 — 2026-09-20 — What the next experiment should be: random subsets per category, not clusters; the estimate's behaviour with training-set size
 **State:** New state drafted (the agent's round failed, the lead's worked); the lead asks what to run next and whether the cluster design is "searching for the answer"; the version he wants is the one where clustering does not matter.

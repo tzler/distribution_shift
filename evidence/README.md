@@ -32,3 +32,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig68_ref_on_bank.png | `scratch/analyze_clusters.py` | `knockout/eval_bank/ref_*` | D21 |
 | fig69_cluster_shift.png | `scratch/analyze_clusters_shift.py` | `out/cluster_shift_long.csv` | D22 |
 | fig70_shift_vs_setsize.png | `scratch/fig_shift_vs_setsize.py` | `out/shift_vs_setsize.csv` | D23 |
+| fig71_margin_vs_dose.png | `scratch/fig_margin_vs_dose.py` (re-run as evaluations land) | `out/margin_vs_dose.csv` | D24 |
