@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D19"></a>
+## D19 — 2026-09-20 — Round 2: calibrate the assay on sub-categories we construct, and test on trials built from the bank, not on MOCHI
+**State:** Batch 1 analysed (D18): knockout flat inside the noise band; a weak graded effect in the random 100-chair arm; MOCHI's 76 chair trials small and built to be hard for the pretrained model.
+**Observation:** The lead's design: cluster a category's objects into distinct sub-populations; split each in half; fine-tune one model per cluster on its training half; build oddity trials from every cluster's held-out half; score every model on every cluster. We know category membership moves the margin, so sub-category membership should too — and the sizes at which it does (objects per model, trials per cluster, cluster separation) are the assay's operating point. Chairs: k-means (k = 8) on the 16³ shape descriptors, keep the three most separated clusters (n = 208 / 175 / 203; between-cluster cosine distance 0.89–1.12 vs within 0.63–0.81); the montage (evidence/fig66) shows tall narrow-backed, wide low armchair-like, and round-backed/office chairs. Trials: 3 per held-out object, distractor from its 10 nearest held-out neighbours in the same cluster, 2 views + 1 view, 882 trials.
+**Decision:** Submit 9 models (3 clusters × N ∈ {all ≈ 90–104, 50, 25}; jobs 8526137–45), each evaluated on MOCHI and on the bank trials, plus the pretrained model and chair_full on the bank trials (8526136). Also submit the held 12 targeted / cross-category knock-ins (8526115–27), as the lead asked. ≈ 21 fine-tunes ≈ 42 GPU-h ≈ $190 / $42.
+**Because:** Testing on trials built from the bank gives thousands of triplets with controlled difficulty and no MOCHI selection effect; a whole sub-population is a dose the training recipe can register, where 10 objects of 2,000 was not; and a 3 × 3 transfer matrix with the pretrained model flat by construction is the state-3 logic one level down, so a null would implicate the recipe, not the metric.
+**Rejected:** k = 50 knockouts on the full bank (2.5 % of the bank; held); evaluating only on MOCHI; forcing all 2,000 chairs into three clusters (silhouette 0.19 — the discarded middle would blur the contrast).
+**Implication:** Once the matrix shows the expected diagonal at some N, the graded questions (targeted knock-in, coverage vs margin change) are asked at that N with bank-built trials. Analysis to write: `scratch/analyze_clusters.py` — 3 × 3 margins, diagonal minus off-diagonal per N, pretrained control.
+**Steering:** lead — the design is his ("find categories within the category"); agent — clustering choices, trial construction, submission.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high that this is the right calibration; medium that these three clusters are separated enough for the recipe to register at N = 25.
+
 <a id="D18"></a>
 ## D18 — 2026-09-20 — Batch 1 complete: knockout is flat inside the noise band; the random knock-ins show the first graded within-category effect; our pipeline does not reproduce the reference models
 **State:** All 22 batch-1 fine-tunes evaluated at their final checkpoint, plus the full-bank replication (chair_full) and the chair g1 re-evaluation.

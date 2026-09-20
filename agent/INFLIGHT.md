@@ -1,7 +1,8 @@
 # INFLIGHT — what is running or waiting, right now
 *Updated 2026-09-20 morning*
 
-- Nothing running. Batch 1 complete and analysed (D18). chair_full landed at 0.155: the reference twelve are not a baseline for our runs.
+- **Batch 2 (D19), 22 jobs, `knockout/logs/batch2_jobs.txt`:** 12 targeted/cross knock-ins (8526115–27, MOCHI eval chained); 9 cluster models chair_c{0,1,2}_{all,n50,n25} (8526137–45, MOCHI + bank-trial eval chained via `run_train_cluster.sbatch`); bank-trial eval test on chair_full (8526136, mig45) — check this first: if `eval_bank/chair_full/ood_analysis_results.csv` is missing, fix `eval_bank.sh` and re-run evals with `run_evalbank_mig45.sbatch`.
+- Analysis to write: `scratch/analyze_clusters.py` (3 × 3 margin matrix by N; diagonal − off-diagonal; pretrained flat) and `scratch/analyze_knockin_targeted.py` (targeted vs random vs cross on the 6 trials; single-trial figure).
 - **Held:** 12 targeted/cross knock-ins; 15 k = 50 knockouts. Decide after chair_full.
 - Analysis scripts: `scratch/analyze_knockout.py`, `scratch/analyze_knockin_random.py`. Round-2 design awaits the lead (STATE Strategy).
 
