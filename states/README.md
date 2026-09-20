@@ -12,6 +12,7 @@ lab walkthrough; the reasoning entries they cite carry the actual dates. Click f
 | 3 | [Measuring distribution shift on the objects themselves, without an encoder](03-a-model-free-ruler.md) | distance on 3-D shape; comparing the twelve models on the same trial; moving the training data moves the margin |
 | 4 | [Counting nearby training data instead of measuring distance to it](04-coverage.md) | a count leaves the pretrained model flat across all trials; the training images' viewpoint does not matter |
 | 5 | [Testing within a category means changing the training data, not the score](05-the-within-category-limit.md) | the graded-looking curve is categories differing; new models trained on chosen subsets |
+| 6 | [Changing the training data within a category: one experiment failed, the next one worked](06-changing-the-training-data.md) | the agent's knockout round: nothing; the lead's sub-category round: the effect, and the distance predicts it without labels |
 
 Each snapshot ends with the resources used up to that point (agent time, compute, dollars). What was available throughout is in [RESOURCES.md](../RESOURCES.md).
 

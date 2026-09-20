@@ -1,7 +1,7 @@
 # Testing within a category means changing the training data, not the score
 With one training set per category, no score computed on this data can tell "far from the chair training set" from "an unusual chair" — they are the same fact. So we are training new models on chosen subsets of a category and measuring whether the margin moves.
 
-*Snapshot: 2026-09-19 — the live state; the maintained version is [STATE.md](../STATE.md) · Lead: TB* · ← [previous](04-coverage.md) · [index](README.md) · [resources](../RESOURCES.md)
+*Snapshot: 2026-09-19 · Lead: TB* · ← [previous](04-coverage.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [next](06-changing-the-training-data.md)
 
 ## Goal
 Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
