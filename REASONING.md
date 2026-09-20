@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D22"></a>
+## D22 — 2026-09-20 — The model-free distance predicts which cluster model wins a trial, better than the cluster labels and beyond them; coverage saturates at small N; graded-within-one-training-set still not identifiable
+**State:** D21 in hand (sub-category membership moves the margin); the lead asked how that relates to the shift measure.
+**Observation:** Same nine models and 882 trials, labels discarded. For each trial × model, distance from the trial's objects to that model's actual training chairs (3-D shape; mean distance to the 10 nearest). With model level and trial removed: r = −0.21 / −0.26 / −0.24 at N ≈ 100 / 50 / 25, against the cluster label's +0.17 / +0.23 / +0.23; distance with the label held fixed −0.15 / −0.12 / −0.09 (evidence/fig69). Coverage (count within a fixed radius) does worse here (+0.14 to +0.21): with 25–100 training objects most counts are zero, so the count saturates where the distance still varies. Inside a single cluster with its single model, distance vs margin is r ≈ +0.05 to +0.09 and the pretrained model shows the same pattern on the same trials — the one-training-set confound, as in D07.
+**Decision:** This is the answer to "how does it relate": the measure predicts, without labels, which of three differently-trained models gives a trial the bigger margin — the state-3 result reproduced one level down with new models, bank-built trials and a continuous ruler. Report the distance form (nearest-neighbour) for small training sets and coverage for large banks, and say why.
+**Because:** The label is a coarse proxy for the distance (they correlate at −0.95); the distance carries what the label carries and more. Predicting beyond the label is what "model-free shift estimate" was supposed to mean.
+**Rejected:** Claiming a graded within-cluster result (not identifiable with one training set per cluster — needs nearest / random / farthest subsets around held-out objects, the round-3 design).
+**Implication:** The manuscript's claim survives in a form that can be stated precisely: distance from the test objects to the training objects, measured on the stimuli, predicts the fine-tuned margin within trial, at category and sub-category scale. Still owed: the seed floor; the round-3 graded test; the human side (no new human data touched by any of this).
+**Steering:** lead asked the question; agent computed and framed it.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the numbers (three independent N, 2,646 trial × model rows each); medium-high on "better than the label" (partial r shrinks as N shrinks: −0.15 → −0.09).
+
 <a id="D21"></a>
 ## D21 — 2026-09-20 — The sub-category calibration works: models specialise to the cluster they were trained on, more so with fewer training chairs; the bank-built test set carries the category effect
 **State:** Round 2 (D19/D20) complete except the seed replicates, which failed on a bad Hydra override and were resubmitted (8528180–81).
