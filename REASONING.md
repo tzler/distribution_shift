@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D37"></a>
+## D37 — 2026-09-21 — Transfer test: the search's measures applied to MOCHI (unseen images, different render pipeline) — the frozen-network distance transfers best, the bounding box holds, voxels degrade
+**State:** The lead asked that measures chosen in the toy setting be tested on images the models never trained on; he had read D36's ranking as scored on the training set (it was scored on held-out trials — the training-object trials are still being evaluated).
+**Observation:** 706 MOCHI single-category trials × 34 cluster models, within-trial score as in D36 (`out/transfer_mochi.csv`). Within a category: DINOv2 / nearest −0.259 (bank held-out: −0.236), bounding box / nearest −0.173 (−0.232), voxel16 / nearest −0.091 (−0.212), structure −0.066 (−0.186). Across categories: DINOv2 −0.16 (unchanged), voxel16 −0.11, structure −0.11, bbox −0.06. All models: DINOv2 −0.35, voxel16 −0.22, structure −0.19, bbox −0.15. DINOv2 on MOCHI uses the test image's own features (image level), which carries the pipeline.
+**Decision:** Report both levels. The within-category result is robust to the render pipeline with the crudest geometry (bbox) and with the frozen-network distance; the finer geometric descriptors were partly fitting the bank's rendering. Recommend the paper's within-category figure use bbox/nearest (model-free, transfers) with DINOv2/nearest beside it (transfers best, with the initialisation caveat of D36).
+**Because:** A measure's job is to predict margins on images the model has not seen from a pipeline it was not trained on; the ranking on the bank alone over-credited voxels and structure.
+**Rejected:** Treating MOCHI as the last word (76 chair trials per category; the bank held-out set is ten times larger — the two rankings together are the evidence).
+**Implication:** The level the lead expects to fail — an internet-scale pretrained encoder with no measurable training set — cannot be tested model-free; that is the manuscript's original wall and where the human claim sits. Next: the training-object anchor (queued), then the one-axis figure with DINOv2 distance on x.
+**Steering:** lead asked for the transfer; agent corrected the premise (held-out, not training) and ran it.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+
 <a id="D36"></a>
 ## D36 — 2026-09-21 — The distance-measure search: within a category everything reasonable ties near −0.23 and a 7-number bounding box is as good as any; across categories only a learned space orders the training sets; nearest-few beats every set-level comparison
 **State:** The lead: we have the right margins now but only an assumed distance measure — search for it. 69 candidates (11 feature sets × up to 8 comparison rules, incl. view-specific depth maps at the test image's own view), each scored as the within-trial correlation between distance-to-the-model's-training-objects and the model's margin, fitted on odd trials and reported on even (evidence/fig80, `out/distance_search.csv`).
