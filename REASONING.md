@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D30"></a>
+## D30 — 2026-09-20 — Walkthrough artifact updated for the collaborator (Act 9); an un-normalised view of the round-3 result
+**State:** Round 3 in (34/36 cluster models, 6 targeted); the lead asked for the shared artifact to carry the weekend's take-homes, and for a version of the result with nothing normalised.
+**Observation:** Un-normalised: fine-tuned and pretrained margins on the same trials against distance to the model's 25 training objects — the gap is what training added: all models +0.029 in the nearest bin, +0.004 in the farthest; the trial's own-category models only, +0.048 → +0.017 (evidence/fig77, 30 bins at the lead's request). Read the gap, not the slope: the slope carries the pair-distance confound (D26).
+**Decision:** Artifact version 8 adds Act 9, "Change the training data": round one's null and why (dose; MOCHI's selection; pipeline ≠ reference), the lead's sub-category design and its result, the distance predicting the winner without labels and with random subsets, the twelve-category reproduction of the Act 4 analysis, the un-normalised view; two limits (small effect; graded within / step across on this descriptor) and the weekend's cost from the ledger ($355 / $80; project $380 / $85). Not included: the search, the seed mechanics, the descriptor question.
+**Because:** The collaborator needs the take-homes and the attribution, not the trace; the trace is the repo.
+**Rejected:** Embedding every figure (the page has a 16 MB limit and a reader's patience).
+**Implication:** URL unchanged: https://claude.ai/artifact/6AhaQJwZjQoZnYEXsBWT9r. The demo repo and viewer still need rebuilding from the states (pending the lead's confirmation of the new state).
+**Steering:** lead asked; agent wrote.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+
 <a id="D29"></a>
 ## D29 — 2026-09-20 — The state-3 analysis reproduces on the round-3 models: 34 models trained on 25 objects of one kind, 11,634 trials, moving the training data moves the margin
 **State:** The lead asked to keep it simple — run the analyses that already worked (every trial × every model; distance to that model's training set; trial held fixed; the rank curve) on the new models, rather than the relationship-coloured figure of D28.

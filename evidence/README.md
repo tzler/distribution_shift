@@ -37,3 +37,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig73_why_margin_rises.png | `scratch/fig_why_margin_rises.py` | `out/banktrials_dAB.csv` | D26 |
 | fig75_one_axis_controlled.png | `scratch/analyze_all_categories.py` (first cut, 8 models; re-run when round 3 completes) | `out/all_categories_long.csv` | D28 |
 | fig76_round3_moving_training.png | `scratch/analyze_round3_simple.py` | `out/all_categories_long.csv` (round-3 models on `banktrials_all.csv`) | D29 |
+| fig77_raw_margin_vs_distance.png | `scratch/fig_raw_margin_vs_distance.py` | `out/all_categories_long.csv` | D30 |
