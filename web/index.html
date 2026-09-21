@@ -151,7 +151,7 @@ details.recipe summary:hover{color:var(--ink)}
   <header class="masthead">
     <div class="eyebrow">Working notes · geometric distribution shift · September 2026</div>
     <h1>The Model-Free Ruler</h1>
-    <p class="dek">How we built a distribution-shift measure with no learned parameters, watched it work, watched the control track it, fixed that by design, asked one question too many, and worked out what actually stands. Then a measure of coverage rather than distance that does better, and a test of whether the models care about viewpoint. Each act carries a recipe; the appendix is a build spec you can hand to Claude.</p>
+    <p class="dek">How we built a distribution-shift measure with no learned parameters, watched it work, watched the control track it, fixed that by design, asked one question too many, and worked out what actually stands. Then a measure of coverage rather than distance that does better, and a test of whether the models care about viewpoint. <b>New (19–20 Sep, Act 9):</b> we trained our own models on chosen subsets of a category and showed the margin follows the training set inside a category too — and which of our two experimental designs got there. Each act carries a recipe; the appendix is a build spec you can hand to Claude.</p>
     <div class="meta">
       <span><b>706</b> MOCHI ShapeNet trials</span>
       <span><b>12</b> category fine-tunes of DINOv2</span>
@@ -172,6 +172,7 @@ details.recipe summary:hover{color:var(--ink)}
         <li class="up"><a href="#a6"><span class="n">6</span><span>What stands<span class="mood">settled</span></span></a></li>
         <li class="up"><a href="#a7"><span class="n">7</span><span>Coverage, not distance<span class="mood">new · belief ↑</span></span></a></li>
         <li class="flat"><a href="#a8"><span class="n">8</span><span>Images, not objects<span class="mood">tested · not supported</span></span></a></li>
+        <li class="up"><a href="#a9"><span class="n">9</span><span>Change the training data<span class="mood">weekend · belief ↑</span></span></a></li>
         <li class="flat"><a href="#reproduce"><span class="n">§</span><span>Reproduce it<span class="mood">build spec</span></span></a></li>
       </ol>
       <div class="legend">
@@ -675,6 +676,47 @@ controls: the test object at all 15 training views (view marginalised), at one r
             <p><code>scratch/voxdepth.py</code> (projector), <code>scratch/viewdepth_pipeline.py</code> (stages 1–4, 3b), <code>run_viewdepth*.sbatch</code>. Stage 2 takes two minutes on 64 cores; stage 4 thirty seconds.</p>
           </div>
         </details>
+      </section>
+
+      <section class="act" id="a9">
+        <div class="act-head"><span class="act-num">ACT 9 · 19–20 SEP</span><h2>Change the training data</h2></div>
+        <p class="stand up">where belief stood · <b>the margin follows the training set inside a category too — shown by training new models, not by scoring old ones</b></p>
+        <div class="prose">
+          <p class="lead">Everything before this act used the twelve category models we were given. Inside a category that leaves one training set per category, so "far from the chair training set" and "an unusual chair" are the same fact and no estimate can separate them. The only way through is to train new models on chosen subsets of a category, so that the training set varies while the test trial stays fixed. This weekend we did that, twice.</p>
+          <p><b>The first round showed nothing.</b> Remove the ten training objects nearest a group of test objects (about 10 % of a 2,000-object set), fine-tune, and measure on the 76 MOCHI chair trials: the margin changed by 0.001, against a run-to-run difference of 0.02 between any two models trained on different data. Two reasons, both about the instrument. The training pipeline draws the same 20,000 image triplets per epoch whatever the bank size, so removing 200 of 2,000 barely changes what the model sees — and 100 chairs train it as fully as 2,000 do. And MOCHI's chair trials were selected to be hard for the pretrained model, so inside the category the unusual chairs are the <em>easy</em> trials. Also learned: our pipeline does not reproduce the collaborator's original models (0.155 against 0.241 on the same chairs), so nothing we train is compared to the original twelve.</p>
+        </div>
+        <figure>
+          <img src="img/64_knockout.png" alt="Removing a trial's ten nearest training objects: no change in its margin, inside the noise band" loading="lazy">
+          <figcaption><b>Round one.</b> Whether none, one or both of a trial's objects lost their nearest training objects, its margin did not move. The band is the per-trial spread between models trained on different random subsets.</figcaption>
+        </figure>
+        <div class="prose">
+          <p><b>The second round worked.</b> The lead's design: we know category membership moves the margin, so find categories <em>within</em> the category. Cluster the chairs on their 3-D shape, keep the three most separated kinds (tall narrow-backed, wide armchair-like, round-backed and office), split each in half, fine-tune one model per kind on 25, 50 or ~100 of its training half, and build 882 hard oddity trials from the held-out halves — hundreds of trials instead of 76, with no MOCHI selection. Every model scored on every kind.</p>
+        </div>
+        <figure>
+          <img src="img/66_clusters.png" alt="Montage of the three chair sub-populations" loading="lazy">
+          <figcaption><b>Three kinds of chair</b>, twelve random members each.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/67_clustermatrix.png" alt="Each model does best on the kind of chair it was trained on, more so with fewer training chairs" loading="lazy">
+          <figcaption><b>Each model does best on the kind it saw.</b> With model quality and trial difficulty removed, the own-kind advantage is +0.009 with ~100 training chairs, +0.012 with 50, +0.015 with 25 — the largest of the six possible pairings every time, and three to four times the seed-to-seed floor (0.0035). Fewer chairs, more specialised.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/69_distance_predicts.png" alt="Distance from the trial's objects to each model's training chairs predicts which model wins the trial" loading="lazy">
+          <figcaption><b>And the geometric distance predicts it without the labels.</b> Throw the cluster labels away and measure, for every trial and model, how far the trial's objects are from the chairs that model actually saw: r = −0.21 to −0.26 within trial, better than the label itself (+0.17 to +0.23), and still predictive with the label held fixed. Random 100-chair subsets show the same thing (r = −0.08, permutation p = 0.001): clustering was the scaffold, not the finding.</figcaption>
+        </figure>
+        <div class="prose">
+          <p><b>Then all twelve categories.</b> The same design in every category at 25 objects per model — 36 models, each scored on 11,634 held-out trials from three kinds of each of twelve categories — and the analysis of Act 4 run on them unchanged.</p>
+        </div>
+        <figure>
+          <img src="img/76_allcats.png" alt="The Act 4 analysis on 34 models trained on 25 objects of one kind: grey falls as measured, flat once the trial is held fixed, blue still falls; rank curve steps down" loading="lazy">
+          <figcaption><b>Moving the training data moves the margin, again.</b> 34 models × 11,634 trials. As measured, the pretrained model falls too (far-from-everything objects are hard for everyone). Hold the trial fixed and it is flat by construction while the fine-tuned margin falls: 70 % of trials slope down, permutation null sd 0.0015. The rank curve steps down from the nearest training set to the farthest, steepest over the first few ranks — the trial's own category — then graded.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/77_raw.png" alt="Margin against distance to the training objects, nothing normalised: fine-tuned and pretrained on the same trials" loading="lazy">
+          <figcaption><b>Nothing normalised.</b> Blue and grey score the same trials; the gap is what training on those 25 objects added. All models: +0.029 in the nearest bin, +0.004 in the farthest. Only the models of the trial's own category: +0.048 to +0.017.</figcaption>
+        </figure>
+        <div class="callout turn">Two honest limits. Inside a category the effect is small — a hundredth or two of margin, against a per-trial spread of two hundredths — and visible only with hundreds of trials and the trial held fixed. And the 16³ voxel distance is informative <em>inside</em> a category and uninformative <em>between</em> categories: at a matched distance from the training set, a same-category trial gains 0.07 and an other-category trial 0.02. On this descriptor the result is graded within a category and a step across categories, not one line. Whether a finer descriptor puts them on one line is the next analysis, and needs no new training.</div>
+        <div class="callout ctrl">Cost of the weekend: 60 fine-tunes and ~80 evaluations, about $530 unsubsidised / $115 subsidised. The first round (the agent's design) was $180 of it and showed nothing; the second (the lead's) showed the effect. The difference was not the metric but the experiment: a dose the training procedure can register, and a test set large and unselected enough to see it.</div>
       </section>
 
       <section class="appendix" id="reproduce">
