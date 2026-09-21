@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D38"></a>
+## D38 — 2026-09-21 — The continuum plot: with the frozen-network distance, three models trained on different subsets lie on one curve; the effect is largest and cleanest under full fine-tuning; far training data can cost
+**State:** The lead asked for the direct plot — models trained on different subsets, best measure on x, margin on y — to see whether items at the same distance get the same margin whichever model they come from. (He had also mis-read D36 as scored on the training set; corrected in D37.)
+**Observation:** 882 held-out chair trials × the three 25-chair cluster models, y = fine-tuned − pretrained on the same trial (evidence/fig81). DINOv2 / nearest: under gentle LoRA the three curves overlap and fall from ~+0.10 to +0.02–0.04 (within-trial r −0.36); under full fine-tuning they fall from ~+0.18 to ~0 along one continuum (within-trial r −0.23, pooled −0.21), and the tall-narrow-backed model goes *below zero* on the farthest trials — fine-tuning on distant data made those trials worse than the pretrained model. Bounding box / nearest: each model's curve falls, but the models' distance ranges differ and the curves do not align on a shared axis.
+**Decision:** This is the paper's within-category figure: full-fine-tune rung, DINOv2-nearest on x, gain on y, three models on one continuum, with the bounding-box version in the supplement as the fully model-free confirmation of the slope. Note the negative-transfer tail explicitly.
+**Because:** It is the lead's question answered in the form he asked for; the continuum is what "the margin tracks distance" should look like; and it is the frozen-network measure that makes the models commensurable, which is the D36/D37 finding restated visually.
+**Rejected:** The gentle rung as the headline (smaller effect, and the nearest bin dips for two models — the D26 confound at the near end); the bounding box as the headline (falls, but no shared axis).
+**Implication:** With the anchor trials (training objects, distance ≈ 0) the continuum gets its left end; the negative tail under full fine-tuning is a testable prediction for the human side (learning far data should cost on near trials).
+**Steering:** lead specified the plot; agent built it.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+
 <a id="D37"></a>
 ## D37 — 2026-09-21 — Transfer test: the search's measures applied to MOCHI (unseen images, different render pipeline) — the frozen-network distance transfers best, the bounding box holds, voxels degrade
 **State:** The lead asked that measures chosen in the toy setting be tested on images the models never trained on; he had read D36's ranking as scored on the training set (it was scored on held-out trials — the training-object trials are still being evaluated).

@@ -44,3 +44,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | step2_fix_the_form.png | `scratch/fig_story_steps.py` | `out/shift2d_shapegen.csv`, `out/blindshift_shapegen.csv` | story figure, step 2 |
 | step4_across_not_within.png | `scratch/fig_story_steps.py` | `out/coverage_shapenet_voxel16_percat.csv` | story figure, step 4 |
 | fig80_distance_search.png | `scratch/distance_search_fast.py` → `out/distance_search.csv` | round-3 margins × 11 feature sets × 8 comparisons | D36 |
+| fig81_gradient.png | `scratch/fig_gradient.py` | `eval_bank_all/chair_c*_n25{,_fullft}`, bbox + DINOv2 banks | D38 |
