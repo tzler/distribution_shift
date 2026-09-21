@@ -20,6 +20,17 @@ Template — one line each:
 **Steering:** lead asked for the transfer; agent corrected the premise (held-out, not training) and ran it.
 **Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
 
+<a id="D37"></a>
+## D37 — 2026-09-21 — Transfer of the search's winners to MOCHI: the geometric measures degrade on the harder, selected trials; the frozen-network distance holds
+**State:** The lead worried the search had been scored on the training set (it had not — the 11,634 trials are held-out halves; the training-object trials are still queued) and that measures tuned on a toy setting need not transfer. Test: the 34 cluster models on the MOCHI single-category trials — never trained on, a different render pipeline, the manuscript's selection of hard trials.
+**Observation:** Within category, nearest-neighbour: DINOv2 pretrained −0.259 (bank −0.236), bounding box −0.173 (bank −0.232), 16³ voxels −0.091 (bank −0.212), structure −0.066 (bank −0.186). Across categories: DINOv2 −0.162 (bank −0.155), voxels −0.110, structure −0.111, bounding box −0.058. All models pooled: DINOv2 −0.346, voxels −0.220, bounding box −0.146. The object descriptors are identical across the two test sets (same assets); the trials differ — MOCHI's pairs are near-identical in shape (`out/transfer_mochi.csv`).
+**Decision:** Report both levels. On unselected trials within a category, geometry suffices and the bounding box is the model-free statement. On the manuscript's trials and across categories, the frozen-network distance is the measure that transfers; carry its caveat (the fine-tuned models inherit that space).
+**Because:** A measure that survives a change of trial set and pipeline is the one to trust one level further out; the geometric ones lose resolution exactly where the trials become hard, which is where the manuscript lives.
+**Rejected:** Declaring the geometric measure sufficient on the strength of the bank-trial search alone.
+**Implication:** The training-object trials (queued) give the anchor for both; the D28 one-axis figure should be redrawn with the DINOv2 distance on x to see whether within- and across-category points now share a line. The lead's deeper worry — none of this need hold for a large model pretrained on the internet — remains open and is not testable with these tools; say so in the paper.
+**Steering:** lead — the transfer requirement and the scepticism; agent — the test.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the numbers; medium on the "resolution" explanation for the geometric drop.
+
 <a id="D36"></a>
 ## D36 — 2026-09-21 — The distance-measure search: within a category everything reasonable ties near −0.23 and a 7-number bounding box is as good as any; across categories only a learned space orders the training sets; nearest-few beats every set-level comparison
 **State:** The lead: we have the right margins now but only an assumed distance measure — search for it. 69 candidates (11 feature sets × up to 8 comparison rules, incl. view-specific depth maps at the test image's own view), each scored as the within-trial correlation between distance-to-the-model's-training-objects and the model's margin, fitted on odd trials and reported on even (evidence/fig80, `out/distance_search.csv`).
