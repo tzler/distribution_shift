@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D29"></a>
+## D29 — 2026-09-20 — The state-3 analysis reproduces on the round-3 models: 34 models trained on 25 objects of one kind, 11,634 trials, moving the training data moves the margin
+**State:** The lead asked to keep it simple — run the analyses that already worked (every trial × every model; distance to that model's training set; trial held fixed; the rank curve) on the new models, rather than the relationship-coloured figure of D28.
+**Observation:** 34 of the 36 cluster models evaluated (telephone c0 and watercraft c1 still scoring), 395,556 trial × model points. As measured: fine-tuned r = −0.10, pretrained r = −0.06 (grey falls too, as always). Trial held fixed: within-trial r = −0.13, 70 % of trials slope down, permutation null sd 0.0015; pretrained flat by construction. Rank curve: nearest training set +0.027 above the trial's average, farthest −0.008, steepest over the first few ranks — the same shape as with the twelve category models (evidence/fig76). Spend for round 3 to date ≈ $250 / $55.
+**Decision:** This is the figure format for the paper's within-and-across result: the three panels of state 3, with models trained on 25 objects of one kind. D28's relationship split stays as the analysis behind it (the step across categories and the graded slope within), not as the headline.
+**Because:** The lead's point: the simple analysis is what worked and what a reader already understands; the new models are just more training sets, and the same plot carries them. The finer decomposition is for the text.
+**Rejected:** Leading with the coloured one-axis figure (D28).
+**Implication:** Re-run when the last two evaluations land; then the targeted-trial figure (6 models, in). Then the descriptor sweep (no training) to see whether cross-category distance can be made informative.
+**Steering:** lead redirected to the simple analysis; agent ran it.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+
 <a id="D28"></a>
 ## D28 — 2026-09-20 — First cut of the final figure (8 models): graded within a category, a step across categories; the voxel distance does not put the two on one line
 **State:** The lead asked to design the final visualisation now, from the finished models, so the rest drop into it. Eight N = 25 cluster models (chair, airplane, bench ×2) scored on all 11,634 bank trials.
