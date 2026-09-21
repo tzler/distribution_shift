@@ -40,3 +40,6 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig77_raw_margin_vs_distance.png | `scratch/fig_raw_margin_vs_distance.py` | `out/all_categories_long.csv` | D30 |
 | fig78_absolute_vs_relative.png | `scratch/fig_absolute_vs_relative.py` | `out/all_categories_long.csv` | D31 |
 | fig79_one_trial_many_models.png | `scratch/fig_one_trial_many_models.py` | `out/all_categories_long.csv` | D32 |
+| step1_manuscript_metric.png | `scratch/fig_story_steps.py` | `L1norm_vs_distshift/trials_vit_base_patch16_224.dino.csv` | story figure, step 1 |
+| step2_fix_the_form.png | `scratch/fig_story_steps.py` | `out/shift2d_shapegen.csv`, `out/blindshift_shapegen.csv` | story figure, step 2 |
+| step4_across_not_within.png | `scratch/fig_story_steps.py` | `out/coverage_shapenet_voxel16_percat.csv` | story figure, step 4 |

@@ -22,6 +22,9 @@ Find a way to use the oddity margin as a proxy for distribution shift — the di
 
 **Why, and what we are doing about it.** With one training set per category, "far from the chair training set" and "an unusual chair" are the same fact about the same object; no score computed on these models can separate them. The comparison that worked above worked because the training set varied. So the current work is to make it vary *within* a category: train new models on chosen subsets of a category, with the trial fixed, and measure whether the margin moves [[D09](REASONING.md#D09)]. The fine-tuned models' own feature spaces do show within-category structure that our 3-D-shape description misses, so a finer description is also on the list [[D15](REASONING.md#D15)].
 
+## The argument in six figures
+1. [The manuscript's estimate measures the trial and the encoder](evidence/step1_manuscript_metric.png) · 2. [Never compare the trial's two objects to each other](evidence/step2_fix_the_form.png) · 3. [Measure on the objects, not in a network](evidence/fig62_encoder_space.png) · 4. [Works across categories, not within](evidence/step4_across_not_within.png) · 5. [Change the training data](evidence/fig76_round3_moving_training.png) · 6. [The margin is relative](evidence/fig78_absolute_vs_relative.png) · 7. Remove pretraining — running (D33).
+
 ## Strategy
 
 Comparing the twelve models on the same trial worked because it varied the training set with the trial fixed. The within-category question needs the same move one level down: vary the training set *within a category*, with the trial fixed, and ask whether the margin follows coverage. Three tracks, all reusing the collaborator's fine-tuning pipeline unchanged (same backbone, LoRA, loss, epochs), so the new models are comparable to the twelve we have.
