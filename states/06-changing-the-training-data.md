@@ -1,7 +1,7 @@
 # Changing the training data within a category: one experiment failed, the next one worked
 We trained new models on chosen subsets of the chair category and asked whether the margin follows how far the test objects are from what each model saw. The first round, designed by the agent, removed or added a few dozen objects and measured on the MOCHI trials; it showed nothing. The second round, designed by the lead, trained models on distinct kinds of chair and measured on hundreds of trials built from held-out chairs; it showed the effect, and the model-free distance predicts it.
 
-*Snapshot: 2026-09-20 — the live state; the maintained version is [STATE.md](../STATE.md) · Lead: TB* · ← [previous](05-the-within-category-limit.md) · [index](README.md) · [resources](../RESOURCES.md)
+*Snapshot: 2026-09-20 · Lead: TB* · ← [previous](05-the-within-category-limit.md) · [index](README.md) · [resources](../RESOURCES.md) · next → [next](07-what-the-margin-is.md)
 
 ## Goal
 Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
