@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D35"></a>
+## D35 — 2026-09-21 — From scratch: the prior-linked level goes (0.79 → 0.28), but nothing absolute replaces it; the model is weak and the single-training-set wall returns
+**State:** The from-scratch ViT-small (random init, 2,000 chairs, 60 epochs) scored on the 11,634 bank trials; the lead's first interest.
+**Observation:** Accuracy 0.51 on chair trials (chance 0.33) against 0.63 for the *pretrained* ViT-small that never saw a chair; margin +0.045 vs +0.064. r(its margin, pretrained ViT-S margin) = +0.28 on chair trials, +0.32 over all — the end of the ladder's 0.79 → 0.44 → 0.34. Against distance to its own 2,000 training chairs: r = +0.13 raw, +0.05 with pair distance held fixed, the same as the pretrained models that never saw the data (+0.17 / −0.02).
+**Decision:** Report the ladder as a dose-response with the from-scratch rung as its end point: the level tied to pretraining vanishes without pretraining; what is left is trial difficulty and noise, not distance. Do not pursue from-scratch models on subsets (this run shows 30,000 images barely suffice; 25 objects cannot).
+**Because:** A single from-scratch model has one training set, which is the D07 wall again — distance-to-training and unusualness are one variable — and the model is too weak for the residual to be read as anything.
+**Rejected:** Longer from-scratch training (the trend from epoch 18 to 60 was 0.53 → 0.70 in training accuracy; the evaluation is still below the untrained-on-chairs prior); ViT-L from scratch.
+**Implication:** The paper's statement: the margin reads distance relative to what the model already had; how much of the margin is "already had" is set by the training regime (85 % → 45 % across the ladder, ~0.28 correlation with the prior at the from-scratch end); an absolute reading is not available at any rung we could train. Rung 3b (ViT-S pretrained, full fine-tune) pending: it separates the small architecture from the missing prior.
+**Steering:** lead asked for from-scratch first; agent ran and read it.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the numbers; medium that a stronger from-scratch model would say the same (the wall argument says it cannot say more on one training set).
+
 <a id="D34"></a>
 ## D34 — 2026-09-21 — The ladder's first two rungs: the trial's level shrinks as more of the prior is overwritten, and the effect of which objects grows
 **State:** All eight ladder runs trained; the six ViT-L runs evaluated; the two ViT-small evaluations failed on a run-dir glob (fixed, re-queued 8568995–96).
