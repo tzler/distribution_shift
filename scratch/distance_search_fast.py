@@ -54,7 +54,7 @@ def objlevel(ids,X,key):
     d={}
     for i,k in zip(ids,X): d.setdefault(key(i),[]).append(k)
     return {k:np.mean(v,axis=0) for k,v in d.items()}
-for nm in ['voxel8','voxel16','voxel32','bbox','structure','volatility','multiview']:
+for nm in ['voxel16','bbox','structure','volatility','multiview']:
     z=np.load(f'{G}/bank/bank_{nm}.npz',allow_pickle=True); run_object_level(nm,dict(zip(z['ids'],z['X'].astype(np.float32))))
 z=np.load(f'{G}/bank/bank3d_shapenet.npz',allow_pickle=True); run_object_level('d57',dict(zip(z['ids'],z['X'].astype(np.float32))))
 z=np.load(f'{K}/eval/encoder_features/pretrained.npz',allow_pickle=True); ids=z['train_ids']; key=lambda i:f'{SYN[i.split("/")[0]]}/{i.split("/")[1]}'; keep=np.array([key(i) in need for i in ids]); run_object_level('dinov2_pretrained',objlevel(ids[keep],z['train_X'][keep].astype(np.float32),key))

@@ -43,3 +43,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | step1_manuscript_metric.png | `scratch/fig_story_steps.py` | `L1norm_vs_distshift/trials_vit_base_patch16_224.dino.csv` | story figure, step 1 |
 | step2_fix_the_form.png | `scratch/fig_story_steps.py` | `out/shift2d_shapegen.csv`, `out/blindshift_shapegen.csv` | story figure, step 2 |
 | step4_across_not_within.png | `scratch/fig_story_steps.py` | `out/coverage_shapenet_voxel16_percat.csv` | story figure, step 4 |
+| fig80_distance_search.png | `scratch/distance_search_fast.py` → `out/distance_search.csv` | round-3 margins × 11 feature sets × 8 comparisons | D36 |
