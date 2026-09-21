@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D34"></a>
+## D34 — 2026-09-21 — The ladder's first two rungs: the trial's level shrinks as more of the prior is overwritten, and the effect of which objects grows
+**State:** All eight ladder runs trained; the six ViT-L runs evaluated; the two ViT-small evaluations failed on a run-dir glob (fixed, re-queued 8568995–96).
+**Observation:** Chair trials, three cluster models at N = 25 per rung. LoRA lr 1e-6: margin 0.146, 85 % of its variance is the trial's level, r(level, pretrained margin) +0.79, own-kind advantage +0.015. LoRA lr 1e-5: 0.208, 54 %, +0.44, +0.039. Full fine-tune lr 1e-5: 0.170, 45 %, +0.34, +0.037. In every rung r(level, distance to the training data) stays at +0.03 to +0.09 — the level that remains is trial difficulty, not distance. The from-scratch ViT-small reached training accuracy ~0.7 at epoch 60 (LoRA runs: 0.85–0.90 by epoch 30).
+**Decision:** State the D31 result as a property of the regime: "relative" because the fine-tuning is a small perturbation of a large prior; overwrite more of the prior and the level's share falls while the effect of which data grows. Report the ladder as a dose-response, with the from-scratch rung as its end point once scored.
+**Because:** Three rungs, one direction, on the same trials with the same analysis; and the prediction was written down before the runs (D33).
+**Rejected:** Reading the higher margins at lr 1e-5 as "better models" (a different rung, not a better one; the relevant quantity is the split).
+**Implication:** The paper's framing: the margin reads distance relative to what the model already had; how much of the margin is "already had" is set by the training regime; humans are at the far-prior end. The from-scratch rung tests whether, with no prior, the level itself becomes distance to the training data.
+**Steering:** lead asked for the from-scratch test; agent designed the ladder and ran it.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on rungs 1–2; the from-scratch rung pending.
+
 <a id="D33"></a>
 ## D33 — 2026-09-20 — "Relative" may be a property of the fine-tuning regime: a ladder of how much of the prior is overwritten, ending in training from scratch
 **State:** D31–D32 established the margin as relative — 92 % of its variance is where pretraining left the trial. The lead asked how that plays with the pretraining-then-fine-tuning regime, and called the from-scratch test "the single highest-powered thing we can do".

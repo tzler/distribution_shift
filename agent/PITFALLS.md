@@ -29,3 +29,4 @@ Environment, pipeline and code traps that cost time here. Cluster-wide ones are 
 - Login node: fine for pandas/matplotlib; a ViT-L forward pass or a 313k×20k distance matrix belongs in a job.
 - `fig17` and other early figures had no saved script; every figure now has one under `scratch/` — keep it that way.
 NOTE: extract job ids with: sbatch ... 2>&1 | tail -1 | grep -o '[0-9]*$'
+- eval scripts glob the run dir as vit_large*/ — non-LoRA and ViT-small runs are named vit_small_…; changed to vit_*/ (D34). Symptom: 'csv//shapenet_dataset.csv' not found, checkpoints present.
