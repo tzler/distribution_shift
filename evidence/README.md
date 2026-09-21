@@ -38,3 +38,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig75_one_axis_controlled.png | `scratch/analyze_all_categories.py` (first cut, 8 models; re-run when round 3 completes) | `out/all_categories_long.csv` | D28 |
 | fig76_round3_moving_training.png | `scratch/analyze_round3_simple.py` | `out/all_categories_long.csv` (round-3 models on `banktrials_all.csv`) | D29 |
 | fig77_raw_margin_vs_distance.png | `scratch/fig_raw_margin_vs_distance.py` | `out/all_categories_long.csv` | D30 |
+| fig78_absolute_vs_relative.png | `scratch/fig_absolute_vs_relative.py` | `out/all_categories_long.csv` | D31 |

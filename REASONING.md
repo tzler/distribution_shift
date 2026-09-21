@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D31"></a>
+## D31 — 2026-09-20 — The margin is a relative measure of distance to the training set, not an absolute one
+**State:** The lead, looking at the un-normalised own-category panel (fig77, "up and down and up and down"), asked whether the margin gives an absolute or a relative measure of distance — a question the reviewers had circled.
+**Observation:** 11,634 trials × the three models of each trial's own category. 92 % of the margin's variance is between trials (the trial's level), 8 % within (which training set). The level is the pretrained margin on the same trial (r = +0.82; +0.96 over all 34 models) and is not the trial's distance to the training sets (r = +0.07). Within a trial, distance predicts the margin (r = −0.21, −0.027 per unit distance; same sign in 11 of 12 categories, with the slope varying from −0.08 airplane to −0.01 telephone). A single function margin = g(distance) explains 0.0 % of the raw margin; level(trial) + g(distance) is the model that fits. Splitting trials into five bands by pretrained margin gives five stacked curves, each at the height the pretrained model set, not one curve (evidence/fig78).
+**Decision:** State it this way in the paper: the margin reads distance to the training set *relative to the trial's own level*; comparisons are meaningful within a trial (same images, different training sets) or after subtracting the level (the pretrained margin, or the mean over models). A single margin from a single model on a single trial is not a distance. This is the within-trial design's justification, stated as a property of the measure rather than a convenience.
+**Because:** It answers the reviewers' question directly, explains why every raw plot in this project wobbled and every within-trial plot did not, and is exactly what "the margin reveals representational support" should mean: support is relative to what the model already had.
+**Rejected:** Treating the wobble in fig77's right panel as noise to be smoothed (it is the trial levels, structured and 92 % of the variance).
+**Implication:** The manuscript's human claim inherits this: a human margin on a trial is a level plus a shift term, and the level has to be estimated (the same participants on matched trials, or the pretrained-like baseline). The within-category slope differing by category is a second question — is the "exchange rate" between distance and margin category-specific? — for the text, not the headline.
+**Steering:** lead asked; agent tested.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+
 <a id="D30"></a>
 ## D30 — 2026-09-20 — Walkthrough artifact updated for the collaborator (Act 9); an un-normalised view of the round-3 result
 **State:** Round 3 in (34/36 cluster models, 6 targeted); the lead asked for the shared artifact to carry the weekend's take-homes, and for a version of the result with nothing normalised.
