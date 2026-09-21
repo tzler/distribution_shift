@@ -9,7 +9,7 @@
 1. When `eval_train/*/ood_analysis_results.csv` exist for all 36 cluster models: run the D36 scorer on them (`scratch/distance_search_fast.py` reads `out/all_categories_long.csv`; build the equivalent long table for the training trials first — the loader in `scratch/analyze_all_categories.py` shows the pattern). The test: for each model, its own 25 objects (distance ≈ 0 in every measure) must get the highest margin; then the within-trial ranking of all 69 measures as before. Log as D39.
 2. Fold rung 3b (`eval_bank_all/chair_full_smallft`) into `scratch/analyze_ladder.py` and D34's table: it separates the small architecture from the missing prior.
 3. Lead review of states 7 and 8 (`states/07-*`, `states/08-*`); then rebuild `../../lab-trace-workspace/distribution-shift-trace` from the confirmed states (pedagogical order, one synthetic commit per state; builder `demo-src/build_demo.py`) and the viewer bundle (`lab-trace-viewer/make_bundle.py`).
-4. Push the three repos once the lead creates them on GitHub (no `gh` on this cluster; SSH works). Remotes to add: this repo (branch `docs-system`, no main yet), `lab-trace`, `lab-trace-viewer`, `distribution-shift-trace`.
+4. Pushed 21 Sep: this repo → github.com/tzler/distribution_shift (branch `docs-system`; the repo has no main — the lead may set docs-system as default or merge); template → tzler/state; viewer → tzler/state_view; demo → tzler/state_distributionshift (still the chronological build — rebuild from the confirmed states, then push).
 
 ## Held / decided against
 - k = 50 knockouts on the full bank (D20); from-scratch models on subsets (D35); further tuning of measures on the bank trials (D36: fit ≈ held-out, nothing to tune).
