@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D32"></a>
+## D32 — 2026-09-20 — The direct version: hold one trial fixed, retrain at different distances, watch its margin — the effect is a population effect, invisible in one trial
+**State:** The lead asked for the most direct test of absolute vs relative: one trial, models trained on data at varying distance from it, that trial's margin.
+**Observation:** Each held-out trial has 34 models at distances 0.1–1.4 (evidence/fig79). In a single trial the 34 margins scatter by sd 0.02–0.03 and the distance trend is inside that scatter: Spearman ρ per trial ranges from −0.43 to +0.19 across the eight shown. Overlaying 300 trials relative to their pretrained margin, the mean runs from +0.023 at the nearest training sets to +0.006 at the farthest — and stays above zero: a model fine-tuned on anything raises a trial's margin a little, and nearby data raises it ~0.02 more. The designed version on MOCHI: shapenet119, pretrained −0.069 → nearest 25 chairs +0.032, random −0.002, farthest −0.044 (monotone, 0.08 across the range); shapenet262, pretrained −0.105 → nearest −0.074, random −0.102, farthest −0.032 (not monotone; the farthest set did best).
+**Decision:** Say plainly: the margin is a relative measure, and a noisy one. One trial under one model does not give a distance; one trial under many models gives a trend that is inside the model-to-model scatter; many trials give the trend cleanly. The claim in the paper is about the population of trials, and should be stated as such — the single-trial "banger" is one of two targeted trials, and the other goes the wrong way.
+**Because:** The honest scale of the effect is ~0.02 of margin over the full range of distance against a per-trial, per-model scatter of ~0.02–0.03; no amount of design changes that ratio, only averaging does.
+**Rejected:** Presenting shapenet119 alone (a 1-in-2 result); increasing the number of targeted trials as the next spend (the population result already carries the claim; the targeted design's value is illustrative).
+**Implication:** For the human side this is the constraint that matters: a human margin on a trial has the same structure (level + small shift term + noise), so human claims need the same within-trial or averaged design. Also worth noting in the text: even far-away training data lifts the margin above the pretrained level (+0.006) — the domain effect never fully disappears at these distances.
+**Steering:** lead asked; agent built.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+
 <a id="D31"></a>
 ## D31 — 2026-09-20 — The margin is a relative measure of distance to the training set, not an absolute one
 **State:** The lead, looking at the un-normalised own-category panel (fig77, "up and down and up and down"), asked whether the margin gives an absolute or a relative measure of distance — a question the reviewers had circled.
