@@ -36,3 +36,17 @@ Check here before repeating a number. Each line: value · where it came from · 
 
 ## Cost
 - one fine-tune ≈ 2 GPU-h (3 min/epoch × 30 + 12 min eval) ≈ $9 unsub / $2 sub; project to 19 Sep ≈ $25 / $6.50; core plan ≈ $440 / $100 · `compute_ledger.csv`, RESOURCES.md · D12, D14
+
+## Interventions (19–21 Sep; models we trained)
+- Round 1 knockout (remove 10 nearest of ~2,000): within-trial contrast −0.001 (chair, airplane), +0.000 (table); run-to-run per-trial sd 0.019 between random subsets; seed floor 0.0035 · `analyze_knockout.py` · D18, D26
+- Our full-bank chair model 0.155 vs the collaborator's 0.241 on the same chairs · D18
+- Chair clusters (N = all/50/25): own-kind advantage +0.009 / +0.012 / +0.015, largest of the 6 pairings each time · `analyze_clusters.py` · D21
+- Distance predicts the winner within trial: r −0.21 / −0.26 / −0.24; label alone +0.17/+0.23; partial −0.15 → −0.09 · `analyze_clusters_shift.py` · D22
+- Random 100-chair subsets on bank trials: within-trial r −0.077, perm p 0.001 · D26
+- Round 3: 34 models × 11,634 trials; within-trial r −0.13, 70 % of trials slope down, null sd 0.0015; rank curve +0.027 → −0.008 · `analyze_round3_simple.py` · D29
+- Relative measure: 92 % of variance is the trial's level; r(level, pretrained) +0.82; r(level, distance) +0.07; within-trial r −0.21 · `fig_absolute_vs_relative.py` · D31
+- Ladder (chair, 3 models at N = 25): level share 85 / 54 / 45 %; r(level, pretrained) 0.79 / 0.44 / 0.34; own-kind +0.015 / +0.039 / +0.037; from scratch r 0.28, accuracy 0.51 (pretrained ViT-S 0.63) · `analyze_ladder.py` · D34, D35
+- Search (held-out): DINOv2/nearest −0.236, bbox/nearest −0.232, voxel16/nearest −0.212; other-category DINOv2 −0.155, geometry ≤ −0.10; coverage worst · `out/distance_search.csv` · D36
+- Transfer to MOCHI: DINOv2 −0.26 within / −0.16 across; bbox −0.17; voxel16 −0.09 · `out/transfer_mochi.csv` · D37
+- Pair-distance confound on bank trials: r(distance to training, pair distance) = 0.81; pretrained rise +0.18 → +0.02 held fixed · D26
+- Costs: project ≈ $449 / $101, 100 GPU-h, 89 jobs (ledger 21 Sep)

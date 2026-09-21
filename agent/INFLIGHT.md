@@ -1,64 +1,18 @@
 # INFLIGHT — what is running or waiting, right now
-*Updated 2026-09-20 morning*
+*Updated 2026-09-21, end of the weekend session. Paths relative to `../knockout/` unless stated.*
 
-- **Round 3 (D27), 42 jobs, `knockout/logs/batch3_jobs.txt`:** 33 cluster models `<cat>_c{0,1,2}_n25` (11 categories) + 6 targeted `chair_tgt_<trial>_{near,rand,far}`, via `run_train_all.sbatch` (MOCHI eval + `eval_bank_all.sh` on `banktrials_all.csv`, 11,634 trials → `eval_bank_all/<cond>/`); 3 `evalall` jobs re-score chair_c*_n25 on the combined file. Designs: `design_clusters_all.json`, `design_targeted.json`.
-- **Regime ladder (D33), 8 runs 8557001–47:** chair_c{0,1,2}_n25_{lora1e5,fullft}, chair_full_scratch_s (ViT-small from scratch, 60 ep), chair_full_smallft (ViT-small pretrained, full FT). Data dirs are symlinks to chair_c*_n25 / chair_full. Evaluator backbone via EVAL_BACKBONE (set by `run_train_regime.sbatch` arg 4). Analysis: D31 variance split per rung.
-- **Distance-measure search (three passes, logs in $CLAUDE_JOB_DIR/tmp/dsearch*.log → `out/distance_search{,_view,_set}.csv`):** object-level descriptors × point-to-set estimators; view-specific depth maps; centroid + coverage. Rank by held-out own-category within-trial r.
-- Analysis to write: `scratch/analyze_targeted.py` (D32 has the numbers).
-- **Batch 2 (D19/D20), `knockout/logs/batch2_jobs.txt`:** ~~12 targeted/cross knock-ins~~ cancelled while pending (D20); 2 seed replicates chair_c0_all_s43/s44 (8526306–07); 9 cluster models chair_c{0,1,2}_{all,n50,n25} (8526137–45, MOCHI + bank-trial eval chained via `run_train_cluster.sbatch`); bank-trial eval test on chair_full (8526136, mig45) — check this first: if `eval_bank/chair_full/ood_analysis_results.csv` is missing, fix `eval_bank.sh` and re-run evals with `run_evalbank_mig45.sbatch`.
-- **Reference twelve on chair bank trials** (8526249–61, mig45, ≈ $3): `eval_bank/ref_<cat>/`. Purpose: calibrate the bank-trial set — chair model should win, the other eleven should order by category distance, pretrained flat. Caveat recorded in D19: no held-out split recoverable, so the chair model has seen these objects.
-- Analysis to write: `scratch/analyze_ref_bank.py` (12 models × 882 chair trials: rank curve, pretrained control), `scratch/analyze_clusters.py` (3 × 3 margin matrix by N; diagonal − off-diagonal; pretrained flat) and `scratch/analyze_knockin_targeted.py` (targeted vs random vs cross on the 6 trials; single-trial figure).
-- **Held:** 12 targeted/cross knock-ins; 15 k = 50 knockouts. Decide after chair_full.
-- Analysis scripts: `scratch/analyze_knockout.py`, `scratch/analyze_knockin_random.py`. Round-2 design awaits the lead (STATE Strategy).
+## Running / queued
+- **Training-object ("anchor") evaluations.** Trials built from each cluster model's own 25 training objects at their training views (`banktrials/traintrials_all.csv`, 2,700 trials, 36 conditions; built by `scripts/make_train_trials.py`). Every one of the 36 cluster models plus the 7 ladder models is being scored on them → `eval_train/<cond>/ood_analysis_results.csv`. Jobs: `evaltrain1..4` (9 models each) and `evaltrainL` (ladder) on mig45, with full-GPU twins `evaltrain4B`, `evaltrainLB` (8580291, 8580293) — whichever twin starts, cancel the other while pending. IDs in `logs/batch3_jobs.txt`.
+- Nothing else is training. The ViT-small control (`chair_full_smallft`) is evaluated on MOCHI and the all-category bank trials but its numbers have not been folded into the ladder table (D34) yet.
 
-*Machine-maintained by `scratch/inflight.py`; last refreshed 2026-09-19 14:12. Paths relative to `../knockout/`.*
+## First things for the next session
+1. When `eval_train/*/ood_analysis_results.csv` exist for all 36 cluster models: run the D36 scorer on them (`scratch/distance_search_fast.py` reads `out/all_categories_long.csv`; build the equivalent long table for the training trials first — the loader in `scratch/analyze_all_categories.py` shows the pattern). The test: for each model, its own 25 objects (distance ≈ 0 in every measure) must get the highest margin; then the within-trial ranking of all 69 measures as before. Log as D39.
+2. Fold rung 3b (`eval_bank_all/chair_full_smallft`) into `scratch/analyze_ladder.py` and D34's table: it separates the small architecture from the missing prior.
+3. Lead review of states 7 and 8 (`states/07-*`, `states/08-*`); then rebuild `../../lab-trace-workspace/distribution-shift-trace` from the confirmed states (pedagogical order, one synthetic commit per state; builder `demo-src/build_demo.py`) and the viewer bundle (`lab-trace-viewer/make_bundle.py`).
+4. Push the three repos once the lead creates them on GitHub (no `gh` on this cluster; SSH works). Remotes to add: this repo (branch `docs-system`, no main yet), `lab-trace`, `lab-trace-viewer`, `distribution-shift-trace`.
 
-## Queue right now (23 jobs)
-| job | name | kind | partition | state | elapsed | log | expected output |
-|---|---|---|---|---|---|---|---|
-| 8520577 | chair_random_100_0 | fine-tune | b200-mig45 | PENDING (Priority) | 0:00  | `logs/train_chair_random_100_0_8520577.log` | `eval/chair_random_100_0/ood_analysis_results.csv` |
-| 8521030 | airplane_g1_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_airplane_g1_k10_8521030.log` | `eval/airplane_g1_k10/ood_analysis_results.csv` |
-| 8521029 | chair_random_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_random_k10_8521029.log` | `eval/chair_random_k10/ood_analysis_results.csv` |
-| 8521028 | chair_g4_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_g4_k10_8521028.log` | `eval/chair_g4_k10/ood_analysis_results.csv` |
-| 8521027 | chair_g3_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_g3_k10_8521027.log` | `eval/chair_g3_k10/ood_analysis_results.csv` |
-| 8521026 | chair_g2_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_g2_k10_8521026.log` | `eval/chair_g2_k10/ood_analysis_results.csv` |
-| 8521035 | table_g1_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_table_g1_k10_8521035.log` | `eval/table_g1_k10/ood_analysis_results.csv` |
-| 8521034 | airplane_random_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_airplane_random_k10_8521034.log` | `eval/airplane_random_k10/ood_analysis_results.csv` |
-| 8521033 | airplane_g4_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_airplane_g4_k10_8521033.log` | `eval/airplane_g4_k10/ood_analysis_results.csv` |
-| 8521032 | airplane_g3_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_airplane_g3_k10_8521032.log` | `eval/airplane_g3_k10/ood_analysis_results.csv` |
-| 8521031 | airplane_g2_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_airplane_g2_k10_8521031.log` | `eval/airplane_g2_k10/ood_analysis_results.csv` |
-| 8521041 | chair_random_100_2 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_random_100_2_8521041.log` | `eval/chair_random_100_2/ood_analysis_results.csv` |
-| 8521040 | chair_random_100_1 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_random_100_1_8521040.log` | `eval/chair_random_100_1/ood_analysis_results.csv` |
-| 8521039 | table_random_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_table_random_k10_8521039.log` | `eval/table_random_k10/ood_analysis_results.csv` |
-| 8521038 | table_g4_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_table_g4_k10_8521038.log` | `eval/table_g4_k10/ood_analysis_results.csv` |
-| 8521037 | table_g3_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_table_g3_k10_8521037.log` | `eval/table_g3_k10/ood_analysis_results.csv` |
-| 8521036 | table_g2_k10 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_table_g2_k10_8521036.log` | `eval/table_g2_k10/ood_analysis_results.csv` |
-| 8521046 | chair_random_100_7 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_random_100_7_8521046.log` | `eval/chair_random_100_7/ood_analysis_results.csv` |
-| 8521045 | chair_random_100_6 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_random_100_6_8521045.log` | `eval/chair_random_100_6/ood_analysis_results.csv` |
-| 8521044 | chair_random_100_5 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_random_100_5_8521044.log` | `eval/chair_random_100_5/ood_analysis_results.csv` |
-| 8521043 | chair_random_100_4 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_random_100_4_8521043.log` | `eval/chair_random_100_4/ood_analysis_results.csv` |
-| 8521042 | chair_random_100_3 | fine-tune | dgx-b200 | PENDING (Priority) | 0:00  | `logs/train_chair_random_100_3_8521042.log` | `eval/chair_random_100_3/ood_analysis_results.csv` |
-| 8519397 | enc_extract | extract | dgx-b200 | RUNNING  | 2:16:15  | `logs/extract_8519397.log` | `eval/encoder_features/*.npz` |
+## Held / decided against
+- k = 50 knockouts on the full bank (D20); from-scratch models on subsets (D35); further tuning of measures on the bank trials (D36: fit ≈ held-out, nothing to tune).
 
-Completed evaluations: chair_g1_k10. (`chair_g1_k10`'s csv from the eval test is an epoch-10 checkpoint; the job's own chained eval overwrites it.)
-
-## Batches
-- **Batch 1** (submitted 19 Sep ~13:40, dgx-b200, 4.5 h limit): pilot `chair_g1_k10` + 21 jobs in `logs/batch1_jobs.txt` — knockout k = 10 for every group, `random_k10` per category, `chair_random_100_1..7`. Each trains 30 epochs (~3 min/epoch) then runs `scripts/eval_one.sh` → `eval/<cat>_<cond>/ood_analysis_results.csv`.
-- **mig45 timing run** `chair_random_100_0` (`b200-mig45`, `--qos=normal`, 12 h limit): compare epoch time with ~3 min; ≤ 2.5× slower ⇒ mig45 is cheaper per run ⇒ batch 2 goes there.
-- **Batch 2** (not submitted): `chair_target_100_<trial>` × 6, `airplane_cross_100_<trial>` × 6; subsets and sims built. `sbatch --job-name=<cat>_<cond> scripts/run_train[_mig45].sbatch <cat> <cond>`.
-- **Batch 3** (held): `<cat>_g<1-4>_k50`, `<cat>_random_k50` (15); decide from batch-1 results.
-- **Track A** `enc_extract` → `eval/encoder_features/{pretrained,ft_chair,ft_airplane,ft_table}.npz`; then write and run `scratch/encoder_space_battery.py` (within-category, category-centred, in each model's space).
-
-## How to check / resume
-```
-squeue -u bonnen -o "%i %j %T %M %P %R"
-python /vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift/scratch/inflight.py                    # refresh this file
-ls /vast/projects/bonnen/naturalistic-navig/Dist-shift-data/knockout/eval/*/ood_analysis_results.csv
-bash /vast/projects/bonnen/naturalistic-navig/Dist-shift-data/knockout/scripts/eval_one.sh <cat> <cond>          # re-run only the evaluation (GPU job)
-python /vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift/scratch/compute_ledger.py               # refresh the cost ledger
-```
-A job that died after training leaves checkpoints in `logs/<cat>_<cond>/*/checkpoints/` — re-run only the eval. A job that died in training: just resubmit (the csv dir is keyed by a random exp tag; nothing to clean).
-
-## Analysis to write while jobs run
-`scratch/analyze_knockout.py` — per category, per trial: x = knn_mean / coverage of the trial to each model's actual training set (recompute from `design.json` removals against `bank_voxel16`); y = fine-tuned margin from each `eval/` csv; within-trial regression of Δmargin on Δx; own-group vs other-group vs size-matched-random contrast.
-`scratch/analyze_knockin.py` — Δmargin from pretrained vs x over the 8 random subsets, per trial; candidate-metric comparison on those runs; targeted vs random vs cross for the 6 target trials; the single-trial figure.
+## Where the numbers live
+`out/all_categories_long.csv` (round-3 margins × voxel16 distance, 395k rows) · `out/distance_search.csv` (69 measures) · `out/transfer_mochi.csv` · `out/cluster_summary.csv` · `out/margin_vs_dose.csv` · `background/compute_ledger.csv` (run `scratch/compute_ledger.py`).
