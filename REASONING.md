@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D39"></a>
+## D39 — 2026-09-22 — Packaged for a collaborator: the experiments are now in the repo, the analysis runs from a fresh clone, and the viewer had two real bugs
+**State:** The lead wants to share the repositories with a collaborator and test whether the framework is actually usable by someone else.
+**Observation:** The project repo held the analysis (`scratch/`, 53 scripts) but not the experiments — the 31 condition-builder / evaluator / SLURM scripts lived in a sibling directory in no repository, so nobody could rerun anything. Analysis scripts also hard-coded our share's absolute path and read bulk tables from `out/`, which is git-ignored, so a clone could not run them. The viewer contained two genuine bugs found by reading it: in demo mode the commit list is reversed twice (the nine states play backwards), and if the CDN copy of `marked` is unavailable every pane stays blank — which is what the lead saw at the lab meeting.
+**Decision:** Add `experiments/` (scripts, designs, trial sets, job lists, and *patches* rather than copies of the collaborator's read-only pipeline) and `data/` (the tables the analysis consumes, 9 MB incl. the 465k-row trial × model table); make every `scratch/` script resolve the repository from its own location, fall back to `data/` when `out/` is absent, and create its output directory. Rewrite the root README for a first-time reader, add `REPRODUCE.md` (figure → script → data for all 35 cited figures) and READMEs for `experiments/` and `data/`. Fix both viewer bugs and add `bootstrap.sh` to the template so the system can be adopted in one command.
+**Because:** "Reproducible" is a claim about someone else's machine. The test was a fresh clone with no access to the share: three advertised scripts now run there and produce their figures.
+**Rejected:** Shipping the collaborator's training and evaluation code (patches instead — 28 and 8 lines); committing the 74 MB analysis table (slimmed and gzipped to 6.9 MB); moving the first-phase scripts out of the repository root (`scratch/` imports several of them — documented the layout instead).
+**Implication:** The framework's first real test is a collaborator using it. What is still untested: the viewer in a browser we do not control, and whether the trace is legible to someone who was not here — the thing the whole system claims.
+**Steering:** lead asked for the packaging and the test; agent did both.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high that the analysis reproduces from a clone (tested); medium on the viewer (two bugs fixed by reading, not yet seen working in a browser).
+
 <a id="D38"></a>
 ## D38 — 2026-09-21 — The continuum plot: with the frozen-network distance, three models trained on different subsets lie on one curve; the effect is largest and cleanest under full fine-tuning; far training data can cost
 **State:** The lead asked for the direct plot — models trained on different subsets, best measure on x, margin on y — to see whether items at the same distance get the same margin whichever model they come from. (He had also mis-read D36 as scored on the training set; corrected in D37.)

@@ -12,7 +12,10 @@
 3. Lead review of states 7 and 8 (`states/07-*`, `states/08-*`); then rebuild `../../lab-trace-workspace/distribution-shift-trace` from the confirmed states (pedagogical order, one synthetic commit per state; builder `demo-src/build_demo.py`) and the viewer bundle (`lab-trace-viewer/make_bundle.py`).
 4. Pushed 21 Sep: this repo → github.com/tzler/distribution_shift (branch `docs-system`; the repo has no main — the lead may set docs-system as default or merge); template → tzler/state; viewer → tzler/state_view; demo → tzler/state_distributionshift (still the chronological build — rebuild from the confirmed states, then push).
 
-## Viewer: broken as of 21 Sep lab meeting
+## Viewer: two bugs fixed 22 Sep, still unverified in a browser
+Fixed by reading the source: (1) demo mode reversed the commit list twice, so the nine states played backwards; (2) no fallback when the CDN copy of `marked` fails to load — every pane stays blank, which matches what the lead saw. Added a small built-in markdown renderer as a fallback. Republished (artifact v4) and pushed to `tzler/state_view`. **Someone still has to open it in a browser and confirm.**
+
+## Viewer: the original report (21 Sep lab meeting)
 The viewer artifact (https://claude.ai/artifact/B4SwzRTvVVdmRVHiW46qvs, v3, bundle inlined) showed nothing for the lead in his browser; never verified in a real browser by the agent. Debug with a browser console against `lab-trace-workspace/lab-trace-viewer/index.html` opened locally (file://) with `demo-bundle.js` beside it; likely candidates: `marked` CDN blocked, the DEMO `api()` path matching, or the artifact wrapper's outer `<head>`. The GitHub repo `tzler/state_distributionshift` works as the fallback walkthrough (nine commits, open STATE.md at each).
 
 ## Held / decided against
