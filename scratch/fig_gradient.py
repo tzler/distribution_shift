@@ -6,6 +6,7 @@ import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 import os as _os
 _here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
 _RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+_os.makedirs(_os.path.join(_RESOLVED_G,'out','figures'),exist_ok=True)
 
 NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=_RESOLVED_G
 SURF,INK,INK2,GREY='#fcfcfb','#0b0b0b','#52514e','#8a8884'; COLS=['#2a78d6','#1baf7a','#eb6834']; NAMES=['tall narrow-backed','wide armchair-like','round-backed / office']

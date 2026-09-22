@@ -53,6 +53,19 @@ python scratch/distance_search_fast.py      # the 69-measure search (needs the d
 Re-running the **experiments** (fine-tuning models, evaluating them) needs the cluster, the
 render bank and the collaborator's training pipeline: see [`experiments/`](experiments/README.md).
 
+## Layout
+
+```
+STATE.md REASONING.md states/ evidence/ RESOURCES.md agent/   the trace (read these)
+README.md REPRODUCE.md docs/                                  how to read and redo it
+data/                    result tables the analysis consumes
+scratch/                 the analysis: one script per figure or battery (53 files)
+experiments/             the interventions: designs, trial sets, SLURM scripts, patches
+*.py at the root         descriptor and bank builders from the first phase — geom3d.py,
+                         geom2d.py, estimators.py and friends; scratch/ imports some of them
+scripts/                 state_lint.py + the pre-commit installer (documentation hygiene)
+```
+
 ## What is not here
 
 - **Rendered images and descriptor banks** (~100 GB): on the lab share at

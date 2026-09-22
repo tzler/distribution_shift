@@ -10,6 +10,7 @@ import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 import os as _os
 _here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
 _RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+_os.makedirs(_os.path.join(_RESOLVED_G,'out','figures'),exist_ok=True)
 
 NAV='/vast/projects/bonnen/naturalistic-navig'; G=_RESOLVED_G; S=f'{NAV}/Dist-shift/HIDA/hida-tune/ShapeNet_OOD_Analyses'
 BLUE,GREY,SURF,INK,INK2,OK,BAD,GRN,HL='#2a78d6','#8a8884','#fcfcfb','#0b0b0b','#52514e','#1baf7a','#eb6834','#1baf7a','#eb6834'
