@@ -1,9 +1,13 @@
 """Regime ladder (D33): how much of the margin is the trial's pre-existing level, rung by rung."""
 import json, ast, numpy as np, pandas as pd
 from scipy import stats
-NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=f'{NAV}/Dist-shift-data/geometric_shift'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=_RESOLVED_G
 T=pd.read_csv(f'{K}/banktrials/banktrials_all.csv'); chair=(T.dataset=='chair').values; cl=T.condition.str[-1].astype(int).values
-L=pd.read_csv(f'{G}/out/all_categories_long.csv'); L=L[(L.kind=='cluster')&(L.model.str.startswith('chair_c'))]
+L=pd.read_csv(f'{G}/out/all_categories_long.csv' if __import__('os').path.exists(f'{G}/out/all_categories_long.csv') else f'{G}/data/all_categories_long.csv.gz'); L=L[(L.kind=='cluster')&(L.model.str.startswith('chair_c'))]
 dist={(m,t):d for m,t,d in zip(L.model,L.trial,L.dist)}   # distance from each chair trial to each chair cluster model's 25 (from the voxel16 table)
 def load(n): return pd.read_csv(f'{K}/eval_bank_all/{n}/ood_analysis_results.csv')
 print('RUNGS WITH THREE CLUSTER MODELS AT N = 25 (chair trials, 882; three models per trial)')

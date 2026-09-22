@@ -3,14 +3,18 @@
 import numpy as np, pandas as pd
 from scipy import stats
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
-G='/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+G=_RESOLVED_G
 BLUE,GREY,SURF,INK,INK2='#2a78d6','#8a8884','#fcfcfb','#0b0b0b','#52514e'
 plt.rcParams.update({'figure.facecolor':SURF,'axes.facecolor':SURF,'savefig.facecolor':SURF,'font.family':'DejaVu Sans','text.color':INK,'axes.labelcolor':INK2,'xtick.color':INK2,'ytick.color':INK2,'axes.edgecolor':'#d8d7d2','font.size':10.5,'axes.titlesize':12})
 def style(a): a.spines['top'].set_visible(False); a.spines['right'].set_visible(False); a.grid(color='#eceae5',lw=.8,zorder=0); a.set_axisbelow(True)
 def bins(x,y,nb=30):
     q=pd.qcut(x.rank(method='first'),nb,labels=False); gg=pd.DataFrame({'q':q,'x':x,'y':y}).groupby('q'); return gg.x.mean(),gg.y.mean(),gg.y.sem()
 def line(a,x,y,e,c,ls,lab,z): a.errorbar(x,y,yerr=e,fmt='o'+ls,color=c,ms=6,mfc=c,mec=SURF,mew=1.1,lw=1.8,ecolor='#d5d3ce',elinewidth=1.4,zorder=z,label=lab)
-L=pd.read_csv(f'{G}/out/all_categories_long.csv'); L=L[L.kind=='cluster']
+L=pd.read_csv(f'{G}/out/all_categories_long.csv' if __import__('os').path.exists(f'{G}/out/all_categories_long.csv') else f'{G}/data/all_categories_long.csv.gz'); L=L[L.kind=='cluster']
 fig,ax=plt.subplots(1,2,figsize=(14,6.2)); fig.subplots_adjust(left=.07,right=.98,top=.74,bottom=.16,wspace=.22)
 for a,(d,t) in zip(ax,[(L,f'every model on every trial   ({len(L):,} points)'),(L[L.train_cat==L.test_cat],f'only the models of the trial\'s own category   ({(L.train_cat==L.test_cat).sum():,} points)')]):
     style(a); bx,bf,ef=bins(d.dist,d.ft); _,bp,ep=bins(d.dist,d.pre)

@@ -2,7 +2,11 @@
 row AFTER category centring, which is the test of a within-category claim."""
 import ast, numpy as np, pandas as pd
 from scipy import stats
-NAV='/vast/projects/bonnen/naturalistic-navig'; G=f'{NAV}/Dist-shift-data/geometric_shift'; S=f'{NAV}/Dist-shift/HIDA/hida-tune/ShapeNet_OOD_Analyses'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+NAV='/vast/projects/bonnen/naturalistic-navig'; G=_RESOLVED_G; S=f'{NAV}/Dist-shift/HIDA/hida-tune/ShapeNet_OOD_Analyses'
 SYN={'airplane':'02691156','bench':'02828884','cabinet':'02933112','car':'02958343','chair':'03001627','display':'03211117',
  'lamp':'03636649','loudspeaker':'03691459','sofa':'04256520','table':'04379243','telephone':'04401088','watercraft':'04530566'}
 INV={v:k for k,v in SYN.items()}; EPS=0.12

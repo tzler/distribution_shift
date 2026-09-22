@@ -5,14 +5,18 @@ its pretrained margin. Right: each trial's level against its mean distance to th
 import numpy as np, pandas as pd
 from scipy import stats
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
-G='/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+G=_RESOLVED_G
 BLUE,GREY,SURF,INK,INK2,OK,BAD='#2a78d6','#8a8884','#fcfcfb','#0b0b0b','#52514e','#1baf7a','#eb6834'
 plt.rcParams.update({'figure.facecolor':SURF,'axes.facecolor':SURF,'savefig.facecolor':SURF,'font.family':'DejaVu Sans','text.color':INK,'axes.labelcolor':INK2,'xtick.color':INK2,'ytick.color':INK2,'axes.edgecolor':'#d8d7d2','font.size':10.5,'axes.titlesize':12})
 def style(a): a.spines['top'].set_visible(False); a.spines['right'].set_visible(False); a.grid(color='#eceae5',lw=.8,zorder=0); a.set_axisbelow(True)
 def box(a,txt,c,where='ur'):
     x,y,va,ha={'ur':(0.98,0.96,'top','right'),'ul':(0.02,0.96,'top','left'),'ll':(0.02,0.04,'bottom','left'),'lr':(0.98,0.04,'bottom','right')}[where]
     a.text(x,y,txt,transform=a.transAxes,fontsize=9.6,color=c,va=va,ha=ha,bbox=dict(boxstyle='round,pad=.4',fc=SURF,ec=c,lw=1.2))
-L=pd.read_csv(f'{G}/out/all_categories_long.csv'); L=L[(L.kind=='cluster')&(L.train_cat==L.test_cat)]
+L=pd.read_csv(f'{G}/out/all_categories_long.csv' if __import__('os').path.exists(f'{G}/out/all_categories_long.csv') else f'{G}/data/all_categories_long.csv.gz'); L=L[(L.kind=='cluster')&(L.train_cat==L.test_cat)]
 g=L.groupby('trial'); lvl=g.ft.mean(); pre=g.pre.first(); md=g.dist.mean(); wd=L.dist-g.dist.transform('mean'); wm=L.ft-g.ft.transform('mean')
 rng=np.random.default_rng(3); pick=rng.choice(L.trial.unique(),150,replace=False)
 fig,ax=plt.subplots(1,3,figsize=(17,6.2),gridspec_kw={'width_ratios':[1.4,1,1]}); fig.subplots_adjust(left=.05,right=.99,top=.72,bottom=.17,wspace=.25)

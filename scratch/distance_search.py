@@ -5,9 +5,13 @@ Three scores: all 34 models (the category step dominates); the trial's own-categ
 other-category models only (does the measure order far training sets at all?)."""
 import json, ast, os, numpy as np, pandas as pd
 from scipy import stats
-NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=f'{NAV}/Dist-shift-data/geometric_shift'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=_RESOLVED_G
 SYN={'airplane':'02691156','bench':'02828884','cabinet':'02933112','car':'02958343','chair':'03001627','display':'03211117','lamp':'03636649','loudspeaker':'03691459','sofa':'04256520','table':'04379243','telephone':'04401088','watercraft':'04530566'}; INV={v:k for k,v in SYN.items()}
-L=pd.read_csv(f'{G}/out/all_categories_long.csv'); L=L[L.kind=='cluster'].copy()
+L=pd.read_csv(f'{G}/out/all_categories_long.csv' if __import__('os').path.exists(f'{G}/out/all_categories_long.csv') else f'{G}/data/all_categories_long.csv.gz'); L=L[L.kind=='cluster'].copy()
 T=pd.read_csv(f'{K}/banktrials/banktrials_all.csv'); T['objs']=[sorted({f'{SYN[c]}/'+n[len(c)+1:-8] for n in ast.literal_eval(s)}) for c,s in zip(T.dataset,T.images)]
 D=json.load(open(f'{K}/design_clusters_all.json')); models=sorted(L.model.unique())
 train={m:[f'{SYN[m.split("_")[0]]}/{o}' for o in D[m.split('_')[0]]['split'][m.split('_c')[1][0]]['train'][:25]] for m in models}

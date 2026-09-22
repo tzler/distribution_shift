@@ -5,9 +5,13 @@ view-specific features also same-view-only. Score: within-trial r, fit on odd tr
 for all models / own-category models / other-category models."""
 import json, ast, numpy as np, pandas as pd
 from scipy import stats
-NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=f'{NAV}/Dist-shift-data/geometric_shift'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=_RESOLVED_G
 SYN={'airplane':'02691156','bench':'02828884','cabinet':'02933112','car':'02958343','chair':'03001627','display':'03211117','lamp':'03636649','loudspeaker':'03691459','sofa':'04256520','table':'04379243','telephone':'04401088','watercraft':'04530566'}
-L=pd.read_csv(f'{G}/out/all_categories_long.csv'); L=L[L.kind=='cluster'].copy(); models=sorted(L.model.unique()); mix={m:i for i,m in enumerate(models)}
+L=pd.read_csv(f'{G}/out/all_categories_long.csv' if __import__('os').path.exists(f'{G}/out/all_categories_long.csv') else f'{G}/data/all_categories_long.csv.gz'); L=L[L.kind=='cluster'].copy(); models=sorted(L.model.unique()); mix={m:i for i,m in enumerate(models)}
 T=pd.read_csv(f'{K}/banktrials/banktrials_all.csv'); nT=len(T)
 T['imgs']=[[f'{SYN[c]}/'+n[len(c)+1:-8]+'/'+n[-7:-4] for n in ast.literal_eval(s)] for c,s in zip(T.dataset,T.images)]
 T['objs']=T.imgs.apply(lambda l: sorted({i.rsplit('/',1)[0] for i in l}))

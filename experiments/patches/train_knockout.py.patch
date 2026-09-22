@@ -1,0 +1,65 @@
+--- Dist-shift/HIDA/hida-tune/train.py	2026-03-29 17:45:47.000000000 -0400
++++ Dist-shift-data/knockout/scripts/train_knockout.py	2026-09-19 11:47:11.962655336 -0400
+@@ -135,7 +135,7 @@
+ 
+ 
+ # Absolute path to project root so subprocess calls work regardless of CWD
+-_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
++_SCRIPT_DIR = '/vast/projects/bonnen/naturalistic-navig/Dist-shift/HIDA/hida-tune'
+ 
+ 
+ def generate_dataset_if_needed(cfg, exp_name, run_generation=True, ratio_overrides=None):
+@@ -152,7 +152,7 @@
+     script_name, output_filename = _get_dataset_script_and_filename(dataset_type)
+ 
+     # Compute output path
+-    exp_dir = os.path.join("/datasets/hida/current", exp_name)
++    exp_dir = os.path.join("/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/knockout/csv", exp_name)
+     output_path = os.path.join(exp_dir, output_filename)
+ 
+     if not run_generation:
+@@ -164,7 +164,7 @@
+ 
+     # Build command based on dataset type (use absolute script path)
+     cmd = [
+-        "python", os.path.join(_SCRIPT_DIR, script_name),
++        sys.executable, os.path.join(_SCRIPT_DIR, script_name),
+         "--output", output_path,
+         "--seed", str(cfg.dataset_generation.seed),
+         "--triplets-per-combo", str(cfg.dataset_generation.triplets_per_combo)
+@@ -310,7 +310,7 @@
+                 sim_dirs = {'white': sd}
+ 
+         cmd = [
+-            "python", os.path.join(_SCRIPT_DIR, script_name),
++            sys.executable, os.path.join(_SCRIPT_DIR, script_name),
+             "--shapenet-roots"] + [f"{k}:{v}" for k, v in roots.items()] + [
+             "--output", output_path,
+             "--triplets-per-category", str(triplets_per_cat),
+@@ -350,7 +350,7 @@
+ 
+     output_filename = f"{base_filename}_epoch{epoch}.csv"
+     # Compute output path
+-    exp_dir = os.path.join("/datasets/hida/current", exp_name)
++    exp_dir = os.path.join("/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/knockout/csv", exp_name)
+     output_path = os.path.join(exp_dir, output_filename)
+ 
+     if not run_generation:
+@@ -362,7 +362,7 @@
+ 
+     # Build command (use absolute script path)
+     cmd = [
+-        "python", os.path.join(_SCRIPT_DIR, script_name),
++        sys.executable, os.path.join(_SCRIPT_DIR, script_name),
+         "--output", output_path,
+         "--seed", str(seed),
+         "--triplets-per-combo", str(cfg.dataset_generation.triplets_per_combo)
+@@ -505,7 +505,7 @@
+                 sim_dirs = {'white': sd}
+ 
+         cmd = [
+-            "python", os.path.join(_SCRIPT_DIR, script_name),
++            sys.executable, os.path.join(_SCRIPT_DIR, script_name),
+             "--shapenet-roots"] + [f"{k}:{v}" for k, v in roots.items()] + [
+             "--output", output_path,
+             "--triplets-per-category", str(triplets_per_cat),

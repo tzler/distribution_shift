@@ -5,11 +5,15 @@ pretrained margin on this trial. Last panel: all trials' curves relative to thei
 import numpy as np, pandas as pd
 from scipy import stats
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
-G='/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+G=_RESOLVED_G
 BLUE,GREY,SURF,INK,INK2,OK,BAD='#2a78d6','#8a8884','#fcfcfb','#0b0b0b','#52514e','#1baf7a','#eb6834'
 plt.rcParams.update({'figure.facecolor':SURF,'axes.facecolor':SURF,'savefig.facecolor':SURF,'font.family':'DejaVu Sans','text.color':INK,'axes.labelcolor':INK2,'xtick.color':INK2,'ytick.color':INK2,'axes.edgecolor':'#d8d7d2','font.size':10.5,'axes.titlesize':11})
 def style(a): a.spines['top'].set_visible(False); a.spines['right'].set_visible(False); a.grid(color='#eceae5',lw=.8,zorder=0); a.set_axisbelow(True)
-L=pd.read_csv(f'{G}/out/all_categories_long.csv'); L=L[L.kind=='cluster']
+L=pd.read_csv(f'{G}/out/all_categories_long.csv' if __import__('os').path.exists(f'{G}/out/all_categories_long.csv') else f'{G}/data/all_categories_long.csv.gz'); L=L[L.kind=='cluster']
 g=L.groupby('trial'); pre=g.pre.first(); lvl=g.ft.mean()
 # pick 8 trials spanning difficulty: quantiles of the pretrained margin, chairs and others mixed
 rng=np.random.default_rng(7); qs=np.quantile(pre,[0.05,0.2,0.35,0.5,0.65,0.8,0.9,0.98]); picks=[]

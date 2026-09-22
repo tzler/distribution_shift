@@ -1,0 +1,22 @@
+8521026 chair_g2_k10
+8521027 chair_g3_k10
+8521028 chair_g4_k10
+8521029 chair_random_k10
+8521030 airplane_g1_k10
+8521031 airplane_g2_k10
+8521032 airplane_g3_k10
+8521033 airplane_g4_k10
+8521034 airplane_random_k10
+8521035 table_g1_k10
+8521036 table_g2_k10
+8521037 table_g3_k10
+8521038 table_g4_k10
+8521039 table_random_k10
+8521040 chair_random_100_1
+8521041 chair_random_100_2
+8521042 chair_random_100_3
+8521043 chair_random_100_4
+8521044 chair_random_100_5
+8521045 chair_random_100_6
+8521046 chair_random_100_7
+17:00 chair_full replication (same 2000-chair bank as the reference, our pipeline)

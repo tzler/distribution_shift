@@ -10,3 +10,5 @@ packet/*.png
 packet.tar.gz
 __pycache__/
 *.pyc
+!experiments/logs/
+!experiments/logs/*

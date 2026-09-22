@@ -1,0 +1,72 @@
+# round 3 2026-09-20: 33 cluster models (N=25, all categories) + 6 targeted + 3 chair evals on all-category trials
+8541753 airplane_c0_n25
+8541754 airplane_c1_n25
+8541755 airplane_c2_n25
+8541756 bench_c0_n25
+8541757 bench_c1_n25
+8541758 bench_c2_n25
+8541759 cabinet_c0_n25
+8541760 cabinet_c1_n25
+8541761 cabinet_c2_n25
+8541762 car_c0_n25
+8541763 car_c1_n25
+8541764 car_c2_n25
+8541765 chair_tgt_shapenet119_far
+8541766 chair_tgt_shapenet119_near
+8541767 chair_tgt_shapenet119_rand
+8541768 chair_tgt_shapenet262_far
+8541769 chair_tgt_shapenet262_near
+8541770 chair_tgt_shapenet262_rand
+8541771 display_c0_n25
+8541772 display_c1_n25
+8541773 display_c2_n25
+8541801 evalall
+8541802 evalall
+8541803 evalall
+8541774 lamp_c0_n25
+8541775 lamp_c1_n25
+8541776 lamp_c2_n25
+8541777 loudspeaker_c0_n25
+8541779 loudspeaker_c1_n25
+8541781 loudspeaker_c2_n25
+8541783 sofa_c0_n25
+8541784 sofa_c1_n25
+8541786 sofa_c2_n25
+8541788 table_c0_n25
+8541789 table_c1_n25
+8541791 table_c2_n25
+8541793 telephone_c0_n25
+8541795 telephone_c1_n25
+8541797 telephone_c2_n25
+8541798 watercraft_c0_n25
+8541799 watercraft_c1_n25
+8541800 watercraft_c2_n25
+# regime ladder 2026-09-20 (D33)
+8557001 chair_c0_n25_lora1e5
+8557008 chair_c0_n25_fullft
+8557017 chair_c1_n25_lora1e5
+8557024 chair_c1_n25_fullft
+8557026 chair_c2_n25_lora1e5
+8557033 chair_c2_n25_fullft
+8557044 chair_full_scratch_s
+8557047 chair_full_smallft
+8563047 chair_full_smallft (resubmitted after HF prefetch)
+8568995 evalsmall chair_full_smallft
+8568996 evalsmall chair_full_scratch_s
+8569317 evalsmallB chair_full_scratch_s
+8569318 evalsmallB chair_full_smallft
+8572067 evaltrain1
+8572069 evaltrain2
+8572070 evaltrain3
+8572071 evaltrain4
+8572072 evaltrainL (ladder models)
+8573756 evaltrain1B (twin of 8572067)
+8573776 evaltrain2B (twin of 8572069)
+8573777 evaltrain3B (twin of 8572070)
+8573778 evaltrain4B (twin of 8572071)
+8573780 evaltrainLB (twin of 8572072)
+8580288 evaltrain1B
+8580289 evaltrain2B
+8580290 evaltrain3B
+8580291 evaltrain4B
+8580293 evaltrainLB

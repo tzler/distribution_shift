@@ -5,7 +5,11 @@ from scipy.cluster.vq import kmeans2
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 
 NAV = '/vast/projects/bonnen/naturalistic-navig'
-G = f'{NAV}/Dist-shift-data/geometric_shift'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+G=_RESOLVED_G
 S = f'{NAV}/Dist-shift/HIDA/hida-tune/ShapeNet_OOD_Analyses'
 OUT = f'{G}/out/figures'
 GEOM = '#2a78d6'

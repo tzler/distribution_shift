@@ -5,7 +5,11 @@ training objects (3-D shape); y = margin. Left: as measured. Middle: each trial'
 import numpy as np, pandas as pd
 from scipy import stats
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
-G='/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+import os as _os
+_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
+_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
+
+G=_RESOLVED_G
 BLUE,GREY,SURF,INK,INK2,OK,BAD='#2a78d6','#8a8884','#fcfcfb','#0b0b0b','#52514e','#1baf7a','#eb6834'
 plt.rcParams.update({'figure.facecolor':SURF,'axes.facecolor':SURF,'savefig.facecolor':SURF,'font.family':'DejaVu Sans','text.color':INK,'axes.labelcolor':INK2,'xtick.color':INK2,'ytick.color':INK2,'axes.edgecolor':'#d8d7d2','font.size':10.5,'axes.titlesize':12})
 def style(a): a.spines['top'].set_visible(False); a.spines['right'].set_visible(False); a.grid(color='#eceae5',lw=.8,zorder=0); a.set_axisbelow(True)
@@ -15,7 +19,7 @@ def box(a,txt,c,where='ur'):
 def bins(x,y,nb=12):
     q=pd.qcut(x.rank(method='first'),nb,labels=False); gg=pd.DataFrame({'q':q,'x':x,'y':y}).groupby('q'); return gg.x.mean(),gg.y.mean(),gg.y.sem()
 def line(a,x,y,e,c,ls,lab,z): a.errorbar(x,y,yerr=e,fmt='o'+ls,color=c,ms=8,mfc=c,mec=SURF,mew=1.3,lw=2.4,ecolor='#d5d3ce',elinewidth=1.4,zorder=z,label=lab)
-L=pd.read_csv(f'{G}/out/all_categories_long.csv'); L=L[L.kind=='cluster'].copy()
+L=pd.read_csv(f'{G}/out/all_categories_long.csv' if __import__('os').path.exists(f'{G}/out/all_categories_long.csv') else f'{G}/data/all_categories_long.csv.gz'); L=L[L.kind=='cluster'].copy()
 M=L.model.nunique(); ncat=L.train_cat.nunique(); print(f'{M} models from {ncat} categories × {L.trial.nunique():,} trials = {len(L):,} points')
 g=L.groupby('trial'); L['dc']=L.dist-g.dist.transform('mean'); L['mc']=L.ft-g.ft.transform('mean'); L['pc']=L.pre-g.pre.transform('mean'); L['rank']=g.dist.rank(method='first')
 assert L.pc.abs().max()<1e-9
