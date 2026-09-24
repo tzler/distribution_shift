@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D40"></a>
+## D40 — 2026-09-24 — The anchor passes: a model's own training objects get its biggest margins, every measure ranks them nearest, and the frozen-network distance tracks the margin best on them
+**State:** The 42 training-object evaluations queued on 21 Sep completed; this was item 1 of the handoff list.
+**Observation:** 2,700 oddity trials built from the 25 training objects of each of 35 models, every model scored on all of them (`data/anchor_long.csv.gz`, evidence/fig82). The model that trained on a trial's objects gives margin +0.136; another model of the same category +0.103; a model of another category +0.076; the pretrained model +0.063. The owner gives the biggest margin on 34 % of trials against a 3 % chance rate, and sits +0.057 above its trial's average. All three measures place the owner first by distance (mean rank 1.00 of 35) — as they must. Within-trial correlation between distance and margin, with the anchor included: frozen pretrained network −0.333, 16³ voxels −0.202, bounding box −0.151; excluding the owner: −0.238, −0.108, −0.104.
+**Decision:** The anchor is passed by every measure, so nothing is eliminated by it; but it separates them by degree, and it separates them the same way the MOCHI transfer did — the frozen-network distance first, the bounding box last. Report the two rankings together: on held-out trials the bounding box ties the best (D36); on training objects and on a different render pipeline it does not (D37, D40).
+**Because:** The anchor is the one point where the true distance is known (zero), so a measure's behaviour there is a fact rather than a fit; and the memorisation effect is large enough to be visible per trial, unlike the graded effect.
+**Rejected:** Treating the anchor as a filter (it excludes nothing); reading the bounding box's weaker showing here as its failure — it was never asked to order objects a model had literally seen.
+**Implication:** The continuum plot (D38) can now be drawn with its left end: distance 0, the memorised objects. Remaining: fold rung 3b into the ladder table; the lead's review of states 7–8.
+**Steering:** agent ran the queued analysis; the design (training-set trials, "there is no reason to treat train and test as different for our purposes") was the lead's.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high.
+
 <a id="D39"></a>
 ## D39 — 2026-09-22 — Packaged for a collaborator: the experiments are now in the repo, the analysis runs from a fresh clone, and the viewer had two real bugs
 **State:** The lead wants to share the repositories with a collaborator and test whether the framework is actually usable by someone else.
