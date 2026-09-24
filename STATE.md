@@ -1,5 +1,5 @@
 # Distribution shift and the oddity margin
-*Last meaningful update: 2026-09-21 · Lead: TB · Status: active* · history: [states/](states/README.md) · log: [REASONING.md](REASONING.md) · what we have: [RESOURCES.md](RESOURCES.md)
+*Last meaningful update: 2026-09-24 · Lead: TB · Status: active* · history: [states/](states/README.md) · log: [REASONING.md](REASONING.md) · what we have: [RESOURCES.md](RESOURCES.md)
 
 ## Goal
 Find a way to use the oddity margin as a proxy for distribution shift — the distance between what a model was trained on and what it is tested on — and establish that it really is one: a shift estimate the margin tracks, computed in a way that cannot be gamed. The NeurIPS reviews questioned whether the manuscript's estimate measures shift at all. We are working out how much of that to take on board and how much to set aside, by testing rather than arguing.
@@ -20,7 +20,7 @@ The short walk from the manuscript to now; each step has its own page in [states
 
 **7 · The distance measure, searched for rather than assumed.** Sixty-nine candidates scored on held-out trials: within a category everything reasonable ties at about −0.23 and a seven-number bounding box reaches it; across categories only a frozen pretrained network's features order the training sets; comparing with the nearest few training objects predicts better than any comparison with the set as a whole at 25 objects. On the manuscript's own MOCHI images the frozen-network distance transfers best and the bounding box holds. With that distance, three models trained on different subsets fall along one continuum, and fine-tuning on distant data can make a trial worse than no fine-tuning [[D36](REASONING.md#D36)–[D38](REASONING.md#D38)]. [figure](evidence/fig81_gradient.png)
 
-**Pending.** Trials built from each model's own training objects — the anchor at distance zero — are being scored (jobs in `../knockout/logs/batch3_jobs.txt`); every measure must put a model's own objects first.
+**8 · The anchor.** Trials built from each model's own 25 training objects, scored by all 35 models — the one place the true distance is known to be zero. The model that trained on those objects gives them its biggest margin (+0.136, against +0.076 from a model of another category and +0.063 from the pretrained model; it wins 34 % of trials against a 3 % chance rate), and every distance measure ranks it nearest. Measured there, the frozen network's distance tracks the margin best (r = −0.33, against −0.20 for voxels and −0.15 for the bounding box) — the same ordering as the transfer to MOCHI images [[D40](REASONING.md#D40)]. [figure](evidence/fig82_anchor.png)
 
 ## Strategy
 Score the 69 measures on the training-object trials; a measure that fails the anchor is out whatever its held-out score. Write the paper's within-category figure from the continuum plot (full fine-tune, frozen-network distance, bounding box in the supplement). State the finding at two scales — graded within a category, a step across categories on geometry, one axis in a learned space — with the caveat that the fine-tuned models were initialised from that network. Then the human side: a human margin has the same structure, a level plus a small shift term, and the claim has to be within-trial or averaged.
@@ -31,7 +31,7 @@ Score the 69 measures on the training-object trials; a measure that fails the an
 **Rates.** B200: $4.51/h unsubsidised, $1.00/h subsidised; a fine-tune ≈ 1.5 GPU-h; the account cap is far away (≈ 10 M of 60 M billing-minutes used).
 
 ## Next steps
-- [ ] Training-object anchor: score all 69 measures; a model's own objects must come first. (Claude)
+- [x] Training-object anchor: passed by every measure; it separates them by degree, not by exclusion [[D40](REASONING.md#D40)]. (Claude)
 - [ ] Paper figures: the continuum plot (D38), the twelve-category reproduction (D29), the ladder (D34), the search (D36). (Claude drafts; TB chooses)
 - [ ] The two states not yet reviewed by the lead (7 and 8), then the demo repo and viewer rebuilt from the confirmed states. (TB, then Claude)
 - [ ] Push the three repositories once created on GitHub. (TB creates; Claude pushes)
