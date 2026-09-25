@@ -12,6 +12,7 @@ import argparse, ast, os, sys, math, pickle, numpy as np, pandas as pd
 from multiprocessing import Pool
 G = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, G); sys.path.insert(0, f'{G}/scratch')
 from voxdepth import project, sphere_eye
+from _repo import G as _REPO_G   # puts lib/ on the path
 from geom3d import read_binvox
 from geom2d import silhouette
 NAV = '/vast/projects/bonnen/naturalistic-navig'; MOCHI = f'{NAV}/MOCHI'; BD = f'{NAV}/Dist-shift-data/blend-data'

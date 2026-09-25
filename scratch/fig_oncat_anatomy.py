@@ -3,10 +3,7 @@ after category-centring, and the curve inside every category separately."""
 import numpy as np, pandas as pd
 from scipy import stats
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
-import os as _os
-_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
-_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
-_os.makedirs(_os.path.join(_RESOLVED_G,'out','figures'),exist_ok=True)
+from _repo import G as _RESOLVED_G
 
 G=_RESOLVED_G
 TEAL,GREY,SURF,INK,INK2,HL='#1baf7a','#8a8884','#fcfcfb','#0b0b0b','#52514e','#eb6834'

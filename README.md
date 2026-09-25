@@ -56,14 +56,22 @@ render bank and the collaborator's training pipeline: see [`experiments/`](exper
 ## Layout
 
 ```
-STATE.md REASONING.md states/ evidence/ RESOURCES.md agent/   the trace (read these)
-README.md REPRODUCE.md docs/                                  how to read and redo it
-data/                    result tables the analysis consumes
-scratch/                 the analysis: one script per figure or battery (53 files)
-experiments/             the interventions: designs, trial sets, SLURM scripts, patches
-*.py at the root         descriptor and bank builders from the first phase — geom3d.py,
-                         geom2d.py, estimators.py and friends; scratch/ imports some of them
-scripts/                 state_lint.py + the pre-commit installer (documentation hygiene)
+STATE.md        what we believe now          ┐
+REASONING.md    why, entry by entry          │ the trace — read these
+states/         how STATE looked before      │
+evidence/       every cited figure           │
+RESOURCES.md    what we had at each point    │
+agent/          notes for the next agent     ┘
+
+README.md       start here
+REPRODUCE.md    figure → script → data, for all 36 cited figures
+data/           the tables the analysis consumes (runs on CPU, no cluster)
+scratch/        the analysis — one script per figure or battery; `from _repo import G`
+lib/            shared modules the analysis imports (descriptors, estimators)
+experiments/    the interventions: designs, trial sets, SLURM scripts, patches
+scripts/        state_lint.py + the pre-commit installer (documentation hygiene)
+docs/           earlier write-ups, kept for the record
+legacy/         first-phase code and superseded passes, kept for provenance
 ```
 
 ## What is not here

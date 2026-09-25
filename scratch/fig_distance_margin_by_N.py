@@ -4,10 +4,7 @@ and the model's margin on the trial. Left: as measured. Right: within trial — 
 import json, ast, os, numpy as np, pandas as pd
 from scipy import stats
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
-import os as _os
-_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
-_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
-_os.makedirs(_os.path.join(_RESOLVED_G,'out','figures'),exist_ok=True)
+from _repo import G as _RESOLVED_G
 
 NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=_RESOLVED_G
 SURF,INK,INK2,GREY='#fcfcfb','#0b0b0b','#52514e','#8a8884'

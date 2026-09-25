@@ -1,9 +1,6 @@
 """Refresh agent/INFLIGHT.md from the live queue and the eval directory."""
 import subprocess, os, datetime, glob
-import os as _os
-_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
-_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
-_os.makedirs(_os.path.join(_RESOLVED_G,'out','figures'),exist_ok=True)
+from _repo import G as _RESOLVED_G
 
 K='/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/knockout'; G=_RESOLVED_G
 q=[l.split('|') for l in subprocess.run(['squeue','-u','bonnen','-h','-o','%i|%j|%T|%M|%P|%R'],capture_output=True,text=True).stdout.strip().splitlines() if l]

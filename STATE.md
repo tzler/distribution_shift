@@ -43,7 +43,7 @@ Score the 69 measures on the training-object trials; a measure that fails the an
 - Why does our pipeline give 0.155 where the collaborator's gave 0.241 on the same chairs? (Only matters if old and new models are ever compared directly.)
 
 ## Pointers
-- This repo: estimator `blind_shift.py`; coverage `scratch/coverage_sweep.py`; viewpoint `scratch/viewdepth_pipeline.py`; cited figures in `evidence/` with provenance; full factual record `README_findings.md`; walkthrough artifact https://claude.ai/artifact/6AhaQJwZjQoZnYEXsBWT9r.
+- This repo: how to read it and redo it in [README.md](README.md) and [REPRODUCE.md](REPRODUCE.md); analysis in `scratch/` (shared modules in `lib/`); interventions in [experiments/](experiments/README.md); tables in [data/](data/README.md); cited figures in [evidence/](evidence/README.md) with provenance; earlier write-ups and the first phase in [docs/](docs/README.md) and `legacy/`. Walkthrough artifact: https://claude.ai/artifact/6AhaQJwZjQoZnYEXsBWT9r.
 - Experiments: `../knockout/` (`design.json`, `design_knockin.json`, `scripts/`).
 - Upstream: collaborator pipeline `../../Dist-shift/HIDA/hida-tune/` (read-only); category results `ShapeNet_OOD_Analyses/<cat>/ood_analysis_results.csv`; metric audit `../L1norm_vs_distshift/README.md`; the manuscript `Human-3D-generalization-copy/paper-to-follow-*/`.
 - Background: `background/` — narrative back-fill, citation list, slot for the MOCHI project's STATE.md.

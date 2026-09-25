@@ -6,6 +6,7 @@ voxel grid, and returns a small depth map + silhouette. Numpy only.
 """
 import numpy as np, pickle, os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from _repo import G as _REPO_G   # puts lib/ on the path
 from geom3d import read_binvox
 YFOV = np.pi / 3.0
 

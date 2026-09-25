@@ -13,8 +13,7 @@ WRITING A STATE (STATE.md or states/*.md) — the thing this project has drifted
   in scripts/state_lint.py in the same commit as the fix.
 
 Read STATE.md first (current truth), then REASONING.md (why), then agent/ (FEEDBACK,
-CHECKS, PITFALLS, INFLIGHT, RECALL — model-facing; five minutes). Weight meetings/
-"Notes (human)" over "Summary (machine)".
+CHECKS, PITFALLS, INFLIGHT, RECALL — model-facing; five minutes).
 - REASONING.md is append-only; NEWEST ENTRY AT THE TOP; next sequential ID; one line per
   field: State · Observation · Decision · Because · Rejected · Implication · Steering ·
   Confidence (one line per contributor, named by role and identity).

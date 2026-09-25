@@ -3,10 +3,7 @@ distance from the trial's objects to THAT model's training chairs (3-D shape, no
 of 10 nearest (knn10) and coverage (count within a fixed radius). Margin with model level and trial removed."""
 import json, ast, os, numpy as np, pandas as pd
 from scipy import stats
-import os as _os
-_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
-_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
-_os.makedirs(_os.path.join(_RESOLVED_G,'out','figures'),exist_ok=True)
+from _repo import G as _RESOLVED_G
 
 NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=_RESOLVED_G
 bz=np.load(f'{G}/bank/bank_voxel16.npz',allow_pickle=True); B=bz['X'].astype(float); ids=np.array(bz['ids'])

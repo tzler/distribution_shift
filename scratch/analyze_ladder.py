@@ -1,10 +1,7 @@
 """Regime ladder (D33): how much of the margin is the trial's pre-existing level, rung by rung."""
 import json, ast, numpy as np, pandas as pd
 from scipy import stats
-import os as _os
-_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
-_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
-_os.makedirs(_os.path.join(_RESOLVED_G,'out','figures'),exist_ok=True)
+from _repo import G as _RESOLVED_G
 
 NAV='/vast/projects/bonnen/naturalistic-navig'; K=f'{NAV}/Dist-shift-data/knockout'; G=_RESOLVED_G
 T=pd.read_csv(f'{K}/banktrials/banktrials_all.csv'); chair=(T.dataset=='chair').values; cl=T.condition.str[-1].astype(int).values

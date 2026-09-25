@@ -1,10 +1,7 @@
 """Compute ledger for this project from SLURM accounting: per day and per job family, with
 GPU-hours, CPU-core-hours and dollars at the published PARCC rates (unsubsidised / subsidised)."""
 import re, subprocess, pandas as pd
-import os as _os
-_here=_os.path.dirname(_os.path.abspath(__file__)); _root=_os.path.dirname(_here)
-_RESOLVED_G=_root if _os.path.exists(_os.path.join(_root,'STATE.md')) else '/vast/projects/bonnen/naturalistic-navig/Dist-shift-data/geometric_shift'
-_os.makedirs(_os.path.join(_RESOLVED_G,'out','figures'),exist_ok=True)
+from _repo import G as _RESOLVED_G
 
 G=_RESOLVED_G
 PAT=r'^(geom_|clean_shift|hida_bank|l1norm|hillclimb|cosshift|cos_shift|imgref|img_ref|pose_feats|res_trend|shift_sweep|viewdepth|enc_extract|evaltest|chair_|airplane_|table_)'
