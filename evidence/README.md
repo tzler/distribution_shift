@@ -47,3 +47,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig81_gradient.png | `scratch/fig_gradient.py` | `eval_bank_all/chair_c*_n25{,_fullft}`, bbox + DINOv2 banks | D38 |
 | fig82_anchor.png | `scratch/analyze_anchor.py` | `data/anchor_long.csv.gz`, `knockout/eval_train/*` | D40 |
 | fig83_anchor_views.png | `scratch/fig_anchor_views.py` | `data/anchor_long.csv.gz` | D40 |
+| fig84_absolute_vs_relative.png | `scratch/fig_absolute_vs_relative_2.py` | `data/all_categories_long.csv.gz`, `data/dinov2_distance_long.csv.gz` | D41 |

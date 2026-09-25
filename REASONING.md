@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D41"></a>
+## D41 — 2026-09-24 — Absolute vs relative, answered with the reviewers' own framing: no single function maps distance to margin; the stable relationship is within a trial
+**State:** The lead returned to the reviewers' question — is the margin an absolute measure of shift (a given distance implies a given margin, across and within categories) or only a relative one? — now that the margins come from 34 models we trained and the distance measure has been searched for rather than assumed.
+**Observation:** 395,556 (held-out trial × cluster model) pairs, distance in the frozen-network measure that won the search and the transfer test (`data/dinov2_distance_long.csv.gz`, evidence/fig84). One function for everything: R² = 0.002 (voxel distance 0.010). Per-category fits: slope −0.034 ± 0.027, ranging −0.077 to +0.011 — one category reverses sign; intercepts +0.096 ± 0.045. Fit on eleven categories and predict the twelfth: **R² = −0.081** (worse than predicting the mean; worst −0.29), mean bias 0.025 of margin. At a matched distance (0.5–0.7) the mean margin runs from 0.038 (telephone) to 0.122 (lamp) — a spread of **0.084**, while traversing the entire range of distance is worth **0.022**. Within a trial, r = −0.25 (voxel −0.13); within a category with the level removed, only −0.07. Ninety per cent of the margin's variance is the trial.
+**Decision:** State it plainly in the paper: the margin is a relative measure. A margin does not name a distance; a *difference* in margin between models scored on the same trial does. Report the leave-one-category-out R² as the test — it is the version of "absolute" a reader will imagine, and it fails.
+**Because:** The reviewers' concern was that the relationship might not be stable across conditions; measured directly, it is not stable *between* categories (a category's level swamps the effect four to one) and is stable *within* a trial. That is not a defect of the measure — it is what a shift estimate can mean for a model whose prior we cannot see (D31, D34).
+**Rejected:** Reporting the pooled correlation as the headline (R² = 0.002 — it is the average of opposed category slopes); calling the within-category residual (−0.07) the effect (the trial's level is the confound the within-trial design removes).
+**Implication:** Every figure in the paper that shows distance against margin must hold the trial fixed or show the levels; a supplementary panel should show the failure of the absolute reading, because it is the reviewers' question answered rather than dodged. The anchor (D40) sets the other end: what full memorisation is worth, 0.057.
+**Steering:** lead framed the question and asked for finer bins and visible distributions; agent computed the frozen-network distance for all pairs and ran the tests.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high — the leave-one-category-out test is decisive and does not depend on the measure (both give a negative R²).
+
 <a id="D40"></a>
 ## D40 — 2026-09-24 — The anchor passes: a model's own training objects get its biggest margins, every measure ranks them nearest, and the frozen-network distance tracks the margin best on them
 **State:** The 42 training-object evaluations queued on 21 Sep completed; this was item 1 of the handoff list.
