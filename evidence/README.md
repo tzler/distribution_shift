@@ -48,3 +48,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig82_anchor.png | `scratch/analyze_anchor.py` | `data/anchor_long.csv.gz`, `knockout/eval_train/*` | D40 |
 | fig83_anchor_views.png | `scratch/fig_anchor_views.py` | `data/anchor_long.csv.gz` | D40 |
 | fig84_absolute_vs_relative.png | `scratch/fig_absolute_vs_relative_2.py` | `data/all_categories_long.csv.gz`, `data/dinov2_distance_long.csv.gz` | D41 |
+| fig85_absolute_fixed.png | `scratch/fig_absolute_fixed.py` | `data/absolute_measure_search.csv`, `data/all_categories_long.csv.gz`, `data/dinov2_distance_long.csv.gz` | D42 |
