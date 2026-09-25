@@ -68,8 +68,8 @@ NAMES={'voxel16':'16³ voxel grid','bbox':'bounding box (7 numbers)','dinov2':'f
 fig,ax=plt.subplots(1,3,figsize=(16,6.8),sharey=True); fig.subplots_adjust(left=.06,right=.98,top=.66,bottom=.22,wspace=.1)
 for a,nm in zip(ax,['voxel16','bbox','dinov2']):
     style(a); sub=L[L[nm].notna()].copy(); gg=sub.groupby('trial'); sub['xc']=sub[nm]-gg[nm].transform('mean')
-    oth=sub[~sub.is_owner]; q=pd.qcut(oth.xc.rank(method='first'),10,labels=False); b=oth.assign(q=q).groupby('q')
-    a.errorbar(b.xc.mean(),b.rel.mean(),yerr=b.rel.sem(),fmt='o-',color=BLUE,ms=8,mec=SURF,lw=2.2,ecolor='#bcd0ea',zorder=4,label='models that did not train on these objects')
+    oth=sub[~sub.is_owner]; q=pd.qcut(oth.xc.rank(method='first'),30,labels=False); b=oth.assign(q=q).groupby('q')
+    a.errorbar(b.xc.mean(),b.rel.mean(),yerr=b.rel.sem(),fmt='o',color=BLUE,ms=6,mec=SURF,mew=.8,ecolor='#bcd0ea',elinewidth=1.2,zorder=4,label='models that did not train on these objects')
     ow=sub[sub.is_owner]; a.errorbar([ow.xc.mean()],[ow.rel.mean()],yerr=[ow.rel.sem()],fmt='o',color=ORA,ms=14,mec=SURF,mew=1.5,ecolor=ORA,zorder=5,label='the model that trained on these very objects')
     a.axhline(0,color=GREY,ls='--',lw=1.8,zorder=3)
     r=stats.pearsonr(sub.xc,sub.rel)[0]
