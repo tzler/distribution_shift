@@ -9,6 +9,17 @@ Template — one line each:
 **Steering:** who drove it — lead / agent / joint (note when the lead is deferring) ·
 **Confidence:** one line per contributor, by role and identity — `lead (TB)`, `agent (Claude Opus 5)` — low / medium / high, and what they are unsure of.
 
+<a id="D44"></a>
+## D44 — 2026-09-24 — The categories with no shift–margin relationship are the ones with no margin to move: a floor, not a failure of the measure
+**State:** The lead, reading the twelve-panel figure: why are loudspeaker, display and cabinet so badly behaved?
+**Observation:** The obvious guess — boxy, low-diversity shapes the descriptor cannot tell apart — is wrong. Those three have the *most* diverse shapes of the twelve (mean within-category cosine distance 0.845 against 0.493 for the rest) and the best-separated clusters (separation ratio 1.26 vs 1.11). What they share is that fine-tuning barely moves their margins: mean margin 0.051 vs 0.075, pretrained 0.039 vs 0.058, and a quarter to two-fifths of their trials sit below zero. Across the twelve categories, the strength of the within-trial relationship tracks the category's mean margin at r = +0.66 (and its mean pretrained margin at +0.58) but not shape diversity (−0.03) or cluster separation (−0.08). Scale each category's slope by its own mean margin and the dependence largely goes (r = −0.17), though the three remain below average (−0.27 to −0.44 against a mean of −0.57). Same pattern for the gain: their slopes are −0.014 to −0.023 against −0.046 elsewhere (evidence/fig88).
+**Decision:** Report this as a floor effect, and treat the absolute size of a per-category slope as uninterpretable on its own — a category that is hard for every model looks like a category where shift does not matter. Where categories are compared, scale by the category's own margin or use the rank.
+**Because:** It changes what a weak category means: not evidence against the measure but evidence that the readout is compressed there. It also predicts which categories will be uninformative in any future design — the ones where the pretrained model is already near chance.
+**Rejected:** The shape-diversity explanation (the data reverse it); dropping the three categories (they are informative about the readout's limits and the pooled result does not depend on them).
+**Implication:** For the human side the same caution applies with more force: a condition where people are near chance cannot show a shift effect regardless of the true relationship. Trial selection should target the middle of the difficulty range.
+**Steering:** lead spotted the three; agent tested the obvious explanation, found it backwards, and found the floor.
+**Confidence:** lead (TB): — (to fill) · agent (Claude Opus 5): high on the floor account (twelve categories, consistent across margin and gain); medium on the residual — the three stay slightly below average even after scaling.
+
 <a id="D43"></a>
 ## D43 — 2026-09-24 — All twelve categories predicted from the other eleven; and why training from scratch would not settle the absolute question
 **State:** The lead asked (a) whether training from scratch would clarify absolute vs relative — "it seems like that would be the third row" of the simple figure — and (b) for the gain panel with all twelve categories side by side.

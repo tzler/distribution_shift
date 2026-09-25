@@ -51,3 +51,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig85_absolute_fixed.png | `scratch/fig_absolute_fixed.py` | `data/absolute_measure_search.csv`, `data/all_categories_long.csv.gz`, `data/dinov2_distance_long.csv.gz` | D42 |
 | fig86_absolute_simple.png | `scratch/fig_absolute_simple.py` | `data/all_categories_long.csv.gz`, `data/dinov2_distance_long.csv.gz` | D42 (the readable version of fig84/85) |
 | fig87_all_categories.png | `scratch/fig_all_categories_gain.py` | `data/all_categories_long.csv.gz`, `data/dinov2_distance_long.csv.gz` | D43 |
+| fig88_why_flat_categories.png | `scratch/fig_why_some_categories.py` | `data/all_categories_long.csv.gz`, `data/dinov2_distance_long.csv.gz` | D44 |
