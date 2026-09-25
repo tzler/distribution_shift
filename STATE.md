@@ -22,6 +22,10 @@ The short walk from the manuscript to now; each step has its own page in [states
 
 **8 · The anchor.** Trials built from each model's own 25 training objects, scored by all 35 models — the one place the true distance is known to be zero. The model that trained on those objects gives them its biggest margin (+0.136, against +0.076 from a model of another category and +0.063 from the pretrained model; it wins 34 % of trials against a 3 % chance rate), and every distance measure ranks it nearest. Measured there, the frozen network's distance tracks the margin best (r = −0.33, against −0.20 for voxels and −0.15 for the bounding box) — the same ordering as the transfer to MOCHI images [[D40](REASONING.md#D40)]. [figure](evidence/fig82_anchor.png)
 
+**9 · Absolute or relative — the reviewers' question, answered.** Absolute would mean one function from distance to margin, valid in a category it was not fitted on. It fails: fit on eleven categories and predict the twelfth and R² is **−0.08**, worse than predicting that category's mean; at a matched distance the margin differs by 0.084 across categories while the whole range of distance is worth 0.022. It is not the distance measure's fault — eight of them, model-free and encoder-based, raw magnitude and normalised, all fail, and un-normalising (the right instinct) buys 0.004. The cause is the readout: a category's mean margin *is* the pretrained model's, r = **+0.985**. Replace the margin with what fine-tuning **added** (margin minus the pretrained margin on the same trial — no knowledge of the training set needed) and one function does transfer: the twelve per-category predictions miss by 0.006 instead of 0.027, better in all twelve [[D41](REASONING.md#D41)–[D43](REASONING.md#D43)]. [figure](evidence/fig86_absolute_simple.png) · [all twelve](evidence/fig87_all_categories.png)
+
+**10 · Where the relationship is weak, and why.** Three categories — loudspeaker, display, cabinet — show almost none. Not because their shapes are uninformative: they are the most diverse of the twelve. Their margins sit near zero (a quarter to two-fifths of trials below it), so there is no range for the training set to act on; across categories the strength of the relationship tracks the mean margin at r = +0.66 and shape diversity not at all. A floor, not a failed measure — and a warning that a per-category slope cannot be read on its own [[D44](REASONING.md#D44)]. [figure](evidence/fig88_why_flat_categories.png)
+
 ## Strategy
 Score the 69 measures on the training-object trials; a measure that fails the anchor is out whatever its held-out score. Write the paper's within-category figure from the continuum plot (full fine-tune, frozen-network distance, bounding box in the supplement). State the finding at two scales — graded within a category, a step across categories on geometry, one axis in a learned space — with the caveat that the fine-tuned models were initialised from that network. Then the human side: a human margin has the same structure, a level plus a small shift term, and the claim has to be within-trial or averaged.
 
@@ -32,7 +36,8 @@ Score the 69 measures on the training-object trials; a measure that fails the an
 
 ## Next steps
 - [x] Training-object anchor: passed by every measure; it separates them by degree, not by exclusion [[D40](REASONING.md#D40)]. (Claude)
-- [ ] Paper figures: the continuum plot (D38), the twelve-category reproduction (D29), the ladder (D34), the search (D36). (Claude drafts; TB chooses)
+- [ ] Paper figures: the absolute-vs-relative pair (D42/D43), the continuum plot (D38), the twelve-category reproduction (D29), the ladder (D34), the search (D36). (Claude drafts; TB chooses)
+- [ ] A states/ snapshot for steps 8–10 (the anchor and the absolute question), then rebuild the demo repo from it. (TB confirms; Claude writes)
 - [ ] The two states not yet reviewed by the lead (7 and 8), then the demo repo and viewer rebuilt from the confirmed states. (TB, then Claude)
 - [ ] Push the three repositories once created on GitHub. (TB creates; Claude pushes)
 - [ ] The human side: the same level-plus-shift structure, stated and tested. (TB)
@@ -40,6 +45,7 @@ Score the 69 measures on the training-object trials; a measure that fails the an
 ## Open questions
 - How much of the frozen network's cross-category ordering is the prior the fine-tuned models inherited from it?
 - Does the negative transfer at far distances appear in people?
+- Is the residual category difference in the gain (table, display) structure or noise?
 - Why does our pipeline give 0.155 where the collaborator's gave 0.241 on the same chairs? (Only matters if old and new models are ever compared directly.)
 
 ## Pointers
