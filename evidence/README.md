@@ -46,3 +46,4 @@ level-3 residualised test (session record 2026-09-19; script to be added).
 | fig80_distance_search.png | `scratch/distance_search_fast.py` → `out/distance_search.csv` | round-3 margins × 11 feature sets × 8 comparisons | D36 |
 | fig81_gradient.png | `scratch/fig_gradient.py` | `eval_bank_all/chair_c*_n25{,_fullft}`, bbox + DINOv2 banks | D38 |
 | fig82_anchor.png | `scratch/analyze_anchor.py` | `data/anchor_long.csv.gz`, `knockout/eval_train/*` | D40 |
+| fig83_anchor_views.png | `scratch/fig_anchor_views.py` | `data/anchor_long.csv.gz` | D40 |
